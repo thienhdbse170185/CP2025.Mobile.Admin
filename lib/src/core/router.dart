@@ -134,7 +134,7 @@ final router = GoRouter(
       ///health-report-route
       GoRoute(
           path: RouteName.report,
-          builder: (context, state) => const HealthReportWidget()),
+          builder: (context, state) => const SymptomWidget()),
 
       ///create-ticket-route
       GoRoute(

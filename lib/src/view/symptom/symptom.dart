@@ -1,17 +1,17 @@
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart'; // For picking images
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart'; // For picking images
 import 'package:smart_farm_admin/src/view/widgets/text_field_required.dart'; // To handle files
 
-class HealthReportWidget extends StatefulWidget {
-  const HealthReportWidget({super.key});
+class SymptomWidget extends StatefulWidget {
+  const SymptomWidget({super.key});
 
   @override
-  State<HealthReportWidget> createState() => _HealthReportWidgetState();
+  State<SymptomWidget> createState() => _SymptomWidgetState();
 }
 
-class _HealthReportWidgetState extends State<HealthReportWidget> {
+class _SymptomWidgetState extends State<SymptomWidget> {
   final TextEditingController _noteController = TextEditingController();
   final List<File> _images = [];
   final TextEditingController _symptomController = TextEditingController();
