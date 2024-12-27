@@ -1,5 +1,4 @@
 import 'package:data_layer/data_layer.dart';
-import 'package:data_layer/repository/auth/auth_local_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_farm_admin/src/core/common/cubits/theme_cubit.dart';
@@ -28,11 +27,12 @@ class _MyAppState extends State<MyApp> {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
-          create: (context) => AuthRepository(dataClient: AuthLocalData()),
+          create: (context) =>
+              AuthRepository(authApiClient: AuthApiClient(dio: dio)),
         ),
         RepositoryProvider(
           create: (context) =>
-              TaskRepository(dataClient: TaskRemoteData(dio: dio)),
+              TaskRepository(apiClient: TaskRemoteData(dio: dio)),
         ),
         RepositoryProvider(
           create: (context) =>
