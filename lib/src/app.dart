@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
         ),
         RepositoryProvider(
           create: (context) =>
-              TaskRepository(dataClient: TaskRemoteData(dio: dio)),
+              TaskRepository(apiClient: TaskRemoteData(dio: dio)),
         ),
         RepositoryProvider(
           create: (context) =>
