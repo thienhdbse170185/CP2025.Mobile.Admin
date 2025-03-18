@@ -33,11 +33,6 @@ class SystemBloc extends Bloc<SystemEvent, SystemState> {
         });
 
         if (accessToken != null && accessToken.isNotEmpty) {
-          // await setupNotifications();
-          // final signalRService =
-          //     SignalRService(flutterLocalNotificationsPlugin);
-          // await signalRService.connect(
-          //     accessToken, dotenv.env['BASE_SIGNALR_URL']!);
           emit(const SystemState.appStartedSuccess());
         } else {
           emit(

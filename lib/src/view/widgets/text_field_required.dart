@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 
 class TextFieldRequired extends StatefulWidget {
-  const TextFieldRequired(
-      {super.key,
-      required this.label,
-      required this.hintText,
-      this.suffixIcon,
-      this.prefixIcon, // Thêm prefixIcon
-      this.onTap,
-      this.isDisabled,
-      this.controller,
-      this.helperText,
-      this.content,
-      this.isReadOnly = false,
-      this.isObscureText = false, // Add this line
-      this.isPassword = false,
-      this.keyBoardType,
-      this.maxLines = 1,
-      this.isRequired = true});
+  const TextFieldRequired({
+    super.key,
+    required this.label,
+    required this.hintText,
+    this.suffixIcon,
+    this.prefixIcon, // Thêm prefixIcon
+    this.onTap,
+    this.isDisabled,
+    this.controller,
+    this.helperText,
+    this.content,
+    this.isReadOnly = false,
+    this.isObscureText = false, // Add this line
+    this.isPassword = false,
+    this.keyBoardType,
+    this.maxLines = 1,
+    this.isRequired = true,
+    this.validator, // Add validator
+  });
 
   final String label;
   final String hintText;
@@ -34,6 +36,7 @@ class TextFieldRequired extends StatefulWidget {
   final bool isObscureText; // Add this line
   final bool isPassword;
   final String? helperText;
+  final String? Function(String?)? validator; // Add validator
 
   @override
   State<TextFieldRequired> createState() => _TextFieldRequiredState();
@@ -50,14 +53,16 @@ class _TextFieldRequiredState extends State<TextFieldRequired> {
 
   @override
   Widget build(BuildContext context) {
-    final isReadOnly = widget.content != null ||
+    final isReadOnly =
+        widget.content != null ||
         widget.isDisabled == true ||
         widget.isReadOnly; // Modify this line
 
-    return TextField(
+    return TextFormField(
       autocorrect: false,
       maxLines: widget.maxLines,
-      controller: widget.controller ??
+      controller:
+          widget.controller ??
           (widget.content != null
               ? TextEditingController(text: widget.content)
               : null), // Nếu có `content`, hiển thị trong TextField
@@ -69,37 +74,42 @@ class _TextFieldRequiredState extends State<TextFieldRequired> {
         enabled: widget.isDisabled == false,
         label: RichText(
           text: TextSpan(
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
             children: [
               TextSpan(text: '${widget.label} '),
               widget.isRequired == true && widget.isDisabled == false
                   ? const TextSpan(
-                      text: ' *',
-                      style: TextStyle(color: Colors.red),
-                    )
+                    text: ' *',
+                    style: TextStyle(color: Colors.red),
+                  )
                   : const TextSpan(),
             ],
           ),
         ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4),
-        ),
+        border: OutlineInputBorder(),
         hintText: widget.hintText,
         prefixIcon: widget.prefixIcon, // Hiển thị prefixIcon
-        suffixIcon: widget.isPassword
-            ? IconButton(
-                onPressed: () {
-                  setState(() {
-                    _isObscureText = !_isObscureText;
-                  });
-                },
-                icon: Icon(_isObscureText
-                    ? Icons.visibility_off_rounded
-                    : Icons.visibility_rounded))
-            : widget.suffixIcon, // Hiển thị suffixIcon
+        suffixIcon:
+            widget.isPassword
+                ? IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _isObscureText = !_isObscureText;
+                    });
+                  },
+                  icon: Icon(
+                    _isObscureText
+                        ? Icons.visibility_off_rounded
+                        : Icons.visibility_rounded,
+                  ),
+                )
+                : widget.suffixIcon, // Hiển thị suffixIcon
         helperText: widget.helperText,
       ),
       obscureText: _isObscureText,
+      validator: widget.validator, // Add validator
     );
   }
 }
