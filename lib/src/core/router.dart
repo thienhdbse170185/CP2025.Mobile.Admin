@@ -6,6 +6,7 @@ import 'package:smart_farm_admin/src/view/auth/login.dart';
 import 'package:smart_farm_admin/src/view/cage/cage.dart';
 import 'package:smart_farm_admin/src/view/home/home.dart';
 import 'package:smart_farm_admin/src/view/layout.dart';
+import 'package:smart_farm_admin/src/view/notification/notification.dart';
 import 'package:smart_farm_admin/src/view/profile/profile.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -18,6 +19,7 @@ class RouteName {
   static const String notificationSetting = '/notification-setting';
   static const String userProfile = '/user-profile';
   static const String cage = '/cage';
+  static const String notification = '/notification';
 
   static const publicRoutes = [login];
 }
@@ -78,11 +80,6 @@ final router = GoRouter(
         ),
       ],
     ),
-    // GoRoute(
-    //   path: RouteName.home,
-    //   pageBuilder:
-    //       (context, state) => _buildPageWithSlideTransition(const HomeScreen()),
-    // ),
     GoRoute(
       path: RouteName.login,
       pageBuilder:
@@ -95,6 +92,12 @@ final router = GoRouter(
         final params = state.extra as Map<String, dynamic>;
         final cageId = params['cageId'] as String;
         return _buildPageWithSlideTransition(CageScreen(cageId: cageId));
+      },
+    ),
+    GoRoute(
+      path: RouteName.notification,
+      pageBuilder: (context, state) {
+        return _buildPageWithSlideTransition(const NotificationScreen());
       },
     ),
   ],

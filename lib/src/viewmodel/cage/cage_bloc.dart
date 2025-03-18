@@ -24,5 +24,20 @@ class CageBloc extends Bloc<CageEvent, CageState> {
         emit(CageState.getCageListFailure('get-cage-list-failure'));
       }
     });
+
+    on<_GetCageDetail>((event, emit) async {
+      emit(CageState.getCageDetailInProgress());
+      try {
+        log('[CAGE_BLOC] Đang lấy thông tin chi tiết chuồng...');
+        final response = await cageRepository.getCageAdminById(
+          cageId: event.cageId,
+        );
+        emit(CageState.getCageDetailSuccess(response));
+      } catch (e) {
+        log('[CAGE_BLOC] Lấy thông tin chi tiết chuồng thất bại!');
+        log('[CAGE_BLOC] Error: $e');
+        emit(CageState.getCageDetailFailure('get-cage-detail-failure'));
+      }
+    });
   }
 }

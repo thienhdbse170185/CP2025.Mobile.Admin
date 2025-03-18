@@ -1,6 +1,8 @@
 import 'package:data_layer/model/dto/cage_admin/cage_admin_dto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:smart_farm_admin/src/core/router.dart';
 import 'package:smart_farm_admin/src/view/widgets/avatar_round.dart';
 import 'package:smart_farm_admin/src/view/widgets/loading_widget.dart';
 import 'package:smart_farm_admin/src/viewmodel/cage/cage_bloc.dart';
@@ -41,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
               getCageListSuccess: (cageList) {
                 setState(() {
                   _isLoading = false;
+                  this.cageList.clear();
                   this.cageList.addAll(cageList);
                 });
               },
@@ -82,7 +85,9 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              context.push(RouteName.notification);
+            },
             icon: Icon(Icons.notifications_outlined),
           ),
           actions: [
@@ -125,65 +130,83 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-          child:
-              _isLoading
-                  ? LoadingWidget()
-                  : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: RefreshIndicator(
+          onRefresh: () async {
+            context.read<CageBloc>().add(const CageEvent.getCageList());
+          },
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 16.0,
+            ),
+            child:
+                _isLoading
+                    ? LoadingWidget()
+                    : Padding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).size.height * 0.1,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    'Chuồng đang hiện hành',
-                                    style:
-                                        Theme.of(context).textTheme.titleLarge,
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Chuồng đang hiện hành',
+                                        style:
+                                            Theme.of(
+                                              context,
+                                            ).textTheme.titleLarge,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Container(
+                                        width: 8,
+                                        height: 8,
+                                        decoration: BoxDecoration(
+                                          color:
+                                              Theme.of(
+                                                context,
+                                              ).colorScheme.primary,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(width: 8),
-                                  Container(
-                                    width: 8,
-                                    height: 8,
-                                    decoration: BoxDecoration(
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'Số lượng: ${cageList.length} (chuồng)',
+                                    style: TextStyle(
                                       color:
-                                          Theme.of(context).colorScheme.primary,
-                                      shape: BoxShape.circle,
+                                          Theme.of(context).colorScheme.outline,
                                     ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 4),
-                              Text(
-                                'Số lượng: ${cageList.length} (chuồng)',
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.outline,
-                                ),
+                              IconButton(
+                                onPressed: () {
+                                  context.read<CageBloc>().add(
+                                    const CageEvent.getCageList(),
+                                  );
+                                },
+                                icon: Icon(Icons.replay),
                               ),
                             ],
                           ),
-                          IconButton(
-                            onPressed: () {
-                              context.read<CageBloc>().add(
-                                const CageEvent.getCageList(),
-                              );
-                            },
-                            icon: Icon(Icons.replay),
+                          const SizedBox(height: 16),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.8,
+                            child: _buildCageList(),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.8,
-                        child: _buildCageList(),
-                      ),
-                    ],
-                  ),
+                    ),
+          ),
         ),
       ),
     );
@@ -200,61 +223,66 @@ class _HomeScreenState extends State<HomeScreen> {
       itemCount: cageList.length,
       itemBuilder: (context, index) {
         final cage = cageList[index];
-        return Card(
-          elevation: 4,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  cage.name,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
+        return GestureDetector(
+          onTap: () {
+            context.push(RouteName.cage, extra: {'cageId': cage.id});
+          },
+          child: Card(
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    cage.name,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Text(
-                      '🐔 ${cage.farmingBatch?.growthStageDetails?.quantity ?? 0} ',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    Text(
-                      '/ ${cage.capacity}',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.outline,
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Text(
+                        '🐔 ${cage.farmingBatch?.growthStageDetails?.quantity ?? 0} ',
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  '👤 ${cage.staffName}',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                const Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      cage.boardStatus ? '✅ Hoạt động' : '❌ Không hoạt động',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      Text(
+                        '/ ${cage.capacity}',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.outline,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '👤 ${cage.staffName}',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  const Spacer(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        cage.boardStatus ? '✅ Hoạt động' : '❌ Không hoạt động',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: cage.boardStatus ? Colors.green : Colors.red,
+                        ),
+                      ),
+                      Icon(
+                        Icons.sensors,
                         color: cage.boardStatus ? Colors.green : Colors.red,
                       ),
-                    ),
-                    Icon(
-                      Icons.sensors,
-                      color: cage.boardStatus ? Colors.green : Colors.red,
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         );

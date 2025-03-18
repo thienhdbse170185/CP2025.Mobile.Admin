@@ -8,11 +8,14 @@ class LoadingWidget extends StatelessWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       child: Center(
-          child: Column(children: [
-        CircularProgressIndicator(),
-        const SizedBox(height: 8),
-        const Text('Đang tải báo cáo...')
-      ])),
+        child: Column(
+          children: [
+            CircularProgressIndicator(),
+            const SizedBox(height: 8),
+            const Text('Đang tải...'),
+          ],
+        ),
+      ),
     );
   }
 }
