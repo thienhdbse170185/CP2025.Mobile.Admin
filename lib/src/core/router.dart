@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 import 'package:smart_farm_admin/src/core/constants/auth_data_constant.dart';
 import 'package:smart_farm_admin/src/view/auth/login.dart';
+import 'package:smart_farm_admin/src/view/cage/cage.dart';
 import 'package:smart_farm_admin/src/view/home/home.dart';
 import 'package:smart_farm_admin/src/view/layout.dart';
 import 'package:smart_farm_admin/src/view/profile/profile.dart';
@@ -16,6 +17,7 @@ class RouteName {
   static const String changePassword = '/change-password';
   static const String notificationSetting = '/notification-setting';
   static const String userProfile = '/user-profile';
+  static const String cage = '/cage';
 
   static const publicRoutes = [login];
 }
@@ -86,6 +88,14 @@ final router = GoRouter(
       pageBuilder:
           (context, state) =>
               _buildPageWithSlideTransition(const LoginScreen()),
+    ),
+    GoRoute(
+      path: RouteName.cage,
+      pageBuilder: (context, state) {
+        final params = state.extra as Map<String, dynamic>;
+        final cageId = params['cageId'] as String;
+        return _buildPageWithSlideTransition(CageScreen(cageId: cageId));
+      },
     ),
   ],
 );

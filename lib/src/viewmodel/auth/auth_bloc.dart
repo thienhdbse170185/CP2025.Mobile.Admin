@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 import 'package:smart_farm_admin/src/core/constants/auth_data_constant.dart';
+import 'package:smart_farm_admin/src/core/constants/user_data_constant.dart';
 import 'package:smart_farm_admin/src/core/utils/jwt_decoder.dart';
 
 part 'auth_bloc.freezed.dart';
@@ -48,6 +49,32 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(const AuthState.loginFailure('auth-failure'));
       }
     });
+
+    on<_Logout>((event, emit) async {
+      emit(const AuthState.logoutInProgress());
+      try {
+        log('[LOGOUT_BLOC] Đang thực hiện đăng xuất...');
+        final box = await Hive.openBox(AuthDataConstant.authBoxName);
+        box.deleteAll([
+          AuthDataConstant.accessTokenKey,
+          AuthDataConstant.refreshTokenKey,
+        ]);
+
+        final userBox = await Hive.openBox(UserDataConstant.userBoxName);
+        userBox.deleteAll([
+          UserDataConstant.userIdKey,
+          UserDataConstant.emailKey,
+          UserDataConstant.roleKey,
+          UserDataConstant.userNameKey,
+        ]);
+        log('[LOGOUT_BLOC] Đăng xuất thành công!');
+        emit(const AuthState.logoutSuccess());
+      } catch (e) {
+        log('[LOGOUT_BLOC] Quá trình đăng xuất có lỗi xảy ra!');
+        log('[LOGOUT_BLOC] Error: $e');
+        emit(AuthState.logoutFailure('logout-failure'));
+      }
+    });
   }
 
   bool _handleCheckPermission({required String accessToken}) {
@@ -56,7 +83,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     log('[AUTH_BLOC] decodedToken: $decodedToken');
     final role = decodedToken['role'];
     log('[AUTH_BLOC] role: $role');
-    if (role == 'admin') {
+    if (role == 'Admin Farm') {
       log('[AUTH_BLOC] Quyền truy cập hợp lệ!');
       return true;
     } else {

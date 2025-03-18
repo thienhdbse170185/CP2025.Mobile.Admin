@@ -1,4 +1,11 @@
+import 'package:data_layer/model/dto/cage_admin/cage_admin_dto.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_farm_admin/src/view/widgets/avatar_round.dart';
+import 'package:smart_farm_admin/src/view/widgets/loading_widget.dart';
+import 'package:smart_farm_admin/src/viewmodel/cage/cage_bloc.dart';
+import 'package:smart_farm_admin/src/viewmodel/system/system_bloc.dart';
+import 'package:smart_farm_admin/src/viewmodel/user/user_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -8,69 +15,250 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _counter = 0;
+  final List<CageAdminDto> cageList = [];
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  bool _isLoading = false;
+  String _username = 'Đang tải';
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<SystemBloc>().add(const SystemEvent.appStarted());
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        // title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<CageBloc, CageState>(
+          listener: (context, state) {
+            state.maybeWhen(
+              getCageListInProgress: () {
+                setState(() {
+                  _isLoading = true;
+                });
+              },
+              getCageListSuccess: (cageList) {
+                setState(() {
+                  _isLoading = false;
+                  this.cageList.addAll(cageList);
+                });
+              },
+              getCageListFailure: (message) {
+                setState(() {
+                  _isLoading = false;
+                });
+              },
+              orElse: () {},
+            );
+          },
+        ),
+        BlocListener<UserBloc, UserState>(
+          listener: (context, state) {
+            state.maybeWhen(
+              getUserProfileInProgress: () {},
+              getUserProfileSuccess: (userName, _) {
+                setState(() {
+                  _username = userName;
+                });
+              },
+              getUserProfileFailure: (message) {},
+              orElse: () {},
+            );
+          },
+        ),
+        BlocListener<SystemBloc, SystemState>(
+          listener: (context, state) {
+            state.maybeWhen(
+              appStartedSuccess: () {
+                context.read<UserBloc>().add(const UserEvent.getUserProfile());
+                context.read<CageBloc>().add(const CageEvent.getCageList());
+              },
+              orElse: () {},
+            );
+          },
+        ),
+      ],
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.notifications_outlined),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Chào buổi sáng',
+                        style: Theme.of(
+                          context,
+                        ).textTheme.labelMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.outline,
+                        ),
+                      ),
+                      Text(
+                        _username,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      StreamBuilder(
+                        stream: Stream.periodic(const Duration(seconds: 10)),
+                        builder: (context, snapshot) {
+                          return Text(
+                            '10:00, 20/10/2021',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 8),
+                  AvatarRoundWidget(),
+                ],
+              ),
             ),
           ],
         ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+          child:
+              _isLoading
+                  ? LoadingWidget()
+                  : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    'Chuồng đang hiện hành',
+                                    style:
+                                        Theme.of(context).textTheme.titleLarge,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Container(
+                                    width: 8,
+                                    height: 8,
+                                    decoration: BoxDecoration(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                'Số lượng: ${cageList.length} (chuồng)',
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.outline,
+                                ),
+                              ),
+                            ],
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              context.read<CageBloc>().add(
+                                const CageEvent.getCageList(),
+                              );
+                            },
+                            icon: Icon(Icons.replay),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.8,
+                        child: _buildCageList(),
+                      ),
+                    ],
+                  ),
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  Widget _buildCageList() {
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 8.0,
+        mainAxisSpacing: 8.0,
+        childAspectRatio: 1.3,
+      ),
+      itemCount: cageList.length,
+      itemBuilder: (context, index) {
+        final cage = cageList[index];
+        return Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  cage.name,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Text(
+                      '🐔 ${cage.farmingBatch?.growthStageDetails?.quantity ?? 0} ',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    Text(
+                      '/ ${cage.capacity}',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.outline,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '👤 ${cage.staffName}',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      cage.boardStatus ? '✅ Hoạt động' : '❌ Không hoạt động',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: cage.boardStatus ? Colors.green : Colors.red,
+                      ),
+                    ),
+                    Icon(
+                      Icons.sensors,
+                      color: cage.boardStatus ? Colors.green : Colors.red,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

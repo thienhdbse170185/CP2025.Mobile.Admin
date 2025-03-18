@@ -7,6 +7,9 @@ import 'package:smart_farm_admin/src/core/router.dart';
 import 'package:smart_farm_admin/src/core/theme/theme.dart';
 import 'package:smart_farm_admin/src/core/theme/util.dart';
 import 'package:smart_farm_admin/src/viewmodel/auth/auth_bloc.dart';
+import 'package:smart_farm_admin/src/viewmodel/cage/cage_bloc.dart';
+import 'package:smart_farm_admin/src/viewmodel/system/system_bloc.dart';
+import 'package:smart_farm_admin/src/viewmodel/user/user_bloc.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -28,6 +31,16 @@ class _MyAppState extends State<MyApp> {
               (context) =>
                   AuthRepository(authApiClient: AuthApiClient(dio: dio)),
         ),
+        RepositoryProvider(
+          create:
+              (context) =>
+                  UserRepository(userApiClient: UserApiClient(dio: dio)),
+        ),
+        RepositoryProvider(
+          create:
+              (context) =>
+                  CageRepository(cageApiClient: CageApiClient(dio: dio)),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -37,6 +50,17 @@ class _MyAppState extends State<MyApp> {
                 (context) =>
                     AuthBloc(authRepository: context.read<AuthRepository>()),
           ),
+          BlocProvider(
+            create:
+                (context) =>
+                    UserBloc(userRepository: context.read<UserRepository>()),
+          ),
+          BlocProvider(
+            create:
+                (context) =>
+                    CageBloc(cageRepository: context.read<CageRepository>()),
+          ),
+          BlocProvider(create: (context) => SystemBloc()),
         ],
         child: BlocBuilder<ThemeCubit, bool>(
           builder: (context, themeMode) {
