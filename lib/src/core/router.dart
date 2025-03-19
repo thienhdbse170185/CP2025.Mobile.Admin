@@ -27,25 +27,6 @@ class RouteName {
   static const publicRoutes = [login];
 }
 
-CustomTransitionPage _buildPageWithSlideTransition(Widget child) {
-  return CustomTransitionPage(
-    child: child,
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      const begin = Offset(1.0, 0.0);
-      const end = Offset.zero;
-      const curve = Curves.easeInOut;
-
-      final tween = Tween(
-        begin: begin,
-        end: end,
-      ).chain(CurveTween(curve: curve));
-      final offsetAnimation = animation.drive(tween);
-
-      return SlideTransition(position: offsetAnimation, child: child);
-    },
-  );
-}
-
 final router = GoRouter(
   navigatorKey: rootNavigatorKey,
   initialLocation: RouteName.home,
@@ -85,22 +66,20 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouteName.login,
-      pageBuilder:
-          (context, state) =>
-              _buildPageWithSlideTransition(const LoginScreen()),
+      builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
       path: RouteName.cage,
-      pageBuilder: (context, state) {
+      builder: (context, state) {
         final params = state.extra as Map<String, dynamic>;
         final cageId = params['cageId'] as String;
-        return _buildPageWithSlideTransition(CageScreen(cageId: cageId));
+        return CageScreen(cageId: cageId);
       },
     ),
     GoRoute(
       path: RouteName.notification,
-      pageBuilder: (context, state) {
-        return _buildPageWithSlideTransition(const NotificationScreen());
+      builder: (context, state) {
+        return const NotificationScreen();
       },
     ),
   ],

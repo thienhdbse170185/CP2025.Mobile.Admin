@@ -12,7 +12,7 @@ class LoadingWidget extends StatelessWidget {
           children: [
             CircularProgressIndicator(),
             const SizedBox(height: 8),
-            const Text('Đang tải...'),
+            const Text('Đang tổng hợp dữ liệu...'),
           ],
         ),
       ),

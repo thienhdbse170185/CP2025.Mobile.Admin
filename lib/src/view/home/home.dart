@@ -249,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Row(
                     children: [
                       Text(
-                        '🐔 ${cage.farmingBatch?.growthStageDetails?.quantity ?? 0} ',
+                        '🐔 ${cage.farmingBatchStageModel?.growthStageDetails?.quantity ?? 0} ',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       Text(
