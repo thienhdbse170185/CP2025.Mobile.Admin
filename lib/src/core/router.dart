@@ -20,6 +20,9 @@ class RouteName {
   static const String userProfile = '/user-profile';
   static const String cage = '/cage';
   static const String notification = '/notification';
+  static const String taskCage = '/cage/task';
+  static const String logCage = '/cage/log';
+  static const String reportCage = '/cage/report';
 
   static const publicRoutes = [login];
 }
