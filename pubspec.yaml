@@ -86,15 +86,12 @@ flutter:
     - .env
 
 flutter_native_splash:
-  color: "#379C3B" # Green color
-  image: "assets/images/LOGOOFFICIAL.png"
-  color_dark: "#379C3B"
-  image_dark: "assets/images/LOGOOFFICIAL.png"
-  
+  image: "assets/images/logo640x640.png"
+  color: "#FFFFFF"
+
   android_12:
-    color: "#379C3B" # Green color
-    image: "assets/images/LOGOOFFICIAL.png"
-    icon_background_color: "#379C3B"
+    image: "assets/images/logo640x640.png"
+    color: "#FFFFFF"
     
   fullscreen: true
   android: true
@@ -102,9 +99,9 @@ flutter_native_splash:
   web: false
 
 flutter_launcher_icons:
-  android: "launcher_icon"
+  android: true
   ios: true
-  image_path: "assets/images/LOGOOFFICIAL.png"
+  image_path: "assets/images/logo192x192.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
   web:
     generate: false
