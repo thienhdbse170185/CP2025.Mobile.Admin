@@ -1,4 +1,9 @@
-import 'package:data_layer/repository/index.dart';
+import 'package:data_layer/repository/auth/auth_api_client.dart';
+import 'package:data_layer/repository/auth/auth_repository.dart';
+import 'package:data_layer/repository/cage/cage_api_client.dart';
+import 'package:data_layer/repository/cage/cage_repository.dart';
+import 'package:data_layer/repository/user/local/user_repository.dart';
+import 'package:data_layer/repository/user/user_api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_farm_admin/src/core/common/cubit/theme_cubit.dart';
@@ -6,8 +11,11 @@ import 'package:smart_farm_admin/src/core/network/http_client.dart';
 import 'package:smart_farm_admin/src/core/router.dart';
 import 'package:smart_farm_admin/src/core/theme/theme.dart';
 import 'package:smart_farm_admin/src/core/theme/util.dart';
+import 'package:smart_farm_admin/src/model/repository/farming_batch/farming_batch_api_client.dart';
+import 'package:smart_farm_admin/src/model/repository/farming_batch/farming_batch_repository.dart';
 import 'package:smart_farm_admin/src/viewmodel/auth/auth_bloc.dart';
 import 'package:smart_farm_admin/src/viewmodel/cage/cage_bloc.dart';
+import 'package:smart_farm_admin/src/viewmodel/farming_batch/farming_batch_cubit.dart';
 import 'package:smart_farm_admin/src/viewmodel/system/system_bloc.dart';
 import 'package:smart_farm_admin/src/viewmodel/user/user_bloc.dart';
 
@@ -41,6 +49,12 @@ class _MyAppState extends State<MyApp> {
               (context) =>
                   CageRepository(cageApiClient: CageApiClient(dio: dio)),
         ),
+        RepositoryProvider(
+          create:
+              (context) => FarmingBatchRepository(
+                apiClient: FarmingBatchApiClient(dio: dio),
+              ),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -61,6 +75,13 @@ class _MyAppState extends State<MyApp> {
                     CageBloc(cageRepository: context.read<CageRepository>()),
           ),
           BlocProvider(create: (context) => SystemBloc()),
+          BlocProvider(
+            create:
+                (context) => FarmingBatchCubit(
+                  farmingBatchRepository:
+                      context.read<FarmingBatchRepository>(),
+                ),
+          ),
         ],
         child: BlocBuilder<ThemeCubit, bool>(
           builder: (context, themeMode) {

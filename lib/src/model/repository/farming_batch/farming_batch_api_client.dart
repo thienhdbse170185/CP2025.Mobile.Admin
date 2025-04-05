@@ -13,7 +13,7 @@ class FarmingBatchApiClient {
       final response = await dio.get('/farmingbatchs');
       if (response.statusCode == 200) {
         log('[FARMING_BATCH_API_CLIENT] Lấy danh sách vụ nuôi thành công!');
-        final List<dynamic> data = response.data;
+        final List<dynamic> data = response.data['result']['items'];
         return data.map((e) => FarmingBatchDto.fromJson(e)).toList();
       } else {
         throw Exception('get-farming-batches-error');
