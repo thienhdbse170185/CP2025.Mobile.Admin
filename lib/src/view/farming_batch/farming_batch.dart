@@ -368,9 +368,16 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
 
   Widget _buildGrowthStagesSection() {
     // Sort growth stages by start date
-    List<Map<String, dynamic>> stages = List<Map<String, dynamic>>.from(
-      farmingBatchDto?.growthStages ?? [],
-    );
+    List<Map<String, dynamic>> stages =
+        (farmingBatchDto?.growthStages ?? [])
+            .map(
+              (stage) => {
+                "name": stage.name,
+                "ageStartDate": stage.ageStartDate,
+                "ageEndDate": stage.ageEndDate,
+              },
+            )
+            .toList();
     stages.sort(
       (a, b) => DateTime.parse(
         a["ageStartDate"],
@@ -485,9 +492,19 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
   }
 
   Widget _buildMedicalSymptomsSection() {
-    List<Map<String, dynamic>> symptoms = List<Map<String, dynamic>>.from(
-      farmingBatchDto?.medicalSymptoms ?? [],
-    );
+    List<Map<String, dynamic>> symptoms =
+        (farmingBatchDto?.medicalSymptoms ?? [])
+            .map(
+              (symptom) => {
+                "status": symptom.status,
+                "isEmergency": symptom.isEmergency,
+                "affectedQuantity": symptom.affectedQuantity,
+                "quantityInCage": symptom.quantityInCage,
+                "diagnosis": symptom.diagnosis,
+                "notes": symptom.notes,
+              },
+            )
+            .toList();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
