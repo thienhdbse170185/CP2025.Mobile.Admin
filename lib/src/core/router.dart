@@ -4,6 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:smart_farm_admin/src/core/constants/auth_data_constant.dart';
 import 'package:smart_farm_admin/src/view/auth/login.dart';
 import 'package:smart_farm_admin/src/view/cage/cage.dart';
+import 'package:smart_farm_admin/src/view/farming_batch/farming_batch.dart';
 import 'package:smart_farm_admin/src/view/home/home.dart';
 import 'package:smart_farm_admin/src/view/layout.dart';
 import 'package:smart_farm_admin/src/view/notification/notification.dart';
@@ -23,6 +24,7 @@ class RouteName {
   static const String taskCage = '/cage/task';
   static const String logCage = '/cage/log';
   static const String reportCage = '/cage/report';
+  static const String farmingBatch = '/farming-batch';
 
   static const publicRoutes = [login];
 }
@@ -80,6 +82,14 @@ final router = GoRouter(
       path: RouteName.notification,
       builder: (context, state) {
         return const NotificationScreen();
+      },
+    ),
+    GoRoute(
+      path: RouteName.farmingBatch,
+      builder: (context, state) {
+        final params = state.extra as Map<String, dynamic>?;
+        final farmingBatchId = params?['farmingBatchId'] as String;
+        return FarmingBatchDetailScreen(farmingBatchId: farmingBatchId);
       },
     ),
   ],

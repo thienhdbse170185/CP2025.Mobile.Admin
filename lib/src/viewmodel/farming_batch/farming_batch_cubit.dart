@@ -30,4 +30,24 @@ class FarmingBatchCubit extends Cubit<FarmingBatchState> {
       );
     }
   }
+
+  Future<void> getFarmingBatchById(String id) async {
+    try {
+      emit(const FarmingBatchState.getFarmingBatchByIdInProgress());
+      final farmingBatch = await _farmingBatchRepository.getFarmingBatchById(
+        id,
+      );
+      emit(
+        FarmingBatchState.getFarmingBatchByIdSuccess(
+          farmingBatch: farmingBatch,
+        ),
+      );
+    } catch (e) {
+      emit(
+        const FarmingBatchState.getFarmingBatchByIdFailure(
+          error: 'get-farming-batch-by-id-error',
+        ),
+      );
+    }
+  }
 }

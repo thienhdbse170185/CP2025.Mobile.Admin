@@ -15,4 +15,15 @@ class FarmingBatchRepository {
       throw Exception('get-farming-batches-error');
     }
   }
+
+  Future<FarmingBatchDto> getFarmingBatchById(String id) async {
+    try {
+      final FarmingBatchDto farmingBatch = await _apiClient.getFarmingBatchById(
+        id,
+      );
+      return farmingBatch;
+    } catch (e) {
+      throw Exception('get-farming-batch-by-id-error');
+    }
+  }
 }

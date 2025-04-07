@@ -22,7 +22,7 @@ FarmingBatchDto _$FarmingBatchDtoFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$FarmingBatchDto {
   String get id => throw _privateConstructorUsedError;
-  String get farmingbatchCode => throw _privateConstructorUsedError;
+  String? get farmingBatchCode => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String? get species => throw _privateConstructorUsedError;
   String get startDate => throw _privateConstructorUsedError;
@@ -33,9 +33,16 @@ mixin _$FarmingBatchDto {
   int get cleaningFrequency => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
   int? get deadQuantity => throw _privateConstructorUsedError;
-  GrowthStageDto? get growthStageDetails => throw _privateConstructorUsedError;
+  String? get farmId => throw _privateConstructorUsedError;
+  String? get cageId => throw _privateConstructorUsedError;
+  String? get cageName => throw _privateConstructorUsedError;
+  List<GrowthStageDetail>? get growthStages =>
+      throw _privateConstructorUsedError;
+  List<MedicalSymptomDetail>? get medicalSymptoms =>
+      throw _privateConstructorUsedError;
   CageDto? get cage => throw _privateConstructorUsedError;
   AnimalTemplateDto? get animalTemplate => throw _privateConstructorUsedError;
+  String? get templateName => throw _privateConstructorUsedError;
 
   /// Serializes this FarmingBatchDto to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -56,7 +63,7 @@ abstract class $FarmingBatchDtoCopyWith<$Res> {
   @useResult
   $Res call({
     String id,
-    String farmingbatchCode,
+    String? farmingBatchCode,
     String name,
     String? species,
     String startDate,
@@ -67,12 +74,16 @@ abstract class $FarmingBatchDtoCopyWith<$Res> {
     int cleaningFrequency,
     int quantity,
     int? deadQuantity,
-    GrowthStageDto? growthStageDetails,
+    String? farmId,
+    String? cageId,
+    String? cageName,
+    List<GrowthStageDetail>? growthStages,
+    List<MedicalSymptomDetail>? medicalSymptoms,
     CageDto? cage,
     AnimalTemplateDto? animalTemplate,
+    String? templateName,
   });
 
-  $GrowthStageDtoCopyWith<$Res>? get growthStageDetails;
   $CageDtoCopyWith<$Res>? get cage;
   $AnimalTemplateDtoCopyWith<$Res>? get animalTemplate;
 }
@@ -93,7 +104,7 @@ class _$FarmingBatchDtoCopyWithImpl<$Res, $Val extends FarmingBatchDto>
   @override
   $Res call({
     Object? id = null,
-    Object? farmingbatchCode = null,
+    Object? farmingBatchCode = freezed,
     Object? name = null,
     Object? species = freezed,
     Object? startDate = null,
@@ -104,9 +115,14 @@ class _$FarmingBatchDtoCopyWithImpl<$Res, $Val extends FarmingBatchDto>
     Object? cleaningFrequency = null,
     Object? quantity = null,
     Object? deadQuantity = freezed,
-    Object? growthStageDetails = freezed,
+    Object? farmId = freezed,
+    Object? cageId = freezed,
+    Object? cageName = freezed,
+    Object? growthStages = freezed,
+    Object? medicalSymptoms = freezed,
     Object? cage = freezed,
     Object? animalTemplate = freezed,
+    Object? templateName = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -115,11 +131,11 @@ class _$FarmingBatchDtoCopyWithImpl<$Res, $Val extends FarmingBatchDto>
                     ? _value.id
                     : id // ignore: cast_nullable_to_non_nullable
                         as String,
-            farmingbatchCode:
-                null == farmingbatchCode
-                    ? _value.farmingbatchCode
-                    : farmingbatchCode // ignore: cast_nullable_to_non_nullable
-                        as String,
+            farmingBatchCode:
+                freezed == farmingBatchCode
+                    ? _value.farmingBatchCode
+                    : farmingBatchCode // ignore: cast_nullable_to_non_nullable
+                        as String?,
             name:
                 null == name
                     ? _value.name
@@ -170,11 +186,31 @@ class _$FarmingBatchDtoCopyWithImpl<$Res, $Val extends FarmingBatchDto>
                     ? _value.deadQuantity
                     : deadQuantity // ignore: cast_nullable_to_non_nullable
                         as int?,
-            growthStageDetails:
-                freezed == growthStageDetails
-                    ? _value.growthStageDetails
-                    : growthStageDetails // ignore: cast_nullable_to_non_nullable
-                        as GrowthStageDto?,
+            farmId:
+                freezed == farmId
+                    ? _value.farmId
+                    : farmId // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            cageId:
+                freezed == cageId
+                    ? _value.cageId
+                    : cageId // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            cageName:
+                freezed == cageName
+                    ? _value.cageName
+                    : cageName // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            growthStages:
+                freezed == growthStages
+                    ? _value.growthStages
+                    : growthStages // ignore: cast_nullable_to_non_nullable
+                        as List<GrowthStageDetail>?,
+            medicalSymptoms:
+                freezed == medicalSymptoms
+                    ? _value.medicalSymptoms
+                    : medicalSymptoms // ignore: cast_nullable_to_non_nullable
+                        as List<MedicalSymptomDetail>?,
             cage:
                 freezed == cage
                     ? _value.cage
@@ -185,23 +221,14 @@ class _$FarmingBatchDtoCopyWithImpl<$Res, $Val extends FarmingBatchDto>
                     ? _value.animalTemplate
                     : animalTemplate // ignore: cast_nullable_to_non_nullable
                         as AnimalTemplateDto?,
+            templateName:
+                freezed == templateName
+                    ? _value.templateName
+                    : templateName // ignore: cast_nullable_to_non_nullable
+                        as String?,
           )
           as $Val,
     );
-  }
-
-  /// Create a copy of FarmingBatchDto
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $GrowthStageDtoCopyWith<$Res>? get growthStageDetails {
-    if (_value.growthStageDetails == null) {
-      return null;
-    }
-
-    return $GrowthStageDtoCopyWith<$Res>(_value.growthStageDetails!, (value) {
-      return _then(_value.copyWith(growthStageDetails: value) as $Val);
-    });
   }
 
   /// Create a copy of FarmingBatchDto
@@ -244,7 +271,7 @@ abstract class _$$FarmingBatchDtoImplCopyWith<$Res>
   @useResult
   $Res call({
     String id,
-    String farmingbatchCode,
+    String? farmingBatchCode,
     String name,
     String? species,
     String startDate,
@@ -255,13 +282,16 @@ abstract class _$$FarmingBatchDtoImplCopyWith<$Res>
     int cleaningFrequency,
     int quantity,
     int? deadQuantity,
-    GrowthStageDto? growthStageDetails,
+    String? farmId,
+    String? cageId,
+    String? cageName,
+    List<GrowthStageDetail>? growthStages,
+    List<MedicalSymptomDetail>? medicalSymptoms,
     CageDto? cage,
     AnimalTemplateDto? animalTemplate,
+    String? templateName,
   });
 
-  @override
-  $GrowthStageDtoCopyWith<$Res>? get growthStageDetails;
   @override
   $CageDtoCopyWith<$Res>? get cage;
   @override
@@ -283,7 +313,7 @@ class __$$FarmingBatchDtoImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? farmingbatchCode = null,
+    Object? farmingBatchCode = freezed,
     Object? name = null,
     Object? species = freezed,
     Object? startDate = null,
@@ -294,9 +324,14 @@ class __$$FarmingBatchDtoImplCopyWithImpl<$Res>
     Object? cleaningFrequency = null,
     Object? quantity = null,
     Object? deadQuantity = freezed,
-    Object? growthStageDetails = freezed,
+    Object? farmId = freezed,
+    Object? cageId = freezed,
+    Object? cageName = freezed,
+    Object? growthStages = freezed,
+    Object? medicalSymptoms = freezed,
     Object? cage = freezed,
     Object? animalTemplate = freezed,
+    Object? templateName = freezed,
   }) {
     return _then(
       _$FarmingBatchDtoImpl(
@@ -305,11 +340,11 @@ class __$$FarmingBatchDtoImplCopyWithImpl<$Res>
                 ? _value.id
                 : id // ignore: cast_nullable_to_non_nullable
                     as String,
-        farmingbatchCode:
-            null == farmingbatchCode
-                ? _value.farmingbatchCode
-                : farmingbatchCode // ignore: cast_nullable_to_non_nullable
-                    as String,
+        farmingBatchCode:
+            freezed == farmingBatchCode
+                ? _value.farmingBatchCode
+                : farmingBatchCode // ignore: cast_nullable_to_non_nullable
+                    as String?,
         name:
             null == name
                 ? _value.name
@@ -360,11 +395,31 @@ class __$$FarmingBatchDtoImplCopyWithImpl<$Res>
                 ? _value.deadQuantity
                 : deadQuantity // ignore: cast_nullable_to_non_nullable
                     as int?,
-        growthStageDetails:
-            freezed == growthStageDetails
-                ? _value.growthStageDetails
-                : growthStageDetails // ignore: cast_nullable_to_non_nullable
-                    as GrowthStageDto?,
+        farmId:
+            freezed == farmId
+                ? _value.farmId
+                : farmId // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        cageId:
+            freezed == cageId
+                ? _value.cageId
+                : cageId // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        cageName:
+            freezed == cageName
+                ? _value.cageName
+                : cageName // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        growthStages:
+            freezed == growthStages
+                ? _value._growthStages
+                : growthStages // ignore: cast_nullable_to_non_nullable
+                    as List<GrowthStageDetail>?,
+        medicalSymptoms:
+            freezed == medicalSymptoms
+                ? _value._medicalSymptoms
+                : medicalSymptoms // ignore: cast_nullable_to_non_nullable
+                    as List<MedicalSymptomDetail>?,
         cage:
             freezed == cage
                 ? _value.cage
@@ -375,6 +430,11 @@ class __$$FarmingBatchDtoImplCopyWithImpl<$Res>
                 ? _value.animalTemplate
                 : animalTemplate // ignore: cast_nullable_to_non_nullable
                     as AnimalTemplateDto?,
+        templateName:
+            freezed == templateName
+                ? _value.templateName
+                : templateName // ignore: cast_nullable_to_non_nullable
+                    as String?,
       ),
     );
   }
@@ -385,7 +445,7 @@ class __$$FarmingBatchDtoImplCopyWithImpl<$Res>
 class _$FarmingBatchDtoImpl implements _FarmingBatchDto {
   _$FarmingBatchDtoImpl({
     required this.id,
-    required this.farmingbatchCode,
+    this.farmingBatchCode,
     required this.name,
     this.species,
     required this.startDate,
@@ -396,10 +456,16 @@ class _$FarmingBatchDtoImpl implements _FarmingBatchDto {
     required this.cleaningFrequency,
     required this.quantity,
     this.deadQuantity,
-    this.growthStageDetails,
+    this.farmId,
+    this.cageId,
+    this.cageName,
+    final List<GrowthStageDetail>? growthStages,
+    final List<MedicalSymptomDetail>? medicalSymptoms,
     this.cage,
     this.animalTemplate,
-  });
+    this.templateName,
+  }) : _growthStages = growthStages,
+       _medicalSymptoms = medicalSymptoms;
 
   factory _$FarmingBatchDtoImpl.fromJson(Map<String, dynamic> json) =>
       _$$FarmingBatchDtoImplFromJson(json);
@@ -407,7 +473,7 @@ class _$FarmingBatchDtoImpl implements _FarmingBatchDto {
   @override
   final String id;
   @override
-  final String farmingbatchCode;
+  final String? farmingBatchCode;
   @override
   final String name;
   @override
@@ -429,15 +495,41 @@ class _$FarmingBatchDtoImpl implements _FarmingBatchDto {
   @override
   final int? deadQuantity;
   @override
-  final GrowthStageDto? growthStageDetails;
+  final String? farmId;
+  @override
+  final String? cageId;
+  @override
+  final String? cageName;
+  final List<GrowthStageDetail>? _growthStages;
+  @override
+  List<GrowthStageDetail>? get growthStages {
+    final value = _growthStages;
+    if (value == null) return null;
+    if (_growthStages is EqualUnmodifiableListView) return _growthStages;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<MedicalSymptomDetail>? _medicalSymptoms;
+  @override
+  List<MedicalSymptomDetail>? get medicalSymptoms {
+    final value = _medicalSymptoms;
+    if (value == null) return null;
+    if (_medicalSymptoms is EqualUnmodifiableListView) return _medicalSymptoms;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   final CageDto? cage;
   @override
   final AnimalTemplateDto? animalTemplate;
+  @override
+  final String? templateName;
 
   @override
   String toString() {
-    return 'FarmingBatchDto(id: $id, farmingbatchCode: $farmingbatchCode, name: $name, species: $species, startDate: $startDate, completeAt: $completeAt, estimatedTimeStart: $estimatedTimeStart, endDate: $endDate, status: $status, cleaningFrequency: $cleaningFrequency, quantity: $quantity, deadQuantity: $deadQuantity, growthStageDetails: $growthStageDetails, cage: $cage, animalTemplate: $animalTemplate)';
+    return 'FarmingBatchDto(id: $id, farmingBatchCode: $farmingBatchCode, name: $name, species: $species, startDate: $startDate, completeAt: $completeAt, estimatedTimeStart: $estimatedTimeStart, endDate: $endDate, status: $status, cleaningFrequency: $cleaningFrequency, quantity: $quantity, deadQuantity: $deadQuantity, farmId: $farmId, cageId: $cageId, cageName: $cageName, growthStages: $growthStages, medicalSymptoms: $medicalSymptoms, cage: $cage, animalTemplate: $animalTemplate, templateName: $templateName)';
   }
 
   @override
@@ -446,8 +538,8 @@ class _$FarmingBatchDtoImpl implements _FarmingBatchDto {
         (other.runtimeType == runtimeType &&
             other is _$FarmingBatchDtoImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.farmingbatchCode, farmingbatchCode) ||
-                other.farmingbatchCode == farmingbatchCode) &&
+            (identical(other.farmingBatchCode, farmingBatchCode) ||
+                other.farmingBatchCode == farmingBatchCode) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.species, species) || other.species == species) &&
             (identical(other.startDate, startDate) ||
@@ -464,19 +556,31 @@ class _$FarmingBatchDtoImpl implements _FarmingBatchDto {
                 other.quantity == quantity) &&
             (identical(other.deadQuantity, deadQuantity) ||
                 other.deadQuantity == deadQuantity) &&
-            (identical(other.growthStageDetails, growthStageDetails) ||
-                other.growthStageDetails == growthStageDetails) &&
+            (identical(other.farmId, farmId) || other.farmId == farmId) &&
+            (identical(other.cageId, cageId) || other.cageId == cageId) &&
+            (identical(other.cageName, cageName) ||
+                other.cageName == cageName) &&
+            const DeepCollectionEquality().equals(
+              other._growthStages,
+              _growthStages,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._medicalSymptoms,
+              _medicalSymptoms,
+            ) &&
             (identical(other.cage, cage) || other.cage == cage) &&
             (identical(other.animalTemplate, animalTemplate) ||
-                other.animalTemplate == animalTemplate));
+                other.animalTemplate == animalTemplate) &&
+            (identical(other.templateName, templateName) ||
+                other.templateName == templateName));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     runtimeType,
     id,
-    farmingbatchCode,
+    farmingBatchCode,
     name,
     species,
     startDate,
@@ -487,10 +591,15 @@ class _$FarmingBatchDtoImpl implements _FarmingBatchDto {
     cleaningFrequency,
     quantity,
     deadQuantity,
-    growthStageDetails,
+    farmId,
+    cageId,
+    cageName,
+    const DeepCollectionEquality().hash(_growthStages),
+    const DeepCollectionEquality().hash(_medicalSymptoms),
     cage,
     animalTemplate,
-  );
+    templateName,
+  ]);
 
   /// Create a copy of FarmingBatchDto
   /// with the given fields replaced by the non-null parameter values.
@@ -512,7 +621,7 @@ class _$FarmingBatchDtoImpl implements _FarmingBatchDto {
 abstract class _FarmingBatchDto implements FarmingBatchDto {
   factory _FarmingBatchDto({
     required final String id,
-    required final String farmingbatchCode,
+    final String? farmingBatchCode,
     required final String name,
     final String? species,
     required final String startDate,
@@ -523,9 +632,14 @@ abstract class _FarmingBatchDto implements FarmingBatchDto {
     required final int cleaningFrequency,
     required final int quantity,
     final int? deadQuantity,
-    final GrowthStageDto? growthStageDetails,
+    final String? farmId,
+    final String? cageId,
+    final String? cageName,
+    final List<GrowthStageDetail>? growthStages,
+    final List<MedicalSymptomDetail>? medicalSymptoms,
     final CageDto? cage,
     final AnimalTemplateDto? animalTemplate,
+    final String? templateName,
   }) = _$FarmingBatchDtoImpl;
 
   factory _FarmingBatchDto.fromJson(Map<String, dynamic> json) =
@@ -534,7 +648,7 @@ abstract class _FarmingBatchDto implements FarmingBatchDto {
   @override
   String get id;
   @override
-  String get farmingbatchCode;
+  String? get farmingBatchCode;
   @override
   String get name;
   @override
@@ -556,11 +670,21 @@ abstract class _FarmingBatchDto implements FarmingBatchDto {
   @override
   int? get deadQuantity;
   @override
-  GrowthStageDto? get growthStageDetails;
+  String? get farmId;
+  @override
+  String? get cageId;
+  @override
+  String? get cageName;
+  @override
+  List<GrowthStageDetail>? get growthStages;
+  @override
+  List<MedicalSymptomDetail>? get medicalSymptoms;
   @override
   CageDto? get cage;
   @override
   AnimalTemplateDto? get animalTemplate;
+  @override
+  String? get templateName;
 
   /// Create a copy of FarmingBatchDto
   /// with the given fields replaced by the non-null parameter values.

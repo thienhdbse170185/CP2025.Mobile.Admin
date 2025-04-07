@@ -24,6 +24,10 @@ mixin _$FarmingBatchState {
     required TResult Function(List<FarmingBatchDto> farmingBatches)
     getFarmingBatchesSuccess,
     required TResult Function(String error) getFarmingBatchesFailure,
+    required TResult Function() getFarmingBatchByIdInProgress,
+    required TResult Function(FarmingBatchDto farmingBatch)
+    getFarmingBatchByIdSuccess,
+    required TResult Function(String error) getFarmingBatchByIdFailure,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
@@ -32,6 +36,9 @@ mixin _$FarmingBatchState {
     TResult? Function(List<FarmingBatchDto> farmingBatches)?
     getFarmingBatchesSuccess,
     TResult? Function(String error)? getFarmingBatchesFailure,
+    TResult? Function()? getFarmingBatchByIdInProgress,
+    TResult? Function(FarmingBatchDto farmingBatch)? getFarmingBatchByIdSuccess,
+    TResult? Function(String error)? getFarmingBatchByIdFailure,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
@@ -40,6 +47,9 @@ mixin _$FarmingBatchState {
     TResult Function(List<FarmingBatchDto> farmingBatches)?
     getFarmingBatchesSuccess,
     TResult Function(String error)? getFarmingBatchesFailure,
+    TResult Function()? getFarmingBatchByIdInProgress,
+    TResult Function(FarmingBatchDto farmingBatch)? getFarmingBatchByIdSuccess,
+    TResult Function(String error)? getFarmingBatchByIdFailure,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -51,6 +61,12 @@ mixin _$FarmingBatchState {
     getFarmingBatchesSuccess,
     required TResult Function(_GetFarmingBatchesFailure value)
     getFarmingBatchesFailure,
+    required TResult Function(_GetFarmingBatchByIdInProgress value)
+    getFarmingBatchByIdInProgress,
+    required TResult Function(_GetFarmingBatchByIdSuccess value)
+    getFarmingBatchByIdSuccess,
+    required TResult Function(_GetFarmingBatchByIdFailure value)
+    getFarmingBatchByIdFailure,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
@@ -61,6 +77,12 @@ mixin _$FarmingBatchState {
     getFarmingBatchesSuccess,
     TResult? Function(_GetFarmingBatchesFailure value)?
     getFarmingBatchesFailure,
+    TResult? Function(_GetFarmingBatchByIdInProgress value)?
+    getFarmingBatchByIdInProgress,
+    TResult? Function(_GetFarmingBatchByIdSuccess value)?
+    getFarmingBatchByIdSuccess,
+    TResult? Function(_GetFarmingBatchByIdFailure value)?
+    getFarmingBatchByIdFailure,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
@@ -69,6 +91,12 @@ mixin _$FarmingBatchState {
     getFarmingBatchesInProgress,
     TResult Function(_GetFarmingBatchesSuccess value)? getFarmingBatchesSuccess,
     TResult Function(_GetFarmingBatchesFailure value)? getFarmingBatchesFailure,
+    TResult Function(_GetFarmingBatchByIdInProgress value)?
+    getFarmingBatchByIdInProgress,
+    TResult Function(_GetFarmingBatchByIdSuccess value)?
+    getFarmingBatchByIdSuccess,
+    TResult Function(_GetFarmingBatchByIdFailure value)?
+    getFarmingBatchByIdFailure,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
@@ -149,6 +177,10 @@ class _$InitialImpl with DiagnosticableTreeMixin implements _Initial {
     required TResult Function(List<FarmingBatchDto> farmingBatches)
     getFarmingBatchesSuccess,
     required TResult Function(String error) getFarmingBatchesFailure,
+    required TResult Function() getFarmingBatchByIdInProgress,
+    required TResult Function(FarmingBatchDto farmingBatch)
+    getFarmingBatchByIdSuccess,
+    required TResult Function(String error) getFarmingBatchByIdFailure,
   }) {
     return initial();
   }
@@ -161,6 +193,9 @@ class _$InitialImpl with DiagnosticableTreeMixin implements _Initial {
     TResult? Function(List<FarmingBatchDto> farmingBatches)?
     getFarmingBatchesSuccess,
     TResult? Function(String error)? getFarmingBatchesFailure,
+    TResult? Function()? getFarmingBatchByIdInProgress,
+    TResult? Function(FarmingBatchDto farmingBatch)? getFarmingBatchByIdSuccess,
+    TResult? Function(String error)? getFarmingBatchByIdFailure,
   }) {
     return initial?.call();
   }
@@ -173,6 +208,9 @@ class _$InitialImpl with DiagnosticableTreeMixin implements _Initial {
     TResult Function(List<FarmingBatchDto> farmingBatches)?
     getFarmingBatchesSuccess,
     TResult Function(String error)? getFarmingBatchesFailure,
+    TResult Function()? getFarmingBatchByIdInProgress,
+    TResult Function(FarmingBatchDto farmingBatch)? getFarmingBatchByIdSuccess,
+    TResult Function(String error)? getFarmingBatchByIdFailure,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -191,6 +229,12 @@ class _$InitialImpl with DiagnosticableTreeMixin implements _Initial {
     getFarmingBatchesSuccess,
     required TResult Function(_GetFarmingBatchesFailure value)
     getFarmingBatchesFailure,
+    required TResult Function(_GetFarmingBatchByIdInProgress value)
+    getFarmingBatchByIdInProgress,
+    required TResult Function(_GetFarmingBatchByIdSuccess value)
+    getFarmingBatchByIdSuccess,
+    required TResult Function(_GetFarmingBatchByIdFailure value)
+    getFarmingBatchByIdFailure,
   }) {
     return initial(this);
   }
@@ -205,6 +249,12 @@ class _$InitialImpl with DiagnosticableTreeMixin implements _Initial {
     getFarmingBatchesSuccess,
     TResult? Function(_GetFarmingBatchesFailure value)?
     getFarmingBatchesFailure,
+    TResult? Function(_GetFarmingBatchByIdInProgress value)?
+    getFarmingBatchByIdInProgress,
+    TResult? Function(_GetFarmingBatchByIdSuccess value)?
+    getFarmingBatchByIdSuccess,
+    TResult? Function(_GetFarmingBatchByIdFailure value)?
+    getFarmingBatchByIdFailure,
   }) {
     return initial?.call(this);
   }
@@ -217,6 +267,12 @@ class _$InitialImpl with DiagnosticableTreeMixin implements _Initial {
     getFarmingBatchesInProgress,
     TResult Function(_GetFarmingBatchesSuccess value)? getFarmingBatchesSuccess,
     TResult Function(_GetFarmingBatchesFailure value)? getFarmingBatchesFailure,
+    TResult Function(_GetFarmingBatchByIdInProgress value)?
+    getFarmingBatchByIdInProgress,
+    TResult Function(_GetFarmingBatchByIdSuccess value)?
+    getFarmingBatchByIdSuccess,
+    TResult Function(_GetFarmingBatchByIdFailure value)?
+    getFarmingBatchByIdFailure,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -293,6 +349,10 @@ class _$GetFarmingBatchesInProgressImpl
     required TResult Function(List<FarmingBatchDto> farmingBatches)
     getFarmingBatchesSuccess,
     required TResult Function(String error) getFarmingBatchesFailure,
+    required TResult Function() getFarmingBatchByIdInProgress,
+    required TResult Function(FarmingBatchDto farmingBatch)
+    getFarmingBatchByIdSuccess,
+    required TResult Function(String error) getFarmingBatchByIdFailure,
   }) {
     return getFarmingBatchesInProgress();
   }
@@ -305,6 +365,9 @@ class _$GetFarmingBatchesInProgressImpl
     TResult? Function(List<FarmingBatchDto> farmingBatches)?
     getFarmingBatchesSuccess,
     TResult? Function(String error)? getFarmingBatchesFailure,
+    TResult? Function()? getFarmingBatchByIdInProgress,
+    TResult? Function(FarmingBatchDto farmingBatch)? getFarmingBatchByIdSuccess,
+    TResult? Function(String error)? getFarmingBatchByIdFailure,
   }) {
     return getFarmingBatchesInProgress?.call();
   }
@@ -317,6 +380,9 @@ class _$GetFarmingBatchesInProgressImpl
     TResult Function(List<FarmingBatchDto> farmingBatches)?
     getFarmingBatchesSuccess,
     TResult Function(String error)? getFarmingBatchesFailure,
+    TResult Function()? getFarmingBatchByIdInProgress,
+    TResult Function(FarmingBatchDto farmingBatch)? getFarmingBatchByIdSuccess,
+    TResult Function(String error)? getFarmingBatchByIdFailure,
     required TResult orElse(),
   }) {
     if (getFarmingBatchesInProgress != null) {
@@ -335,6 +401,12 @@ class _$GetFarmingBatchesInProgressImpl
     getFarmingBatchesSuccess,
     required TResult Function(_GetFarmingBatchesFailure value)
     getFarmingBatchesFailure,
+    required TResult Function(_GetFarmingBatchByIdInProgress value)
+    getFarmingBatchByIdInProgress,
+    required TResult Function(_GetFarmingBatchByIdSuccess value)
+    getFarmingBatchByIdSuccess,
+    required TResult Function(_GetFarmingBatchByIdFailure value)
+    getFarmingBatchByIdFailure,
   }) {
     return getFarmingBatchesInProgress(this);
   }
@@ -349,6 +421,12 @@ class _$GetFarmingBatchesInProgressImpl
     getFarmingBatchesSuccess,
     TResult? Function(_GetFarmingBatchesFailure value)?
     getFarmingBatchesFailure,
+    TResult? Function(_GetFarmingBatchByIdInProgress value)?
+    getFarmingBatchByIdInProgress,
+    TResult? Function(_GetFarmingBatchByIdSuccess value)?
+    getFarmingBatchByIdSuccess,
+    TResult? Function(_GetFarmingBatchByIdFailure value)?
+    getFarmingBatchByIdFailure,
   }) {
     return getFarmingBatchesInProgress?.call(this);
   }
@@ -361,6 +439,12 @@ class _$GetFarmingBatchesInProgressImpl
     getFarmingBatchesInProgress,
     TResult Function(_GetFarmingBatchesSuccess value)? getFarmingBatchesSuccess,
     TResult Function(_GetFarmingBatchesFailure value)? getFarmingBatchesFailure,
+    TResult Function(_GetFarmingBatchByIdInProgress value)?
+    getFarmingBatchByIdInProgress,
+    TResult Function(_GetFarmingBatchByIdSuccess value)?
+    getFarmingBatchByIdSuccess,
+    TResult Function(_GetFarmingBatchByIdFailure value)?
+    getFarmingBatchByIdFailure,
     required TResult orElse(),
   }) {
     if (getFarmingBatchesInProgress != null) {
@@ -482,6 +566,10 @@ class _$GetFarmingBatchesSuccessImpl
     required TResult Function(List<FarmingBatchDto> farmingBatches)
     getFarmingBatchesSuccess,
     required TResult Function(String error) getFarmingBatchesFailure,
+    required TResult Function() getFarmingBatchByIdInProgress,
+    required TResult Function(FarmingBatchDto farmingBatch)
+    getFarmingBatchByIdSuccess,
+    required TResult Function(String error) getFarmingBatchByIdFailure,
   }) {
     return getFarmingBatchesSuccess(farmingBatches);
   }
@@ -494,6 +582,9 @@ class _$GetFarmingBatchesSuccessImpl
     TResult? Function(List<FarmingBatchDto> farmingBatches)?
     getFarmingBatchesSuccess,
     TResult? Function(String error)? getFarmingBatchesFailure,
+    TResult? Function()? getFarmingBatchByIdInProgress,
+    TResult? Function(FarmingBatchDto farmingBatch)? getFarmingBatchByIdSuccess,
+    TResult? Function(String error)? getFarmingBatchByIdFailure,
   }) {
     return getFarmingBatchesSuccess?.call(farmingBatches);
   }
@@ -506,6 +597,9 @@ class _$GetFarmingBatchesSuccessImpl
     TResult Function(List<FarmingBatchDto> farmingBatches)?
     getFarmingBatchesSuccess,
     TResult Function(String error)? getFarmingBatchesFailure,
+    TResult Function()? getFarmingBatchByIdInProgress,
+    TResult Function(FarmingBatchDto farmingBatch)? getFarmingBatchByIdSuccess,
+    TResult Function(String error)? getFarmingBatchByIdFailure,
     required TResult orElse(),
   }) {
     if (getFarmingBatchesSuccess != null) {
@@ -524,6 +618,12 @@ class _$GetFarmingBatchesSuccessImpl
     getFarmingBatchesSuccess,
     required TResult Function(_GetFarmingBatchesFailure value)
     getFarmingBatchesFailure,
+    required TResult Function(_GetFarmingBatchByIdInProgress value)
+    getFarmingBatchByIdInProgress,
+    required TResult Function(_GetFarmingBatchByIdSuccess value)
+    getFarmingBatchByIdSuccess,
+    required TResult Function(_GetFarmingBatchByIdFailure value)
+    getFarmingBatchByIdFailure,
   }) {
     return getFarmingBatchesSuccess(this);
   }
@@ -538,6 +638,12 @@ class _$GetFarmingBatchesSuccessImpl
     getFarmingBatchesSuccess,
     TResult? Function(_GetFarmingBatchesFailure value)?
     getFarmingBatchesFailure,
+    TResult? Function(_GetFarmingBatchByIdInProgress value)?
+    getFarmingBatchByIdInProgress,
+    TResult? Function(_GetFarmingBatchByIdSuccess value)?
+    getFarmingBatchByIdSuccess,
+    TResult? Function(_GetFarmingBatchByIdFailure value)?
+    getFarmingBatchByIdFailure,
   }) {
     return getFarmingBatchesSuccess?.call(this);
   }
@@ -550,6 +656,12 @@ class _$GetFarmingBatchesSuccessImpl
     getFarmingBatchesInProgress,
     TResult Function(_GetFarmingBatchesSuccess value)? getFarmingBatchesSuccess,
     TResult Function(_GetFarmingBatchesFailure value)? getFarmingBatchesFailure,
+    TResult Function(_GetFarmingBatchByIdInProgress value)?
+    getFarmingBatchByIdInProgress,
+    TResult Function(_GetFarmingBatchByIdSuccess value)?
+    getFarmingBatchByIdSuccess,
+    TResult Function(_GetFarmingBatchByIdFailure value)?
+    getFarmingBatchByIdFailure,
     required TResult orElse(),
   }) {
     if (getFarmingBatchesSuccess != null) {
@@ -667,6 +779,10 @@ class _$GetFarmingBatchesFailureImpl
     required TResult Function(List<FarmingBatchDto> farmingBatches)
     getFarmingBatchesSuccess,
     required TResult Function(String error) getFarmingBatchesFailure,
+    required TResult Function() getFarmingBatchByIdInProgress,
+    required TResult Function(FarmingBatchDto farmingBatch)
+    getFarmingBatchByIdSuccess,
+    required TResult Function(String error) getFarmingBatchByIdFailure,
   }) {
     return getFarmingBatchesFailure(error);
   }
@@ -679,6 +795,9 @@ class _$GetFarmingBatchesFailureImpl
     TResult? Function(List<FarmingBatchDto> farmingBatches)?
     getFarmingBatchesSuccess,
     TResult? Function(String error)? getFarmingBatchesFailure,
+    TResult? Function()? getFarmingBatchByIdInProgress,
+    TResult? Function(FarmingBatchDto farmingBatch)? getFarmingBatchByIdSuccess,
+    TResult? Function(String error)? getFarmingBatchByIdFailure,
   }) {
     return getFarmingBatchesFailure?.call(error);
   }
@@ -691,6 +810,9 @@ class _$GetFarmingBatchesFailureImpl
     TResult Function(List<FarmingBatchDto> farmingBatches)?
     getFarmingBatchesSuccess,
     TResult Function(String error)? getFarmingBatchesFailure,
+    TResult Function()? getFarmingBatchByIdInProgress,
+    TResult Function(FarmingBatchDto farmingBatch)? getFarmingBatchByIdSuccess,
+    TResult Function(String error)? getFarmingBatchByIdFailure,
     required TResult orElse(),
   }) {
     if (getFarmingBatchesFailure != null) {
@@ -709,6 +831,12 @@ class _$GetFarmingBatchesFailureImpl
     getFarmingBatchesSuccess,
     required TResult Function(_GetFarmingBatchesFailure value)
     getFarmingBatchesFailure,
+    required TResult Function(_GetFarmingBatchByIdInProgress value)
+    getFarmingBatchByIdInProgress,
+    required TResult Function(_GetFarmingBatchByIdSuccess value)
+    getFarmingBatchByIdSuccess,
+    required TResult Function(_GetFarmingBatchByIdFailure value)
+    getFarmingBatchByIdFailure,
   }) {
     return getFarmingBatchesFailure(this);
   }
@@ -723,6 +851,12 @@ class _$GetFarmingBatchesFailureImpl
     getFarmingBatchesSuccess,
     TResult? Function(_GetFarmingBatchesFailure value)?
     getFarmingBatchesFailure,
+    TResult? Function(_GetFarmingBatchByIdInProgress value)?
+    getFarmingBatchByIdInProgress,
+    TResult? Function(_GetFarmingBatchByIdSuccess value)?
+    getFarmingBatchByIdSuccess,
+    TResult? Function(_GetFarmingBatchByIdFailure value)?
+    getFarmingBatchByIdFailure,
   }) {
     return getFarmingBatchesFailure?.call(this);
   }
@@ -735,6 +869,12 @@ class _$GetFarmingBatchesFailureImpl
     getFarmingBatchesInProgress,
     TResult Function(_GetFarmingBatchesSuccess value)? getFarmingBatchesSuccess,
     TResult Function(_GetFarmingBatchesFailure value)? getFarmingBatchesFailure,
+    TResult Function(_GetFarmingBatchByIdInProgress value)?
+    getFarmingBatchByIdInProgress,
+    TResult Function(_GetFarmingBatchByIdSuccess value)?
+    getFarmingBatchByIdSuccess,
+    TResult Function(_GetFarmingBatchByIdFailure value)?
+    getFarmingBatchByIdFailure,
     required TResult orElse(),
   }) {
     if (getFarmingBatchesFailure != null) {
@@ -754,5 +894,619 @@ abstract class _GetFarmingBatchesFailure implements FarmingBatchState {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GetFarmingBatchesFailureImplCopyWith<_$GetFarmingBatchesFailureImpl>
+  get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$GetFarmingBatchByIdInProgressImplCopyWith<$Res> {
+  factory _$$GetFarmingBatchByIdInProgressImplCopyWith(
+    _$GetFarmingBatchByIdInProgressImpl value,
+    $Res Function(_$GetFarmingBatchByIdInProgressImpl) then,
+  ) = __$$GetFarmingBatchByIdInProgressImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$GetFarmingBatchByIdInProgressImplCopyWithImpl<$Res>
+    extends
+        _$FarmingBatchStateCopyWithImpl<
+          $Res,
+          _$GetFarmingBatchByIdInProgressImpl
+        >
+    implements _$$GetFarmingBatchByIdInProgressImplCopyWith<$Res> {
+  __$$GetFarmingBatchByIdInProgressImplCopyWithImpl(
+    _$GetFarmingBatchByIdInProgressImpl _value,
+    $Res Function(_$GetFarmingBatchByIdInProgressImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of FarmingBatchState
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$GetFarmingBatchByIdInProgressImpl
+    with DiagnosticableTreeMixin
+    implements _GetFarmingBatchByIdInProgress {
+  const _$GetFarmingBatchByIdInProgressImpl();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'FarmingBatchState.getFarmingBatchByIdInProgress()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties..add(
+      DiagnosticsProperty(
+        'type',
+        'FarmingBatchState.getFarmingBatchByIdInProgress',
+      ),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$GetFarmingBatchByIdInProgressImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() getFarmingBatchesInProgress,
+    required TResult Function(List<FarmingBatchDto> farmingBatches)
+    getFarmingBatchesSuccess,
+    required TResult Function(String error) getFarmingBatchesFailure,
+    required TResult Function() getFarmingBatchByIdInProgress,
+    required TResult Function(FarmingBatchDto farmingBatch)
+    getFarmingBatchByIdSuccess,
+    required TResult Function(String error) getFarmingBatchByIdFailure,
+  }) {
+    return getFarmingBatchByIdInProgress();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? getFarmingBatchesInProgress,
+    TResult? Function(List<FarmingBatchDto> farmingBatches)?
+    getFarmingBatchesSuccess,
+    TResult? Function(String error)? getFarmingBatchesFailure,
+    TResult? Function()? getFarmingBatchByIdInProgress,
+    TResult? Function(FarmingBatchDto farmingBatch)? getFarmingBatchByIdSuccess,
+    TResult? Function(String error)? getFarmingBatchByIdFailure,
+  }) {
+    return getFarmingBatchByIdInProgress?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? getFarmingBatchesInProgress,
+    TResult Function(List<FarmingBatchDto> farmingBatches)?
+    getFarmingBatchesSuccess,
+    TResult Function(String error)? getFarmingBatchesFailure,
+    TResult Function()? getFarmingBatchByIdInProgress,
+    TResult Function(FarmingBatchDto farmingBatch)? getFarmingBatchByIdSuccess,
+    TResult Function(String error)? getFarmingBatchByIdFailure,
+    required TResult orElse(),
+  }) {
+    if (getFarmingBatchByIdInProgress != null) {
+      return getFarmingBatchByIdInProgress();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_GetFarmingBatchesInProgress value)
+    getFarmingBatchesInProgress,
+    required TResult Function(_GetFarmingBatchesSuccess value)
+    getFarmingBatchesSuccess,
+    required TResult Function(_GetFarmingBatchesFailure value)
+    getFarmingBatchesFailure,
+    required TResult Function(_GetFarmingBatchByIdInProgress value)
+    getFarmingBatchByIdInProgress,
+    required TResult Function(_GetFarmingBatchByIdSuccess value)
+    getFarmingBatchByIdSuccess,
+    required TResult Function(_GetFarmingBatchByIdFailure value)
+    getFarmingBatchByIdFailure,
+  }) {
+    return getFarmingBatchByIdInProgress(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_GetFarmingBatchesInProgress value)?
+    getFarmingBatchesInProgress,
+    TResult? Function(_GetFarmingBatchesSuccess value)?
+    getFarmingBatchesSuccess,
+    TResult? Function(_GetFarmingBatchesFailure value)?
+    getFarmingBatchesFailure,
+    TResult? Function(_GetFarmingBatchByIdInProgress value)?
+    getFarmingBatchByIdInProgress,
+    TResult? Function(_GetFarmingBatchByIdSuccess value)?
+    getFarmingBatchByIdSuccess,
+    TResult? Function(_GetFarmingBatchByIdFailure value)?
+    getFarmingBatchByIdFailure,
+  }) {
+    return getFarmingBatchByIdInProgress?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_GetFarmingBatchesInProgress value)?
+    getFarmingBatchesInProgress,
+    TResult Function(_GetFarmingBatchesSuccess value)? getFarmingBatchesSuccess,
+    TResult Function(_GetFarmingBatchesFailure value)? getFarmingBatchesFailure,
+    TResult Function(_GetFarmingBatchByIdInProgress value)?
+    getFarmingBatchByIdInProgress,
+    TResult Function(_GetFarmingBatchByIdSuccess value)?
+    getFarmingBatchByIdSuccess,
+    TResult Function(_GetFarmingBatchByIdFailure value)?
+    getFarmingBatchByIdFailure,
+    required TResult orElse(),
+  }) {
+    if (getFarmingBatchByIdInProgress != null) {
+      return getFarmingBatchByIdInProgress(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _GetFarmingBatchByIdInProgress implements FarmingBatchState {
+  const factory _GetFarmingBatchByIdInProgress() =
+      _$GetFarmingBatchByIdInProgressImpl;
+}
+
+/// @nodoc
+abstract class _$$GetFarmingBatchByIdSuccessImplCopyWith<$Res> {
+  factory _$$GetFarmingBatchByIdSuccessImplCopyWith(
+    _$GetFarmingBatchByIdSuccessImpl value,
+    $Res Function(_$GetFarmingBatchByIdSuccessImpl) then,
+  ) = __$$GetFarmingBatchByIdSuccessImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({FarmingBatchDto farmingBatch});
+
+  $FarmingBatchDtoCopyWith<$Res> get farmingBatch;
+}
+
+/// @nodoc
+class __$$GetFarmingBatchByIdSuccessImplCopyWithImpl<$Res>
+    extends
+        _$FarmingBatchStateCopyWithImpl<$Res, _$GetFarmingBatchByIdSuccessImpl>
+    implements _$$GetFarmingBatchByIdSuccessImplCopyWith<$Res> {
+  __$$GetFarmingBatchByIdSuccessImplCopyWithImpl(
+    _$GetFarmingBatchByIdSuccessImpl _value,
+    $Res Function(_$GetFarmingBatchByIdSuccessImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of FarmingBatchState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? farmingBatch = null}) {
+    return _then(
+      _$GetFarmingBatchByIdSuccessImpl(
+        farmingBatch:
+            null == farmingBatch
+                ? _value.farmingBatch
+                : farmingBatch // ignore: cast_nullable_to_non_nullable
+                    as FarmingBatchDto,
+      ),
+    );
+  }
+
+  /// Create a copy of FarmingBatchState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $FarmingBatchDtoCopyWith<$Res> get farmingBatch {
+    return $FarmingBatchDtoCopyWith<$Res>(_value.farmingBatch, (value) {
+      return _then(_value.copyWith(farmingBatch: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$GetFarmingBatchByIdSuccessImpl
+    with DiagnosticableTreeMixin
+    implements _GetFarmingBatchByIdSuccess {
+  const _$GetFarmingBatchByIdSuccessImpl({required this.farmingBatch});
+
+  @override
+  final FarmingBatchDto farmingBatch;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'FarmingBatchState.getFarmingBatchByIdSuccess(farmingBatch: $farmingBatch)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(
+        DiagnosticsProperty(
+          'type',
+          'FarmingBatchState.getFarmingBatchByIdSuccess',
+        ),
+      )
+      ..add(DiagnosticsProperty('farmingBatch', farmingBatch));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$GetFarmingBatchByIdSuccessImpl &&
+            (identical(other.farmingBatch, farmingBatch) ||
+                other.farmingBatch == farmingBatch));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, farmingBatch);
+
+  /// Create a copy of FarmingBatchState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$GetFarmingBatchByIdSuccessImplCopyWith<_$GetFarmingBatchByIdSuccessImpl>
+  get copyWith => __$$GetFarmingBatchByIdSuccessImplCopyWithImpl<
+    _$GetFarmingBatchByIdSuccessImpl
+  >(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() getFarmingBatchesInProgress,
+    required TResult Function(List<FarmingBatchDto> farmingBatches)
+    getFarmingBatchesSuccess,
+    required TResult Function(String error) getFarmingBatchesFailure,
+    required TResult Function() getFarmingBatchByIdInProgress,
+    required TResult Function(FarmingBatchDto farmingBatch)
+    getFarmingBatchByIdSuccess,
+    required TResult Function(String error) getFarmingBatchByIdFailure,
+  }) {
+    return getFarmingBatchByIdSuccess(farmingBatch);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? getFarmingBatchesInProgress,
+    TResult? Function(List<FarmingBatchDto> farmingBatches)?
+    getFarmingBatchesSuccess,
+    TResult? Function(String error)? getFarmingBatchesFailure,
+    TResult? Function()? getFarmingBatchByIdInProgress,
+    TResult? Function(FarmingBatchDto farmingBatch)? getFarmingBatchByIdSuccess,
+    TResult? Function(String error)? getFarmingBatchByIdFailure,
+  }) {
+    return getFarmingBatchByIdSuccess?.call(farmingBatch);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? getFarmingBatchesInProgress,
+    TResult Function(List<FarmingBatchDto> farmingBatches)?
+    getFarmingBatchesSuccess,
+    TResult Function(String error)? getFarmingBatchesFailure,
+    TResult Function()? getFarmingBatchByIdInProgress,
+    TResult Function(FarmingBatchDto farmingBatch)? getFarmingBatchByIdSuccess,
+    TResult Function(String error)? getFarmingBatchByIdFailure,
+    required TResult orElse(),
+  }) {
+    if (getFarmingBatchByIdSuccess != null) {
+      return getFarmingBatchByIdSuccess(farmingBatch);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_GetFarmingBatchesInProgress value)
+    getFarmingBatchesInProgress,
+    required TResult Function(_GetFarmingBatchesSuccess value)
+    getFarmingBatchesSuccess,
+    required TResult Function(_GetFarmingBatchesFailure value)
+    getFarmingBatchesFailure,
+    required TResult Function(_GetFarmingBatchByIdInProgress value)
+    getFarmingBatchByIdInProgress,
+    required TResult Function(_GetFarmingBatchByIdSuccess value)
+    getFarmingBatchByIdSuccess,
+    required TResult Function(_GetFarmingBatchByIdFailure value)
+    getFarmingBatchByIdFailure,
+  }) {
+    return getFarmingBatchByIdSuccess(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_GetFarmingBatchesInProgress value)?
+    getFarmingBatchesInProgress,
+    TResult? Function(_GetFarmingBatchesSuccess value)?
+    getFarmingBatchesSuccess,
+    TResult? Function(_GetFarmingBatchesFailure value)?
+    getFarmingBatchesFailure,
+    TResult? Function(_GetFarmingBatchByIdInProgress value)?
+    getFarmingBatchByIdInProgress,
+    TResult? Function(_GetFarmingBatchByIdSuccess value)?
+    getFarmingBatchByIdSuccess,
+    TResult? Function(_GetFarmingBatchByIdFailure value)?
+    getFarmingBatchByIdFailure,
+  }) {
+    return getFarmingBatchByIdSuccess?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_GetFarmingBatchesInProgress value)?
+    getFarmingBatchesInProgress,
+    TResult Function(_GetFarmingBatchesSuccess value)? getFarmingBatchesSuccess,
+    TResult Function(_GetFarmingBatchesFailure value)? getFarmingBatchesFailure,
+    TResult Function(_GetFarmingBatchByIdInProgress value)?
+    getFarmingBatchByIdInProgress,
+    TResult Function(_GetFarmingBatchByIdSuccess value)?
+    getFarmingBatchByIdSuccess,
+    TResult Function(_GetFarmingBatchByIdFailure value)?
+    getFarmingBatchByIdFailure,
+    required TResult orElse(),
+  }) {
+    if (getFarmingBatchByIdSuccess != null) {
+      return getFarmingBatchByIdSuccess(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _GetFarmingBatchByIdSuccess implements FarmingBatchState {
+  const factory _GetFarmingBatchByIdSuccess({
+    required final FarmingBatchDto farmingBatch,
+  }) = _$GetFarmingBatchByIdSuccessImpl;
+
+  FarmingBatchDto get farmingBatch;
+
+  /// Create a copy of FarmingBatchState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$GetFarmingBatchByIdSuccessImplCopyWith<_$GetFarmingBatchByIdSuccessImpl>
+  get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$GetFarmingBatchByIdFailureImplCopyWith<$Res> {
+  factory _$$GetFarmingBatchByIdFailureImplCopyWith(
+    _$GetFarmingBatchByIdFailureImpl value,
+    $Res Function(_$GetFarmingBatchByIdFailureImpl) then,
+  ) = __$$GetFarmingBatchByIdFailureImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String error});
+}
+
+/// @nodoc
+class __$$GetFarmingBatchByIdFailureImplCopyWithImpl<$Res>
+    extends
+        _$FarmingBatchStateCopyWithImpl<$Res, _$GetFarmingBatchByIdFailureImpl>
+    implements _$$GetFarmingBatchByIdFailureImplCopyWith<$Res> {
+  __$$GetFarmingBatchByIdFailureImplCopyWithImpl(
+    _$GetFarmingBatchByIdFailureImpl _value,
+    $Res Function(_$GetFarmingBatchByIdFailureImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of FarmingBatchState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? error = null}) {
+    return _then(
+      _$GetFarmingBatchByIdFailureImpl(
+        error:
+            null == error
+                ? _value.error
+                : error // ignore: cast_nullable_to_non_nullable
+                    as String,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$GetFarmingBatchByIdFailureImpl
+    with DiagnosticableTreeMixin
+    implements _GetFarmingBatchByIdFailure {
+  const _$GetFarmingBatchByIdFailureImpl({required this.error});
+
+  @override
+  final String error;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'FarmingBatchState.getFarmingBatchByIdFailure(error: $error)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(
+        DiagnosticsProperty(
+          'type',
+          'FarmingBatchState.getFarmingBatchByIdFailure',
+        ),
+      )
+      ..add(DiagnosticsProperty('error', error));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$GetFarmingBatchByIdFailureImpl &&
+            (identical(other.error, error) || other.error == error));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, error);
+
+  /// Create a copy of FarmingBatchState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$GetFarmingBatchByIdFailureImplCopyWith<_$GetFarmingBatchByIdFailureImpl>
+  get copyWith => __$$GetFarmingBatchByIdFailureImplCopyWithImpl<
+    _$GetFarmingBatchByIdFailureImpl
+  >(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() getFarmingBatchesInProgress,
+    required TResult Function(List<FarmingBatchDto> farmingBatches)
+    getFarmingBatchesSuccess,
+    required TResult Function(String error) getFarmingBatchesFailure,
+    required TResult Function() getFarmingBatchByIdInProgress,
+    required TResult Function(FarmingBatchDto farmingBatch)
+    getFarmingBatchByIdSuccess,
+    required TResult Function(String error) getFarmingBatchByIdFailure,
+  }) {
+    return getFarmingBatchByIdFailure(error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? getFarmingBatchesInProgress,
+    TResult? Function(List<FarmingBatchDto> farmingBatches)?
+    getFarmingBatchesSuccess,
+    TResult? Function(String error)? getFarmingBatchesFailure,
+    TResult? Function()? getFarmingBatchByIdInProgress,
+    TResult? Function(FarmingBatchDto farmingBatch)? getFarmingBatchByIdSuccess,
+    TResult? Function(String error)? getFarmingBatchByIdFailure,
+  }) {
+    return getFarmingBatchByIdFailure?.call(error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? getFarmingBatchesInProgress,
+    TResult Function(List<FarmingBatchDto> farmingBatches)?
+    getFarmingBatchesSuccess,
+    TResult Function(String error)? getFarmingBatchesFailure,
+    TResult Function()? getFarmingBatchByIdInProgress,
+    TResult Function(FarmingBatchDto farmingBatch)? getFarmingBatchByIdSuccess,
+    TResult Function(String error)? getFarmingBatchByIdFailure,
+    required TResult orElse(),
+  }) {
+    if (getFarmingBatchByIdFailure != null) {
+      return getFarmingBatchByIdFailure(error);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_GetFarmingBatchesInProgress value)
+    getFarmingBatchesInProgress,
+    required TResult Function(_GetFarmingBatchesSuccess value)
+    getFarmingBatchesSuccess,
+    required TResult Function(_GetFarmingBatchesFailure value)
+    getFarmingBatchesFailure,
+    required TResult Function(_GetFarmingBatchByIdInProgress value)
+    getFarmingBatchByIdInProgress,
+    required TResult Function(_GetFarmingBatchByIdSuccess value)
+    getFarmingBatchByIdSuccess,
+    required TResult Function(_GetFarmingBatchByIdFailure value)
+    getFarmingBatchByIdFailure,
+  }) {
+    return getFarmingBatchByIdFailure(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_GetFarmingBatchesInProgress value)?
+    getFarmingBatchesInProgress,
+    TResult? Function(_GetFarmingBatchesSuccess value)?
+    getFarmingBatchesSuccess,
+    TResult? Function(_GetFarmingBatchesFailure value)?
+    getFarmingBatchesFailure,
+    TResult? Function(_GetFarmingBatchByIdInProgress value)?
+    getFarmingBatchByIdInProgress,
+    TResult? Function(_GetFarmingBatchByIdSuccess value)?
+    getFarmingBatchByIdSuccess,
+    TResult? Function(_GetFarmingBatchByIdFailure value)?
+    getFarmingBatchByIdFailure,
+  }) {
+    return getFarmingBatchByIdFailure?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_GetFarmingBatchesInProgress value)?
+    getFarmingBatchesInProgress,
+    TResult Function(_GetFarmingBatchesSuccess value)? getFarmingBatchesSuccess,
+    TResult Function(_GetFarmingBatchesFailure value)? getFarmingBatchesFailure,
+    TResult Function(_GetFarmingBatchByIdInProgress value)?
+    getFarmingBatchByIdInProgress,
+    TResult Function(_GetFarmingBatchByIdSuccess value)?
+    getFarmingBatchByIdSuccess,
+    TResult Function(_GetFarmingBatchByIdFailure value)?
+    getFarmingBatchByIdFailure,
+    required TResult orElse(),
+  }) {
+    if (getFarmingBatchByIdFailure != null) {
+      return getFarmingBatchByIdFailure(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _GetFarmingBatchByIdFailure implements FarmingBatchState {
+  const factory _GetFarmingBatchByIdFailure({required final String error}) =
+      _$GetFarmingBatchByIdFailureImpl;
+
+  String get error;
+
+  /// Create a copy of FarmingBatchState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$GetFarmingBatchByIdFailureImplCopyWith<_$GetFarmingBatchByIdFailureImpl>
   get copyWith => throw _privateConstructorUsedError;
 }

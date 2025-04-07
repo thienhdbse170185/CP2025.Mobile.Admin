@@ -23,4 +23,22 @@ class FarmingBatchApiClient {
       throw Exception('get-farming-batches-error');
     }
   }
+
+  Future<FarmingBatchDto> getFarmingBatchById(String id) async {
+    try {
+      log(
+        '[FARMING_BATCH_API_CLIENT] Đang lấy thông tin vụ nuôi với id: $id...',
+      );
+      final response = await dio.get('/farmingbatchs/$id');
+      if (response.statusCode == 200) {
+        log('[FARMING_BATCH_API_CLIENT] Lấy thông tin vụ nuôi thành công!');
+        return FarmingBatchDto.fromJson(response.data['result']);
+      } else {
+        throw Exception('get-farming-batch-by-id-error');
+      }
+    } catch (e) {
+      log('[FARMING_BATCH_API_CLIENT] Lỗi khi lấy thông tin vụ nuôi: $e');
+      throw Exception('get-farming-batch-by-id-error');
+    }
+  }
 }

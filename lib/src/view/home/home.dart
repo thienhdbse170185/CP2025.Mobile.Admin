@@ -342,10 +342,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           child: InkWell(
             onTap: () {
-              // context.push(
-              //   RouteName.farmingBatchDetail,
-              //   extra: {'batchId': batch.id},
-              // );
+              context.push(
+                RouteName.farmingBatch,
+                extra: {'farmingBatchId': batch.id},
+              );
             },
             borderRadius: BorderRadius.circular(12),
             child: Padding(
@@ -395,7 +395,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Mã vụ: ${batch.farmingbatchCode}',
+                    'Mã vụ: ${batch.farmingBatchCode}',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 4),
