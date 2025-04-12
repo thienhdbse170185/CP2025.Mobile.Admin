@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_farm_admin/src/core/router.dart';
+import 'package:smart_farm_admin/src/core/utils/time_util.dart';
 import 'package:smart_farm_admin/src/model/dto/farming_batch/farming_batch_dto.dart';
+import 'package:smart_farm_admin/src/model/dto/farming_batch/growth_stage_detail/growth_stage_detail.dart';
+import 'package:smart_farm_admin/src/model/dto/farming_batch/medical_symptom_detail/medical_symptom_detail.dart';
 import 'package:smart_farm_admin/src/viewmodel/farming_batch/farming_batch_cubit.dart';
 
 class FarmingBatchDetailScreen extends StatefulWidget {
@@ -31,18 +36,18 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
   @override
   Widget build(BuildContext context) {
     // Calculate current stage based on today's date
-    DateTime now = DateTime.now();
+    DateTime now = TimeUtils.customNow();
     String currentStage = "Chưa bắt đầu";
     double growthProgress = 0.0;
 
     DateTime startDate =
         farmingBatchDto != null
             ? DateTime.parse(farmingBatchDto!.startDate)
-            : DateTime.now(); // Provide a default value or handle null case
+            : now; // Provide a default value or handle null case
     DateTime endDate =
         farmingBatchDto != null
             ? DateTime.parse(farmingBatchDto!.endDate)
-            : DateTime.now(); // Provide a default value or handle null case
+            : now; // Provide a default value or handle null case
 
     if (now.isAfter(startDate) && now.isBefore(endDate)) {
       // Calculate overall progress
@@ -147,24 +152,25 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
                   farmingBatchDto?.status == "Active"
                       ? 'Đang nuôi'
                       : 'Kết thúc',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                farmingBatchDto?.farmingBatchCode ?? '',
-                style: TextStyle(color: Colors.grey[600]),
               ),
             ],
           ),
           const SizedBox(height: 8),
           Text(
             farmingBatchDto?.name ?? '',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
+          // Hiển thị mã vụ nuôi mới
+          // const SizedBox(height: 4),
+          // Text(
+          //   'Mã vụ: ${farmingBatchDto?.farmingBatchCode ?? ''}',
+          //   style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+          // ),
           const SizedBox(height: 4),
           Text(
             'Chuồng: ${farmingBatchDto?.cageName ?? ''}',
@@ -230,60 +236,142 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
   }
 
   Widget _buildDateInfo() {
-    // Format dates
+    // Định dạng ngày cho các trường ngày tháng mới
     String startDate = DateFormat(
       'dd/MM/yyyy',
     ).format(DateTime.parse(farmingBatchDto?.startDate ?? '1970-01-01'));
+    String estimatedTimeStart = DateFormat('dd/MM/yyyy HH:mm').format(
+      DateTime.parse(farmingBatchDto?.estimatedTimeStart ?? '1970-01-01'),
+    );
     String endDate = DateFormat(
       'dd/MM/yyyy',
     ).format(DateTime.parse(farmingBatchDto?.endDate ?? '1970-01-01'));
 
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Ngày bắt đầu', style: TextStyle(color: Colors.grey[600])),
-              const SizedBox(height: 2),
-              Row(
+        Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.calendar_today, size: 16, color: Colors.green),
-                  const SizedBox(width: 4),
                   Text(
-                    startDate,
-                    style: TextStyle(fontWeight: FontWeight.w500),
+                    'Ngày bắt đầu',
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
+                  const SizedBox(height: 2),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.calendar_today,
+                        size: 16,
+                        color: Colors.green,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        startDate,
+                        style: const TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
-        ),
-        Container(height: 35, width: 1, color: Colors.grey[300]),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Ngày kết thúc (dự kiến)',
-                  style: TextStyle(color: Colors.grey[600]),
-                ),
-                const SizedBox(height: 2),
-                Row(
+            ),
+            Container(height: 35, width: 1, color: Colors.grey[300]),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.event, size: 16, color: Colors.green),
-                    const SizedBox(width: 4),
                     Text(
-                      endDate,
-                      style: TextStyle(fontWeight: FontWeight.w500),
+                      'Ngày dự kiến bắt đầu',
+                      style: TextStyle(color: Colors.grey[600]),
+                    ),
+                    const SizedBox(height: 2),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.access_time,
+                          size: 16,
+                          color: Colors.green,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          estimatedTimeStart,
+                          style: const TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Ngày kết thúc (dự kiến)',
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
+                  const SizedBox(height: 2),
+                  Row(
+                    children: [
+                      const Icon(Icons.event, size: 16, color: Colors.green),
+                      const SizedBox(width: 4),
+                      Text(
+                        endDate,
+                        style: const TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            if (farmingBatchDto?.completeAt != null)
+              Container(height: 35, width: 1, color: Colors.grey[300]),
+            if (farmingBatchDto?.completeAt != null)
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Ngày hoàn thành',
+                        style: TextStyle(color: Colors.grey[600]),
+                      ),
+                      const SizedBox(height: 2),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.check_circle,
+                            size: 16,
+                            color: Colors.green,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            DateFormat('dd/MM/yyyy').format(
+                              DateTime.parse(
+                                farmingBatchDto!.completeAt ?? '1970-01-01',
+                              ),
+                            ),
+                            style: const TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
         ),
       ],
     );
@@ -322,7 +410,7 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
               const SizedBox(width: 12),
               Expanded(
                 child: _buildInfoCard(
-                  title: 'Tần suất vệ sinh',
+                  title: 'T.suất v.sinh',
                   value: '${farmingBatchDto?.cleaningFrequency ?? 0} ngày/lần',
                   icon: Icons.cleaning_services,
                   color: Colors.purple,
@@ -368,20 +456,29 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
 
   Widget _buildGrowthStagesSection() {
     // Sort growth stages by start date
-    List<Map<String, dynamic>> stages =
+    List<GrowthStageDetail> stages =
         (farmingBatchDto?.growthStages ?? [])
             .map(
-              (stage) => {
-                "name": stage.name,
-                "ageStartDate": stage.ageStartDate,
-                "ageEndDate": stage.ageEndDate,
-              },
+              (stage) => GrowthStageDetail(
+                affectQuantity: stage.affectQuantity,
+                ageEndDate: stage.ageEndDate,
+                ageStartDate: stage.ageStartDate,
+                deadQuantity: stage.deadQuantity,
+                foodType: stage.foodType,
+                id: stage.id,
+                name: stage.name,
+                quantity: stage.quantity,
+                recommendedWeightPerSession: stage.recommendedWeightPerSession,
+                status: stage.status,
+                weightAnimal: stage.weightAnimal,
+                weightBasedOnBodyMass: stage.weightBasedOnBodyMass,
+              ),
             )
             .toList();
     stages.sort(
       (a, b) => DateTime.parse(
-        a["ageStartDate"],
-      ).compareTo(DateTime.parse(b["ageStartDate"])),
+        a.ageStartDate,
+      ).compareTo(DateTime.parse(b.ageStartDate)),
     );
 
     return Padding(
@@ -399,7 +496,7 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
-              ...stages.map((stage) => _buildStageItem(stage)).toList(),
+              ...stages.map((stage) => _buildStageItem(stage)),
             ],
           ),
         ),
@@ -407,102 +504,152 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
     );
   }
 
-  Widget _buildStageItem(Map<String, dynamic> stage) {
-    // Check if current stage
-    DateTime now = DateTime.now();
-    DateTime stageStart = DateTime.parse(stage["ageStartDate"]);
-    DateTime stageEnd = DateTime.parse(stage["ageEndDate"]);
-    bool isCurrentStage = now.isAfter(stageStart) && now.isBefore(stageEnd);
-
-    // Format dates
+  Widget _buildStageItem(GrowthStageDetail stage) {
+    DateTime now = TimeUtils.customNow();
+    DateTime stageStart = DateTime.parse(stage.ageStartDate);
+    DateTime stageEnd = DateTime.parse(stage.ageEndDate);
     String startDate = DateFormat('dd/MM/yyyy').format(stageStart);
     String endDate = DateFormat('dd/MM/yyyy').format(stageEnd);
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: isCurrentStage ? Colors.green[50] : Colors.grey[50],
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: isCurrentStage ? Colors.green : Colors.grey[300]!,
-          width: 1,
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: isCurrentStage ? Colors.green : Colors.grey[300],
-              shape: BoxShape.circle,
+    return InkWell(
+      onTap: () {
+        // Điều hướng sang màn hình chi tiết giai đoạn với dữ liệu chi tiết của stage
+        context.push(
+          RouteName.growthStageDetail,
+          extra: {"growthStageDetail": stage},
+        );
+      },
+      child: Opacity(
+        opacity: stage.status == 'Active' ? 1.0 : 0.5,
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color:
+                stage.status == 'Active' ? Colors.orange[50] : Colors.green[50],
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: stage.status == 'Active' ? Colors.orange : Colors.green,
+              width: 1,
             ),
-            child: Icon(Icons.egg_alt, color: Colors.white),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color:
+                      stage.status == 'Active' ? Colors.orange : Colors.green,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.pets, color: Colors.white),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      stage["name"],
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color:
-                            isCurrentStage ? Colors.green[800] : Colors.black,
-                      ),
-                    ),
-                    if (isCurrentStage)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 2,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          'Hiện tại',
+                    // Hiển thị tên stage kèm nhãn trạng thái
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          stage.name,
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
                             fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color:
+                                stage.status == 'Active'
+                                    ? Colors.orange[800]
+                                    : Colors.black,
                           ),
                         ),
-                      ),
+                        if (stage.status == 'Active')
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.orange,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Text(
+                              'Hiện tại',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )
+                        else if (stage.status == 'Completed')
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Text(
+                              'Đã hoàn thành',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    // Hiển thị khoảng thời gian cùng icon mũi tên báo hiệu có thể bấm
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '$startDate - $endDate',
+                          style: TextStyle(color: Colors.grey[700]),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                          color: Colors.grey[600],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    // Gợi ý người dùng nhấn để xem chi tiết
+                    Text(
+                      'Nhấn để xem chi tiết',
+                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                    ),
                   ],
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  '$startDate - $endDate',
-                  style: TextStyle(color: Colors.grey[700]),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 
   Widget _buildMedicalSymptomsSection() {
-    List<Map<String, dynamic>> symptoms =
+    List<MedicalSymptomDetail> symptoms =
         (farmingBatchDto?.medicalSymptoms ?? [])
             .map(
-              (symptom) => {
-                "status": symptom.status,
-                "isEmergency": symptom.isEmergency,
-                "affectedQuantity": symptom.affectedQuantity,
-                "quantityInCage": symptom.quantityInCage,
-                "diagnosis": symptom.diagnosis,
-                "notes": symptom.notes,
-              },
+              (symptom) => MedicalSymptomDetail(
+                id: symptom.id,
+                status: symptom.status,
+                isEmergency: symptom.isEmergency,
+                affectedQuantity: symptom.affectedQuantity,
+                quantityInCage: symptom.quantityInCage,
+                diagnosis: symptom.diagnosis,
+                notes: symptom.notes,
+              ),
             )
             .toList();
 
@@ -555,10 +702,10 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
     );
   }
 
-  Widget _buildSymptomItem(Map<String, dynamic> symptom) {
+  Widget _buildSymptomItem(MedicalSymptomDetail symptom) {
     // Determine color based on status
     Color statusColor;
-    switch (symptom["status"]) {
+    switch (symptom.status) {
       case "Pending":
         statusColor = Colors.orange;
         break;
@@ -573,7 +720,7 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
     }
 
     String statusText;
-    switch (symptom["status"]) {
+    switch (symptom.status) {
       case "Pending":
         statusText = "Chờ xử lý";
         break;
@@ -584,7 +731,7 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
         statusText = "Đã giải quyết";
         break;
       default:
-        statusText = symptom["status"];
+        statusText = symptom.status;
     }
 
     return Container(
@@ -624,7 +771,7 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
                   ),
                 ),
               ),
-              if (symptom["isEmergency"] == true)
+              if (symptom.isEmergency == true)
                 Container(
                   margin: const EdgeInsets.only(left: 8),
                   padding: const EdgeInsets.symmetric(
@@ -647,7 +794,7 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
                 ),
               Spacer(),
               Text(
-                '${symptom["affectedQuantity"]}/${symptom["quantityInCage"]} con',
+                '${symptom.affectedQuantity}/${symptom.quantityInCage} con',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.grey[700],
@@ -657,15 +804,14 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            symptom["diagnosis"] ?? 'Chưa chẩn đoán',
+            symptom.diagnosis ?? 'Chưa chẩn đoán',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
-          if (symptom["notes"] != null &&
-              symptom["notes"].toString().isNotEmpty)
+          if (symptom.notes != null && symptom.notes.toString().isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(top: 8),
               child: Text(
-                'Ghi chú: ${symptom["notes"]}',
+                'Ghi chú: ${symptom.notes}',
                 style: TextStyle(color: Colors.grey[800]),
               ),
             ),

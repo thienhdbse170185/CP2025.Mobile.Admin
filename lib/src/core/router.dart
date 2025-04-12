@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 import 'package:smart_farm_admin/src/core/constants/auth_data_constant.dart';
+import 'package:smart_farm_admin/src/model/dto/farming_batch/growth_stage_detail/growth_stage_detail.dart';
 import 'package:smart_farm_admin/src/view/auth/login.dart';
 import 'package:smart_farm_admin/src/view/cage/cage.dart';
 import 'package:smart_farm_admin/src/view/farming_batch/farming_batch.dart';
+import 'package:smart_farm_admin/src/view/growth_stage/growth_stage_screen.dart';
 import 'package:smart_farm_admin/src/view/home/home.dart';
 import 'package:smart_farm_admin/src/view/layout.dart';
 import 'package:smart_farm_admin/src/view/notification/notification.dart';
@@ -25,6 +27,7 @@ class RouteName {
   static const String logCage = '/cage/log';
   static const String reportCage = '/cage/report';
   static const String farmingBatch = '/farming-batch';
+  static const String growthStageDetail = '/growth-stage-detail';
 
   static const publicRoutes = [login];
 }
@@ -90,6 +93,15 @@ final router = GoRouter(
         final params = state.extra as Map<String, dynamic>?;
         final farmingBatchId = params?['farmingBatchId'] as String;
         return FarmingBatchDetailScreen(farmingBatchId: farmingBatchId);
+      },
+    ),
+    GoRoute(
+      path: RouteName.growthStageDetail,
+      builder: (context, state) {
+        final params = state.extra as Map<String, dynamic>;
+        final growthStageDetail =
+            params['growthStageDetail'] as GrowthStageDetail;
+        return GrowthStageScreen(growthStageDetail: growthStageDetail);
       },
     ),
   ],

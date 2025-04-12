@@ -68,7 +68,7 @@ class _LayoutScaffoldState extends State<LayoutScaffold> {
               ),
             );
           } else {
-            final adjustedIndex = index > 2 ? index - 1 : index;
+            final adjustedIndex = index > 1 ? index - 1 : index;
             widget.navigationShell.goBranch(adjustedIndex);
           }
           // final adjustedIndex = index > 2 ? index - 1 : index;
@@ -111,6 +111,6 @@ class _LayoutScaffoldState extends State<LayoutScaffold> {
 
   int _getSelectedIndex() {
     final currentIndex = widget.navigationShell.currentIndex;
-    return currentIndex >= 2 ? currentIndex + 1 : currentIndex;
+    return currentIndex >= 1 ? currentIndex + 1 : currentIndex;
   }
 }

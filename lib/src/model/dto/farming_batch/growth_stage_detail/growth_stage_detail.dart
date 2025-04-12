@@ -10,6 +10,14 @@ class GrowthStageDetail with _$GrowthStageDetail {
     required String name,
     required String ageStartDate,
     required String ageEndDate,
+    required double weightAnimal,
+    required int quantity,
+    required String foodType,
+    required int affectQuantity,
+    required String status,
+    required int deadQuantity,
+    required double recommendedWeightPerSession,
+    required double weightBasedOnBodyMass,
   }) = _GrowthStageDetail;
 
   factory GrowthStageDetail.fromJson(Map<String, dynamic> json) =>

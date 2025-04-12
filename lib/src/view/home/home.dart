@@ -222,21 +222,21 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-        body: RefreshIndicator(
-          onRefresh: () async {
-            context.read<FarmingBatchCubit>().getFarmingBatches();
-          },
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 16.0,
-            ),
-            child:
-                _isLoading
-                    ? const LoadingWidget()
-                    : Padding(
+        body:
+            _isLoading
+                ? Center(child: CircularProgressIndicator())
+                : RefreshIndicator(
+                  onRefresh: () async {
+                    context.read<FarmingBatchCubit>().getFarmingBatches();
+                  },
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 16.0,
+                    ),
+                    child: Padding(
                       padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).size.height * 0.1,
+                        bottom: MediaQuery.of(context).size.height * 0.03,
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -295,8 +295,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-          ),
-        ),
+                  ),
+                ),
       ),
     );
   }
@@ -392,11 +392,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Mã vụ: ${batch.farmingBatchCode}',
-                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 4),
                   Row(
