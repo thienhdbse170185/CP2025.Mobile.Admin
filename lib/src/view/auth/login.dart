@@ -23,6 +23,8 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isProcessing = false;
   bool _isWrongCredentials = false;
 
+  String _messageWrongCredentials = '';
+
   @override
   void dispose() {
     _usernameController.dispose();
@@ -74,6 +76,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   _isProcessing = false;
                   if (message.contains('wrong-credentials')) {
                     _isWrongCredentials = true;
+                    _messageWrongCredentials =
+                        'Thông tin đăng nhập không chính xác!';
+                  } else if (message.contains('permission-denied')) {
+                    _isWrongCredentials = true;
+                    _messageWrongCredentials =
+                        'Tài khoản không có quyền truy cập ứng dụng này.';
                   }
                 });
                 log('[LOGIN] Đăng nhập thất bại! Lỗi: $message');
@@ -202,10 +210,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 8),
                         if (_isWrongCredentials)
-                          const Padding(
+                          Padding(
                             padding: EdgeInsets.only(left: 4),
                             child: Text(
-                              "Tên tài khoản hoặc mật khẩu không chính xác",
+                              _messageWrongCredentials,
                               style: TextStyle(color: Colors.red, fontSize: 13),
                             ),
                           ),
