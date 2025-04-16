@@ -9,8 +9,8 @@ class AnimalTemplateDto with _$AnimalTemplateDto {
     required String id,
     required String name,
     required String species,
-    required String status,
-    required String notes,
+    String? status,
+    String? notes,
   }) = _AnimalTemplateDto;
 
   factory AnimalTemplateDto.fromJson(Map<String, dynamic> json) =>

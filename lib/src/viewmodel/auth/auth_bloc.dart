@@ -83,7 +83,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     log('[AUTH_BLOC] decodedToken: $decodedToken');
     final role = decodedToken['role'];
     log('[AUTH_BLOC] role: $role');
-    if (role == 'Admin Farm') {
+    if (role == 'Customer') {
       log('[AUTH_BLOC] Quyền truy cập hợp lệ!');
       return true;
     } else {

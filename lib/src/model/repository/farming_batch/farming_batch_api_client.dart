@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:smart_farm_admin/src/model/dto/farming_batch/farming_batch_dto.dart';
+import 'package:smart_farm_admin/src/model/dto/merged_farming_batch/merged_farming_batch_dto.dart';
 
 class FarmingBatchApiClient {
   final Dio dio;
@@ -39,6 +40,28 @@ class FarmingBatchApiClient {
     } catch (e) {
       log('[FARMING_BATCH_API_CLIENT] Lỗi khi lấy thông tin vụ nuôi: $e');
       throw Exception('get-farming-batch-by-id-error');
+    }
+  }
+
+  Future<List<MergedFarmingBatchDto>> getFarmingBatchByUserId(
+    String userId,
+  ) async {
+    try {
+      log(
+        '[FARMING_BATCH_API_CLIENT] Đang lấy thông tin vụ nuôi với userId: $userId...',
+      );
+      final response = await dio.get('/farmingbatchs/customer/$userId');
+      if (response.statusCode == 200) {
+        log('[FARMING_BATCH_API_CLIENT] Lấy thông tin vụ nuôi thành công!');
+        return (response.data['result'] as List<dynamic>)
+            .map((e) => MergedFarmingBatchDto.fromJson(e))
+            .toList();
+      } else {
+        throw Exception('get-farming-batch-by-user-id-error');
+      }
+    } catch (e) {
+      log('[FARMING_BATCH_API_CLIENT] Lỗi khi lấy thông tin vụ nuôi: $e');
+      throw Exception('get-farming-batch-by-user-id-error');
     }
   }
 }

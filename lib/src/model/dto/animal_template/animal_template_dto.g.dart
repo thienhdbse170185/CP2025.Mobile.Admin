@@ -12,8 +12,8 @@ _$AnimalTemplateDtoImpl _$$AnimalTemplateDtoImplFromJson(
   id: json['id'] as String,
   name: json['name'] as String,
   species: json['species'] as String,
-  status: json['status'] as String,
-  notes: json['notes'] as String,
+  status: json['status'] as String?,
+  notes: json['notes'] as String?,
 );
 
 Map<String, dynamic> _$$AnimalTemplateDtoImplToJson(

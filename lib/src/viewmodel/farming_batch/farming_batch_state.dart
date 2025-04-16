@@ -21,4 +21,13 @@ class FarmingBatchState with _$FarmingBatchState {
   const factory FarmingBatchState.getFarmingBatchByIdFailure({
     required String error,
   }) = _GetFarmingBatchByIdFailure;
+
+  const factory FarmingBatchState.getFarmingBatchByUserIdInProgress() =
+      _GetFarmingBatchByUserIdInProgress;
+  const factory FarmingBatchState.getFarmingBatchByUserIdSuccess({
+    required List<MergedFarmingBatchDto> farmingBatch,
+  }) = _GetFarmingBatchByUserIdSuccess;
+  const factory FarmingBatchState.getFarmingBatchByUserIdFailure({
+    required String error,
+  }) = _GetFarmingBatchByUserIdFailure;
 }

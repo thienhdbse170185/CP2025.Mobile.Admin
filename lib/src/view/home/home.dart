@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_farm_admin/src/core/router.dart';
 import 'package:smart_farm_admin/src/model/dto/farming_batch/farming_batch_dto.dart';
+import 'package:smart_farm_admin/src/model/dto/merged_farming_batch/merged_farming_batch_dto.dart';
 import 'package:smart_farm_admin/src/view/widgets/avatar_round.dart';
-import 'package:smart_farm_admin/src/view/widgets/loading_widget.dart';
 import 'package:smart_farm_admin/src/viewmodel/farming_batch/farming_batch_cubit.dart';
 import 'package:smart_farm_admin/src/viewmodel/system/system_bloc.dart';
 import 'package:smart_farm_admin/src/viewmodel/user/user_bloc.dart';
@@ -23,6 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
   String _username = 'Đang tải';
   String _currentDate = '';
   String _currentTime = '';
+
+  List<MergedFarmingBatchDto> mergedFarmingBatchList = [];
 
   @override
   void initState() {
@@ -119,6 +121,18 @@ class _HomeScreenState extends State<HomeScreen> {
         BlocListener<FarmingBatchCubit, FarmingBatchState>(
           listener: (context, state) {
             state.maybeWhen(
+              getFarmingBatchByUserIdInProgress: () {
+                setState(() {
+                  _isLoading = true;
+                });
+              },
+              getFarmingBatchByUserIdSuccess: (farmingBatches) {
+                setState(() {
+                  _isLoading = false;
+                  farmingBatches.clear();
+                  farmingBatches.addAll(farmingBatches);
+                });
+              },
               getFarmingBatchesInProgress: () {
                 setState(() {
                   _isLoading = true;
@@ -151,6 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 setState(() {
                   _username = userName;
                 });
+                context.read<FarmingBatchCubit>().getFarmingBatchByUserId();
               },
               getUserProfileFailure: (message) {},
               orElse: () {},
@@ -162,7 +177,6 @@ class _HomeScreenState extends State<HomeScreen> {
             state.maybeWhen(
               appStartedSuccess: () {
                 context.read<UserBloc>().add(const UserEvent.getUserProfile());
-                context.read<FarmingBatchCubit>().getFarmingBatches();
               },
               orElse: () {},
             );

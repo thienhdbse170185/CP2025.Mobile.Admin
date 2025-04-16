@@ -24,8 +24,8 @@ mixin _$AnimalTemplateDto {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get species => throw _privateConstructorUsedError;
-  String get status => throw _privateConstructorUsedError;
-  String get notes => throw _privateConstructorUsedError;
+  String? get status => throw _privateConstructorUsedError;
+  String? get notes => throw _privateConstructorUsedError;
 
   /// Serializes this AnimalTemplateDto to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -48,8 +48,8 @@ abstract class $AnimalTemplateDtoCopyWith<$Res> {
     String id,
     String name,
     String species,
-    String status,
-    String notes,
+    String? status,
+    String? notes,
   });
 }
 
@@ -71,8 +71,8 @@ class _$AnimalTemplateDtoCopyWithImpl<$Res, $Val extends AnimalTemplateDto>
     Object? id = null,
     Object? name = null,
     Object? species = null,
-    Object? status = null,
-    Object? notes = null,
+    Object? status = freezed,
+    Object? notes = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -92,15 +92,15 @@ class _$AnimalTemplateDtoCopyWithImpl<$Res, $Val extends AnimalTemplateDto>
                     : species // ignore: cast_nullable_to_non_nullable
                         as String,
             status:
-                null == status
+                freezed == status
                     ? _value.status
                     : status // ignore: cast_nullable_to_non_nullable
-                        as String,
+                        as String?,
             notes:
-                null == notes
+                freezed == notes
                     ? _value.notes
                     : notes // ignore: cast_nullable_to_non_nullable
-                        as String,
+                        as String?,
           )
           as $Val,
     );
@@ -120,8 +120,8 @@ abstract class _$$AnimalTemplateDtoImplCopyWith<$Res>
     String id,
     String name,
     String species,
-    String status,
-    String notes,
+    String? status,
+    String? notes,
   });
 }
 
@@ -142,8 +142,8 @@ class __$$AnimalTemplateDtoImplCopyWithImpl<$Res>
     Object? id = null,
     Object? name = null,
     Object? species = null,
-    Object? status = null,
-    Object? notes = null,
+    Object? status = freezed,
+    Object? notes = freezed,
   }) {
     return _then(
       _$AnimalTemplateDtoImpl(
@@ -163,15 +163,15 @@ class __$$AnimalTemplateDtoImplCopyWithImpl<$Res>
                 : species // ignore: cast_nullable_to_non_nullable
                     as String,
         status:
-            null == status
+            freezed == status
                 ? _value.status
                 : status // ignore: cast_nullable_to_non_nullable
-                    as String,
+                    as String?,
         notes:
-            null == notes
+            freezed == notes
                 ? _value.notes
                 : notes // ignore: cast_nullable_to_non_nullable
-                    as String,
+                    as String?,
       ),
     );
   }
@@ -184,8 +184,8 @@ class _$AnimalTemplateDtoImpl implements _AnimalTemplateDto {
     required this.id,
     required this.name,
     required this.species,
-    required this.status,
-    required this.notes,
+    this.status,
+    this.notes,
   });
 
   factory _$AnimalTemplateDtoImpl.fromJson(Map<String, dynamic> json) =>
@@ -198,9 +198,9 @@ class _$AnimalTemplateDtoImpl implements _AnimalTemplateDto {
   @override
   final String species;
   @override
-  final String status;
+  final String? status;
   @override
-  final String notes;
+  final String? notes;
 
   @override
   String toString() {
@@ -246,8 +246,8 @@ abstract class _AnimalTemplateDto implements AnimalTemplateDto {
     required final String id,
     required final String name,
     required final String species,
-    required final String status,
-    required final String notes,
+    final String? status,
+    final String? notes,
   }) = _$AnimalTemplateDtoImpl;
 
   factory _AnimalTemplateDto.fromJson(Map<String, dynamic> json) =
@@ -260,9 +260,9 @@ abstract class _AnimalTemplateDto implements AnimalTemplateDto {
   @override
   String get species;
   @override
-  String get status;
+  String? get status;
   @override
-  String get notes;
+  String? get notes;
 
   /// Create a copy of AnimalTemplateDto
   /// with the given fields replaced by the non-null parameter values.
