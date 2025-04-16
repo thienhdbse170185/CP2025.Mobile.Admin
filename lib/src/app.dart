@@ -13,9 +13,12 @@ import 'package:smart_farm_admin/src/core/theme/theme.dart';
 import 'package:smart_farm_admin/src/core/theme/util.dart';
 import 'package:smart_farm_admin/src/model/repository/farming_batch/farming_batch_api_client.dart';
 import 'package:smart_farm_admin/src/model/repository/farming_batch/farming_batch_repository.dart';
+import 'package:smart_farm_admin/src/model/repository/report/report_api_client.dart';
+import 'package:smart_farm_admin/src/model/repository/report/report_repository.dart';
 import 'package:smart_farm_admin/src/viewmodel/auth/auth_bloc.dart';
 import 'package:smart_farm_admin/src/viewmodel/cage/cage_bloc.dart';
 import 'package:smart_farm_admin/src/viewmodel/farming_batch/farming_batch_cubit.dart';
+import 'package:smart_farm_admin/src/viewmodel/report_farming_batch/report_farming_batch_cubit.dart';
 import 'package:smart_farm_admin/src/viewmodel/system/system_bloc.dart';
 import 'package:smart_farm_admin/src/viewmodel/user/user_bloc.dart';
 
@@ -55,6 +58,11 @@ class _MyAppState extends State<MyApp> {
                 apiClient: FarmingBatchApiClient(dio: dio),
               ),
         ),
+        RepositoryProvider(
+          create:
+              (context) =>
+                  ReportRepository(apiClient: ReportApiClient(dio: dio)),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -80,6 +88,12 @@ class _MyAppState extends State<MyApp> {
                 (context) => FarmingBatchCubit(
                   farmingBatchRepository:
                       context.read<FarmingBatchRepository>(),
+                ),
+          ),
+          BlocProvider(
+            create:
+                (context) => ReportFarmingBatchCubit(
+                  reportRepository: context.read<ReportRepository>(),
                 ),
           ),
         ],

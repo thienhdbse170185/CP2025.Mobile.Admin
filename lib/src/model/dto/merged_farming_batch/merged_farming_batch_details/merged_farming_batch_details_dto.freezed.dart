@@ -35,7 +35,7 @@ mixin _$MergedFarmingBatchDetailsDto {
   int get cleaningFrequency => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
   int get deadQuantity => throw _privateConstructorUsedError;
-  GrowthStageDetail get growthStageDetails =>
+  GrowthStageDetail? get growthStageDetails =>
       throw _privateConstructorUsedError;
   CageDto get cage => throw _privateConstructorUsedError;
   AnimalTemplateDto get template => throw _privateConstructorUsedError;
@@ -74,12 +74,12 @@ abstract class $MergedFarmingBatchDetailsDtoCopyWith<$Res> {
     int cleaningFrequency,
     int quantity,
     int deadQuantity,
-    GrowthStageDetail growthStageDetails,
+    GrowthStageDetail? growthStageDetails,
     CageDto cage,
     AnimalTemplateDto template,
   });
 
-  $GrowthStageDetailCopyWith<$Res> get growthStageDetails;
+  $GrowthStageDetailCopyWith<$Res>? get growthStageDetails;
   $CageDtoCopyWith<$Res> get cage;
   $AnimalTemplateDtoCopyWith<$Res> get template;
 }
@@ -114,7 +114,7 @@ class _$MergedFarmingBatchDetailsDtoCopyWithImpl<
     Object? cleaningFrequency = null,
     Object? quantity = null,
     Object? deadQuantity = null,
-    Object? growthStageDetails = null,
+    Object? growthStageDetails = freezed,
     Object? cage = null,
     Object? template = null,
   }) {
@@ -181,10 +181,10 @@ class _$MergedFarmingBatchDetailsDtoCopyWithImpl<
                     : deadQuantity // ignore: cast_nullable_to_non_nullable
                         as int,
             growthStageDetails:
-                null == growthStageDetails
+                freezed == growthStageDetails
                     ? _value.growthStageDetails
                     : growthStageDetails // ignore: cast_nullable_to_non_nullable
-                        as GrowthStageDetail,
+                        as GrowthStageDetail?,
             cage:
                 null == cage
                     ? _value.cage
@@ -204,8 +204,14 @@ class _$MergedFarmingBatchDetailsDtoCopyWithImpl<
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $GrowthStageDetailCopyWith<$Res> get growthStageDetails {
-    return $GrowthStageDetailCopyWith<$Res>(_value.growthStageDetails, (value) {
+  $GrowthStageDetailCopyWith<$Res>? get growthStageDetails {
+    if (_value.growthStageDetails == null) {
+      return null;
+    }
+
+    return $GrowthStageDetailCopyWith<$Res>(_value.growthStageDetails!, (
+      value,
+    ) {
       return _then(_value.copyWith(growthStageDetails: value) as $Val);
     });
   }
@@ -253,13 +259,13 @@ abstract class _$$MergedFarmingBatchDetailsDtoImplCopyWith<$Res>
     int cleaningFrequency,
     int quantity,
     int deadQuantity,
-    GrowthStageDetail growthStageDetails,
+    GrowthStageDetail? growthStageDetails,
     CageDto cage,
     AnimalTemplateDto template,
   });
 
   @override
-  $GrowthStageDetailCopyWith<$Res> get growthStageDetails;
+  $GrowthStageDetailCopyWith<$Res>? get growthStageDetails;
   @override
   $CageDtoCopyWith<$Res> get cage;
   @override
@@ -296,7 +302,7 @@ class __$$MergedFarmingBatchDetailsDtoImplCopyWithImpl<$Res>
     Object? cleaningFrequency = null,
     Object? quantity = null,
     Object? deadQuantity = null,
-    Object? growthStageDetails = null,
+    Object? growthStageDetails = freezed,
     Object? cage = null,
     Object? template = null,
   }) {
@@ -363,10 +369,10 @@ class __$$MergedFarmingBatchDetailsDtoImplCopyWithImpl<$Res>
                 : deadQuantity // ignore: cast_nullable_to_non_nullable
                     as int,
         growthStageDetails:
-            null == growthStageDetails
+            freezed == growthStageDetails
                 ? _value.growthStageDetails
                 : growthStageDetails // ignore: cast_nullable_to_non_nullable
-                    as GrowthStageDetail,
+                    as GrowthStageDetail?,
         cage:
             null == cage
                 ? _value.cage
@@ -399,7 +405,7 @@ class _$MergedFarmingBatchDetailsDtoImpl
     required this.cleaningFrequency,
     required this.quantity,
     required this.deadQuantity,
-    required this.growthStageDetails,
+    this.growthStageDetails,
     required this.cage,
     required this.template,
   });
@@ -433,7 +439,7 @@ class _$MergedFarmingBatchDetailsDtoImpl
   @override
   final int deadQuantity;
   @override
-  final GrowthStageDetail growthStageDetails;
+  final GrowthStageDetail? growthStageDetails;
   @override
   final CageDto cage;
   @override
@@ -529,7 +535,7 @@ abstract class _MergedFarmingBatchDetailsDto
     required final int cleaningFrequency,
     required final int quantity,
     required final int deadQuantity,
-    required final GrowthStageDetail growthStageDetails,
+    final GrowthStageDetail? growthStageDetails,
     required final CageDto cage,
     required final AnimalTemplateDto template,
   }) = _$MergedFarmingBatchDetailsDtoImpl;
@@ -562,7 +568,7 @@ abstract class _MergedFarmingBatchDetailsDto
   @override
   int get deadQuantity;
   @override
-  GrowthStageDetail get growthStageDetails;
+  GrowthStageDetail? get growthStageDetails;
   @override
   CageDto get cage;
   @override

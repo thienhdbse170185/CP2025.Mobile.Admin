@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_farm_admin/src/core/router.dart';
+import 'package:smart_farm_admin/src/core/utils/date_util.dart';
 import 'package:smart_farm_admin/src/core/utils/time_util.dart';
 import 'package:smart_farm_admin/src/model/dto/farming_batch/farming_batch_dto.dart';
 import 'package:smart_farm_admin/src/model/dto/farming_batch/growth_stage_detail/growth_stage_detail.dart';
@@ -99,7 +100,35 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
         );
       },
       child: Scaffold(
-        appBar: AppBar(title: Text('Chi tiết vụ nuôi')),
+        appBar: AppBar(
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Chi tiết vụ nuôi'),
+              Row(
+                children: [
+                  const Icon(Icons.access_time, size: 12),
+                  const SizedBox(width: 4),
+                  Text(
+                    'Thời gian: ${CustomDateUtils.formatDate(TimeUtils.customNow())}',
+                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.list_alt_outlined),
+              onPressed: () {
+                context.push(
+                  RouteName.reportFarmingBatch,
+                  extra: {"farmingBatchId": widget.farmingBatchId},
+                );
+              },
+            ),
+          ],
+        ),
         body:
             _isLoading
                 ? Center(child: CircularProgressIndicator())
@@ -401,7 +430,7 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
               const SizedBox(width: 12),
               Expanded(
                 child: _buildInfoCard(
-                  title: 'Đã chết',
+                  title: 'Thất thoát',
                   value: '${farmingBatchDto?.deadQuantity ?? 0}',
                   icon: Icons.warning,
                   color: Colors.red,
@@ -505,7 +534,6 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
   }
 
   Widget _buildStageItem(GrowthStageDetail stage) {
-    DateTime now = TimeUtils.customNow();
     DateTime stageStart = DateTime.parse(stage.ageStartDate);
     DateTime stageEnd = DateTime.parse(stage.ageEndDate);
     String startDate = DateFormat('dd/MM/yyyy').format(stageStart);
@@ -611,7 +639,8 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '$startDate - $endDate',
+                          '$startDate - ${stage.status == "Active" ? "Hiện tại" : endDate}',
+
                           style: TextStyle(color: Colors.grey[700]),
                         ),
                         Icon(
@@ -623,9 +652,24 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
                     ),
                     const SizedBox(height: 4),
                     // Gợi ý người dùng nhấn để xem chi tiết
-                    Text(
-                      'Nhấn để xem chi tiết',
-                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Nhấn để xem chi tiết',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        Text(
+                          '${stage.quantity.toString()} (con)',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

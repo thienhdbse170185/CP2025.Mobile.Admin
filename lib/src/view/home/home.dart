@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_farm_admin/src/core/router.dart';
 import 'package:smart_farm_admin/src/model/dto/farming_batch/farming_batch_dto.dart';
+import 'package:smart_farm_admin/src/model/dto/merged_farming_batch/merged_farming_batch_details/merged_farming_batch_details_dto.dart';
 import 'package:smart_farm_admin/src/model/dto/merged_farming_batch/merged_farming_batch_dto.dart';
 import 'package:smart_farm_admin/src/view/widgets/avatar_round.dart';
 import 'package:smart_farm_admin/src/viewmodel/farming_batch/farming_batch_cubit.dart';
@@ -18,13 +19,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<FarmingBatchDto> farmingBatchList = [];
+  List<MergedFarmingBatchDto> mergedFarmingBatchList = [];
   bool _isLoading = false;
   String _username = 'Đang tải';
   String _currentDate = '';
   String _currentTime = '';
-
-  List<MergedFarmingBatchDto> mergedFarmingBatchList = [];
 
   @override
   void initState() {
@@ -114,6 +113,10 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  int _getTotalQuantity(List<MergedFarmingBatchDetailsDto> batches) {
+    return batches.fold(0, (sum, batch) => sum + (batch.quantity));
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
@@ -126,26 +129,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   _isLoading = true;
                 });
               },
-              getFarmingBatchByUserIdSuccess: (farmingBatches) {
+              getFarmingBatchByUserIdSuccess: (mergedBatches) {
                 setState(() {
                   _isLoading = false;
-                  farmingBatches.clear();
-                  farmingBatches.addAll(farmingBatches);
+                  mergedFarmingBatchList.clear();
+                  mergedFarmingBatchList.addAll(mergedBatches);
                 });
               },
-              getFarmingBatchesInProgress: () {
-                setState(() {
-                  _isLoading = true;
-                });
-              },
-              getFarmingBatchesSuccess: (batchList) {
-                setState(() {
-                  _isLoading = false;
-                  farmingBatchList.clear();
-                  farmingBatchList.addAll(batchList);
-                });
-              },
-              getFarmingBatchesFailure: (message) {
+              getFarmingBatchByUserIdFailure: (message) {
                 setState(() {
                   _isLoading = false;
                   ScaffoldMessenger.of(
@@ -238,10 +229,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body:
             _isLoading
-                ? Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator())
                 : RefreshIndicator(
                   onRefresh: () async {
-                    context.read<FarmingBatchCubit>().getFarmingBatches();
+                    context.read<FarmingBatchCubit>().getFarmingBatchByUserId();
                   },
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(
@@ -286,7 +277,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    'Số lượng: ${farmingBatchList.length} (vụ nuôi)',
+                                    'Số lượng: ${mergedFarmingBatchList.length} (nhóm vụ nuôi)',
                                     style: TextStyle(
                                       color:
                                           Theme.of(context).colorScheme.outline,
@@ -296,16 +287,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               IconButton(
                                 onPressed: () {
-                                  context
-                                      .read<FarmingBatchCubit>()
-                                      .getFarmingBatches();
+                                  context.read<SystemBloc>().add(
+                                    const SystemEvent.appStarted(),
+                                  );
                                 },
                                 icon: const Icon(Icons.refresh),
                               ),
                             ],
                           ),
                           const SizedBox(height: 16),
-                          _buildFarmingBatchList(),
+                          _buildMergedFarmingBatchList(),
                         ],
                       ),
                     ),
@@ -315,8 +306,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildFarmingBatchList() {
-    if (farmingBatchList.isEmpty) {
+  Widget _buildMergedFarmingBatchList() {
+    if (mergedFarmingBatchList.isEmpty) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -342,11 +333,33 @@ class _HomeScreenState extends State<HomeScreen> {
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: farmingBatchList.length,
+      itemCount: mergedFarmingBatchList.length,
       itemBuilder: (context, index) {
-        final batch = farmingBatchList[index];
-        final progress = _calculateProgress(batch.startDate, batch.endDate);
-        final daysRemaining = _calculateDaysRemaining(batch.endDate);
+        final mergedBatch = mergedFarmingBatchList[index];
+        final batchModels = mergedBatch.farmingBatchModels ?? [];
+
+        // Dùng ngày kết thúc của vụ nuôi đầu tiên để tính tiến độ
+        // Giả định rằng tất cả các vụ nuôi trong một nhóm có cùng ngày bắt đầu và kết thúc
+        final progress =
+            batchModels.isNotEmpty
+                ? _calculateProgress(
+                  batchModels.first.startDate,
+                  batchModels.first.endDate,
+                )
+                : 0.0;
+
+        final daysRemaining =
+            batchModels.isNotEmpty
+                ? _calculateDaysRemaining(batchModels.first.endDate)
+                : 0;
+
+        // Tính tổng số lượng vật nuôi trong tất cả các vụ nuôi của nhóm
+        final totalQuantity = _getTotalQuantity(batchModels);
+
+        // Kiểm tra trạng thái của các vụ nuôi trong nhóm
+        // Nếu tất cả đều trong cùng trạng thái thì hiển thị trạng thái đó, nếu không thì hiển thị "Mixed"
+        final statuses = batchModels.map((e) => e.status).toSet();
+        final status = statuses.length == 1 ? statuses.first : "Mixed";
 
         return Card(
           elevation: 3,
@@ -357,8 +370,8 @@ class _HomeScreenState extends State<HomeScreen> {
           child: InkWell(
             onTap: () {
               context.push(
-                RouteName.farmingBatch,
-                extra: {'farmingBatchId': batch.id},
+                RouteName.mergedFarmingBatch,
+                extra: {'mergedFarmingBatch': mergedBatch.farmingBatchModels},
               );
             },
             borderRadius: BorderRadius.circular(12),
@@ -372,7 +385,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Expanded(
                         child: Text(
-                          batch.name,
+                          mergedBatch.farmingBatchName ?? "Không có tên",
                           style: Theme.of(
                             context,
                           ).textTheme.titleLarge?.copyWith(
@@ -388,35 +401,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: _getStatusColor(batch.status).withOpacity(0.2),
+                          color: _getStatusColor(status).withOpacity(0.2),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: _getStatusColor(batch.status),
+                            color: _getStatusColor(status),
                             width: 1,
                           ),
                         ),
                         child: Text(
-                          _translateStatus(batch.status),
+                          _translateStatus(status),
                           style: Theme.of(
                             context,
                           ).textTheme.bodySmall?.copyWith(
-                            color: _getStatusColor(batch.status),
+                            color: _getStatusColor(status),
                             fontWeight: FontWeight.bold,
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      const Icon(Icons.location_on_outlined, size: 16),
-                      const SizedBox(width: 4),
-                      Expanded(
-                        child: Text(
-                          'Chuồng: ${batch.cage?.name} (${batch.cage?.location})',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
@@ -428,17 +427,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Loài: ${batch.animalTemplate?.species ?? "N/A"}',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
+                            if (batchModels.isNotEmpty)
+                              Text(
+                                'Loài: ${batchModels.first.species ?? "N/A"}',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
                             const SizedBox(height: 4),
                             Row(
                               children: [
                                 const Icon(Icons.pets, size: 16),
                                 const SizedBox(width: 4),
                                 Text(
-                                  'Số lượng: ${batch.quantity} con',
+                                  'Số lượng: $totalQuantity con',
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ],
@@ -455,29 +455,61 @@ class _HomeScreenState extends State<HomeScreen> {
                                 const Icon(Icons.calendar_today, size: 16),
                                 const SizedBox(width: 4),
                                 Text(
-                                  'Bắt đầu: ${_formatDate(batch.startDate)}',
+                                  'Bắt đầu: ${_formatDate(mergedBatch.dateStart)}',
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ],
                             ),
                             const SizedBox(height: 4),
-                            Row(
-                              children: [
-                                const Icon(Icons.event, size: 16),
-                                const SizedBox(width: 4),
-                                Text(
-                                  'Kết thúc: ${_formatDate(batch.endDate)}',
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
-                              ],
-                            ),
+                            if (batchModels.isNotEmpty)
+                              Row(
+                                children: [
+                                  const Icon(Icons.event, size: 16),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'Kết thúc: ${_formatDate(batchModels.first.endDate)}',
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                ],
+                              ),
                           ],
                         ),
                       ),
                     ],
                   ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Số lượng chuồng: ${batchModels.length}',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children:
+                        batchModels.map((batch) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color:
+                                  Theme.of(context).colorScheme.surfaceVariant,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              batch.cage?.name ?? "N/A",
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          );
+                        }).toList(),
+                  ),
                   const SizedBox(height: 16),
-                  if (batch.status == 'Active') ...[
+                  if (status == 'Active') ...[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -486,16 +518,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(fontWeight: FontWeight.bold),
                         ),
-                        Text(
-                          'Còn lại: $daysRemaining ngày',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodyMedium?.copyWith(
-                            color:
-                                daysRemaining < 7 ? Colors.red : Colors.green,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        // Text(
+                        //   'Còn lại: $daysRemaining ngày',
+                        //   style: Theme.of(
+                        //     context,
+                        //   ).textTheme.bodyMedium?.copyWith(
+                        //     color:
+                        //         daysRemaining < 7 ? Colors.red : Colors.green,
+                        //     fontWeight: FontWeight.bold,
+                        //   ),
+                        // ),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -518,13 +550,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       textAlign: TextAlign.right,
                     ),
                   ],
-                  if (batch.status == 'Completed') ...[
+                  if (status == 'Completed') ...[
                     Row(
                       children: [
                         Icon(Icons.check_circle, color: Colors.green, size: 20),
                         const SizedBox(width: 8),
                         Text(
-                          'Hoàn thành vào: ${_formatDate(batch.completeAt)}',
+                          'Hoàn thành vào: ${batchModels.isNotEmpty ? _formatDate(batchModels.first.completeAt) : "N/A"}',
                           style: Theme.of(
                             context,
                           ).textTheme.bodyMedium?.copyWith(

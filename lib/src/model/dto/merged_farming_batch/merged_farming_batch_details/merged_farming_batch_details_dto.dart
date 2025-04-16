@@ -21,7 +21,7 @@ class MergedFarmingBatchDetailsDto with _$MergedFarmingBatchDetailsDto {
     required int cleaningFrequency,
     required int quantity,
     required int deadQuantity,
-    required GrowthStageDetail growthStageDetails,
+    GrowthStageDetail? growthStageDetails,
     required CageDto cage,
     required AnimalTemplateDto template,
   }) = _MergedFarmingBatchDetailsDto;

@@ -21,9 +21,12 @@ _$MergedFarmingBatchDetailsDtoImpl _$$MergedFarmingBatchDetailsDtoImplFromJson(
   cleaningFrequency: (json['cleaningFrequency'] as num).toInt(),
   quantity: (json['quantity'] as num).toInt(),
   deadQuantity: (json['deadQuantity'] as num).toInt(),
-  growthStageDetails: GrowthStageDetail.fromJson(
-    json['growthStageDetails'] as Map<String, dynamic>,
-  ),
+  growthStageDetails:
+      json['growthStageDetails'] == null
+          ? null
+          : GrowthStageDetail.fromJson(
+            json['growthStageDetails'] as Map<String, dynamic>,
+          ),
   cage: CageDto.fromJson(json['cage'] as Map<String, dynamic>),
   template: AnimalTemplateDto.fromJson(
     json['template'] as Map<String, dynamic>,
