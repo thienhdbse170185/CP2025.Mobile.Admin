@@ -68,6 +68,10 @@ dependencies:
   app_settings: ^6.1.1
   fl_chart: ^0.71.0
   printing: ^5.13.1
+  pdf: ^3.11.3
+  path_provider: ^2.0.12
+  open_file: ^3.2.1
+  share_plus: ^6.3.0
 
 dev_dependencies:
   flutter_test:

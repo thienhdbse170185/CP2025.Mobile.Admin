@@ -1,7 +1,15 @@
+import 'dart:developer';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:smart_farm_admin/src/core/utils/date_util.dart';
 import 'package:smart_farm_admin/src/core/utils/time_util.dart';
 import 'package:smart_farm_admin/src/model/dto/report_farming_batch/food_usage_detail/food_usage_detail.dart';
@@ -203,10 +211,81 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
       ),
     );
 
-    await Printing.sharePdf(
-      bytes: await pdf.save(),
-      filename: 'báo_cáo_vụ_nuôi_${reportData.farmingBatchName}.pdf',
-    );
+    // Generate PDF bytes
+    final bytes = await pdf.save();
+
+    // Generate filename
+    final fileName =
+        'báo_cáo_vụ_nuôi_${reportData.farmingBatchName}_${TimeUtils.customNow()}.pdf';
+
+    // Save to device storage
+    final output = await _savePdfToStorage(bytes, fileName);
+
+    if (output != null) {
+      // Open the saved PDF
+      await OpenFile.open(output.path);
+
+      // Show share option after viewing
+      final shareResult = await showDialog<bool>(
+        context: context,
+        builder:
+            (context) => AlertDialog(
+              title: Text('Xem báo cáo PDF'),
+              content: Text('Bạn có muốn chia sẻ báo cáo này không?'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: Text('Không'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: Text('Chia sẻ'),
+                ),
+              ],
+            ),
+      );
+
+      if (shareResult == true) {
+        await Share.shareXFiles([XFile(output.path)], text: 'Báo cáo vụ nuôi');
+      }
+    }
+  }
+
+  // Helper method to save PDF to storage
+  Future<File?> _savePdfToStorage(Uint8List bytes, String fileName) async {
+    try {
+      // Request storage permission
+      var status = await Permission.storage.request();
+
+      if (status.isGranted) {
+        // Get the documents directory
+        Directory? directory;
+        if (Platform.isAndroid) {
+          directory = Directory('/storage/emulated/0/Download');
+          // Create directory if it doesn't exist
+          if (!await directory.exists()) {
+            directory = await getExternalStorageDirectory();
+          }
+        } else if (Platform.isIOS) {
+          directory = await getApplicationDocumentsDirectory();
+        }
+
+        if (directory != null) {
+          final filePath = '${directory.path}/$fileName';
+          final file = File(filePath);
+          await file.writeAsBytes(bytes);
+          return file;
+        }
+      } else {
+        // Handle when permission is denied
+        log('Storage permission denied');
+      }
+
+      return null;
+    } catch (e) {
+      log('Error saving PDF: $e');
+      return null;
+    }
   }
 
   pw.Widget _buildPdfHeader(
@@ -360,8 +439,8 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
         if (reportData.totalFoodCost > 0)
           _buildPdfCostBar(
             'Thức ăn',
-            reportData.totalFoodCost as double,
-            totalCost as double,
+            reportData.totalFoodCost,
+            totalCost,
             PdfColors.blue,
             font,
           ),
@@ -369,8 +448,8 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
         if (reportData.totalVaccineCost > 0)
           _buildPdfCostBar(
             'Vaccine',
-            reportData.totalVaccineCost as double,
-            totalCost as double,
+            reportData.totalVaccineCost,
+            totalCost,
             PdfColors.green,
             font,
           ),
@@ -378,8 +457,8 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
         if (reportData.totalMedicineCost > 0)
           _buildPdfCostBar(
             'Thuốc',
-            reportData.totalMedicineCost as double,
-            totalCost as double,
+            reportData.totalMedicineCost,
+            totalCost,
             PdfColors.red,
             font,
           ),
@@ -389,8 +468,8 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
 
   pw.Widget _buildPdfCostBar(
     String label,
-    double value,
-    double total,
+    int value,
+    int total,
     PdfColor color,
     pw.Font font,
   ) {
