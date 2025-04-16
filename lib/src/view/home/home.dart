@@ -281,7 +281,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    'Số lượng: ${mergedFarmingBatchList.length} (nhóm vụ nuôi)',
+                                    'Số lượng: ${mergedFarmingBatchList.length} (Vụ nuôi)',
                                     style: TextStyle(
                                       color:
                                           Theme.of(context).colorScheme.outline,
