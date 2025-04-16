@@ -183,12 +183,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
       child: Scaffold(
         appBar: AppBar(
-          // leading: IconButton(
-          //   onPressed: () {
-          //     context.push(RouteName.notification);
-          //   },
-          //   icon: const Icon(Icons.notifications_outlined),
-          // ),
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: Image.asset(
+              TimeUtils.getCurrentSessionImage(),
+              width: 40,
+              height: 40,
+            ),
+          ),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 16.0),
