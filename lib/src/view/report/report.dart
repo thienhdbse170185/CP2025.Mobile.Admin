@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -6,10 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:smart_farm_admin/src/core/utils/date_util.dart';
 import 'package:smart_farm_admin/src/core/utils/time_util.dart';
 import 'package:smart_farm_admin/src/model/dto/report_farming_batch/food_usage_detail/food_usage_detail.dart';
@@ -211,79 +208,106 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
       ),
     );
 
-    // Generate PDF bytes
+    // Generate the PDF as bytes
     final bytes = await pdf.save();
 
     // Generate filename
     final fileName =
         'báo_cáo_vụ_nuôi_${reportData.farmingBatchName}_${TimeUtils.customNow()}.pdf';
 
-    // Save to device storage
-    final output = await _savePdfToStorage(bytes, fileName);
+    // Save the PDF to storage
+    final savedFile = await _savePdfToStorage(bytes, fileName);
 
-    if (output != null) {
-      // Open the saved PDF
-      await OpenFile.open(output.path);
-
-      // Show share option after viewing
-      final shareResult = await showDialog<bool>(
-        context: context,
-        builder:
-            (context) => AlertDialog(
-              title: Text('Xem báo cáo PDF'),
-              content: Text('Bạn có muốn chia sẻ báo cáo này không?'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: Text('Không'),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(true),
-                  child: Text('Chia sẻ'),
-                ),
-              ],
-            ),
+    if (savedFile != null) {
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('PDF đã được lưu vào: ${savedFile.path}')),
       );
 
-      if (shareResult == true) {
-        await Share.shareXFiles([XFile(output.path)], text: 'Báo cáo vụ nuôi');
+      // Optional: Ask if the user wants to share the file
+      final bool share =
+          await showDialog(
+            context: context,
+            builder:
+                (context) => AlertDialog(
+                  title: Text('Lưu thành công'),
+                  content: Text('Bạn có muốn chia sẻ file PDF này không?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(false),
+                      child: Text('Không'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(true),
+                      child: Text('Có'),
+                    ),
+                  ],
+                ),
+          ) ??
+          false;
+
+      if (share) {
+        await Printing.sharePdf(bytes: bytes, filename: fileName);
       }
     }
   }
 
-  // Helper method to save PDF to storage
+  // Helper method to save PDF to device storage
   Future<File?> _savePdfToStorage(Uint8List bytes, String fileName) async {
     try {
-      // Request storage permission
-      var status = await Permission.storage.request();
+      // Request storage permissions
+      bool permissionGranted = false;
 
-      if (status.isGranted) {
-        // Get the documents directory
-        Directory? directory;
-        if (Platform.isAndroid) {
-          directory = Directory('/storage/emulated/0/Download');
-          // Create directory if it doesn't exist
-          if (!await directory.exists()) {
-            directory = await getExternalStorageDirectory();
-          }
-        } else if (Platform.isIOS) {
-          directory = await getApplicationDocumentsDirectory();
-        }
-
-        if (directory != null) {
-          final filePath = '${directory.path}/$fileName';
-          final file = File(filePath);
-          await file.writeAsBytes(bytes);
-          return file;
+      if (Platform.isAndroid) {
+        if (await Permission.storage.request().isGranted) {
+          permissionGranted = true;
         }
       } else {
-        // Handle when permission is denied
-        log('Storage permission denied');
+        // For iOS and other platforms
+        permissionGranted = true;
       }
 
-      return null;
+      if (!permissionGranted) {
+        throw Exception('Quyền lưu trữ bị từ chối');
+      }
+
+      // Determine the save directory
+      Directory? directory;
+
+      if (Platform.isAndroid) {
+        // For Android, try to use the Download folder
+        directory = Directory('/storage/emulated/0/Download');
+        if (!await directory.exists()) {
+          // Fall back to app-specific directory
+          directory = await getExternalStorageDirectory();
+        }
+      } else if (Platform.isIOS) {
+        directory = await getApplicationDocumentsDirectory();
+      } else {
+        // For other platforms
+        directory = await getApplicationDocumentsDirectory();
+      }
+
+      if (directory == null) {
+        throw Exception('Không thể xác định thư mục lưu trữ');
+      }
+
+      // Create the file path
+      final filePath = '${directory.path}/$fileName';
+      final file = File(filePath);
+
+      // Write PDF bytes to file
+      await file.writeAsBytes(bytes);
+
+      return file;
     } catch (e) {
-      log('Error saving PDF: $e');
+      print('Error saving PDF: $e');
+
+      // Show error to user
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Lỗi khi lưu file: $e')));
+
       return null;
     }
   }

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_farm_admin/src/core/constants/session_data_constant.dart';
 import 'package:smart_farm_admin/src/core/router.dart';
+import 'package:smart_farm_admin/src/core/utils/time_util.dart';
 import 'package:smart_farm_admin/src/model/dto/farming_batch/farming_batch_dto.dart';
 import 'package:smart_farm_admin/src/model/dto/merged_farming_batch/merged_farming_batch_details/merged_farming_batch_details_dto.dart';
 import 'package:smart_farm_admin/src/model/dto/merged_farming_batch/merged_farming_batch_dto.dart';
@@ -22,22 +24,11 @@ class _HomeScreenState extends State<HomeScreen> {
   List<MergedFarmingBatchDto> mergedFarmingBatchList = [];
   bool _isLoading = false;
   String _username = 'Đang tải';
-  String _currentDate = '';
-  String _currentTime = '';
 
   @override
   void initState() {
     super.initState();
     context.read<SystemBloc>().add(const SystemEvent.appStarted());
-    _updateDateTime();
-  }
-
-  void _updateDateTime() {
-    final now = DateTime.now();
-    setState(() {
-      _currentDate = DateFormat('dd/MM/yyyy').format(now);
-      _currentTime = DateFormat('HH:mm').format(now);
-    });
   }
 
   String _getGreeting() {
@@ -45,6 +36,22 @@ class _HomeScreenState extends State<HomeScreen> {
     if (hour < 12) return 'Chào buổi sáng';
     if (hour < 18) return 'Chào buổi chiều';
     return 'Chào buổi tối';
+  }
+
+  String _handleSessionMessage() {
+    final currentSession = TimeUtils.getCurrentSession();
+    switch (currentSession) {
+      case SessionDataConstant.MORNING_INDEX:
+        return SessionDataConstant.MORNING_MESSAGE;
+      case SessionDataConstant.NOON_INDEX:
+        return SessionDataConstant.NOON_MESSAGE;
+      case SessionDataConstant.AFTERNOON_INDEX:
+        return SessionDataConstant.AFTERNOON_MESSAGE;
+      case SessionDataConstant.EVENING_INDEX:
+        return SessionDataConstant.EVENING_MESSAGE;
+      default:
+        return 'Chúc bạn ngủ ngon';
+    }
   }
 
   Color _getStatusColor(String status) {
@@ -176,12 +183,12 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              context.push(RouteName.notification);
-            },
-            icon: const Icon(Icons.notifications_outlined),
-          ),
+          // leading: IconButton(
+          //   onPressed: () {
+          //     context.push(RouteName.notification);
+          //   },
+          //   icon: const Icon(Icons.notifications_outlined),
+          // ),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 16.0),
@@ -193,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        _getGreeting(),
+                        _handleSessionMessage(),
                         style: Theme.of(
                           context,
                         ).textTheme.labelMedium?.copyWith(
@@ -205,15 +212,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
                       StreamBuilder(
-                        stream: Stream.periodic(const Duration(seconds: 10), (
-                          _,
-                        ) {
-                          _updateDateTime();
-                          return DateTime.now();
-                        }),
+                        stream: Stream.periodic(const Duration(seconds: 1)),
                         builder: (context, snapshot) {
                           return Text(
-                            '$_currentTime, $_currentDate',
+                            DateFormat(
+                              'HH:mm, dd/MM/yyyy',
+                            ).format(TimeUtils.customNow()),
                             style: Theme.of(context).textTheme.bodySmall,
                           );
                         },
