@@ -275,12 +275,11 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
       Directory? directory;
 
       if (Platform.isAndroid) {
-        // For Android, try to use the Download folder
-        directory = Directory('/storage/emulated/0/Download');
-        if (!await directory.exists()) {
-          // Fall back to app-specific directory
-          directory = await getExternalStorageDirectory();
+        // Trước hết xin All files access trên API 30+
+        if (await Permission.manageExternalStorage.isDenied) {
+          await Permission.manageExternalStorage.request();
         }
+        permissionGranted = await Permission.manageExternalStorage.isGranted;
       } else if (Platform.isIOS) {
         directory = await getApplicationDocumentsDirectory();
       } else {
