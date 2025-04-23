@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:data_layer/data_layer.dart';
-import 'package:data_layer/model/dto/cage_admin/cage_admin_dto.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:smart_farm_admin/src/model/dto/cage_admin/cage_admin_dto.dart';
+import 'package:smart_farm_admin/src/model/repository/cage/cage_repository.dart';
 
 part 'cage_bloc.freezed.dart';
 part 'cage_event.dart';

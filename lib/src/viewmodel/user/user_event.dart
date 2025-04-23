@@ -19,4 +19,8 @@ class UserEvent with _$UserEvent {
     required String email,
     required String otp,
   }) = _VerifyOTP;
+  const factory UserEvent.getUserProfileByUserId() = _GetUserProfileByUserId;
+  const factory UserEvent.updateUserInfo({
+    required UpdateUserInfoRequest request,
+  }) = _UpdateUserInfo;
 }

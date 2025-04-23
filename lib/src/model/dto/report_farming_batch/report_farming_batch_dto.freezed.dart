@@ -44,6 +44,10 @@ mixin _$ReportFarmingBatchDto {
       throw _privateConstructorUsedError;
   List<FoodUsageDetail> get foodUsageDetails =>
       throw _privateConstructorUsedError;
+  List<AnimalMeatSaleDto> get animalMeatSales =>
+      throw _privateConstructorUsedError;
+  List<DeadPoultryLogDto> get deadPoultryLogs =>
+      throw _privateConstructorUsedError;
 
   /// Serializes this ReportFarmingBatchDto to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -81,6 +85,8 @@ abstract class $ReportFarmingBatchDtoCopyWith<$Res> {
     List<VaccineDetail> vaccineDetails,
     List<PrescriptionDetail> prescriptionDetails,
     List<FoodUsageDetail> foodUsageDetails,
+    List<AnimalMeatSaleDto> animalMeatSales,
+    List<DeadPoultryLogDto> deadPoultryLogs,
   });
 }
 
@@ -120,6 +126,8 @@ class _$ReportFarmingBatchDtoCopyWithImpl<
     Object? vaccineDetails = null,
     Object? prescriptionDetails = null,
     Object? foodUsageDetails = null,
+    Object? animalMeatSales = null,
+    Object? deadPoultryLogs = null,
   }) {
     return _then(
       _value.copyWith(
@@ -213,6 +221,16 @@ class _$ReportFarmingBatchDtoCopyWithImpl<
                     ? _value.foodUsageDetails
                     : foodUsageDetails // ignore: cast_nullable_to_non_nullable
                         as List<FoodUsageDetail>,
+            animalMeatSales:
+                null == animalMeatSales
+                    ? _value.animalMeatSales
+                    : animalMeatSales // ignore: cast_nullable_to_non_nullable
+                        as List<AnimalMeatSaleDto>,
+            deadPoultryLogs:
+                null == deadPoultryLogs
+                    ? _value.deadPoultryLogs
+                    : deadPoultryLogs // ignore: cast_nullable_to_non_nullable
+                        as List<DeadPoultryLogDto>,
           )
           as $Val,
     );
@@ -247,6 +265,8 @@ abstract class _$$ReportFarmingBatchDtoImplCopyWith<$Res>
     List<VaccineDetail> vaccineDetails,
     List<PrescriptionDetail> prescriptionDetails,
     List<FoodUsageDetail> foodUsageDetails,
+    List<AnimalMeatSaleDto> animalMeatSales,
+    List<DeadPoultryLogDto> deadPoultryLogs,
   });
 }
 
@@ -283,6 +303,8 @@ class __$$ReportFarmingBatchDtoImplCopyWithImpl<$Res>
     Object? vaccineDetails = null,
     Object? prescriptionDetails = null,
     Object? foodUsageDetails = null,
+    Object? animalMeatSales = null,
+    Object? deadPoultryLogs = null,
   }) {
     return _then(
       _$ReportFarmingBatchDtoImpl(
@@ -376,6 +398,16 @@ class __$$ReportFarmingBatchDtoImplCopyWithImpl<$Res>
                 ? _value._foodUsageDetails
                 : foodUsageDetails // ignore: cast_nullable_to_non_nullable
                     as List<FoodUsageDetail>,
+        animalMeatSales:
+            null == animalMeatSales
+                ? _value._animalMeatSales
+                : animalMeatSales // ignore: cast_nullable_to_non_nullable
+                    as List<AnimalMeatSaleDto>,
+        deadPoultryLogs:
+            null == deadPoultryLogs
+                ? _value._deadPoultryLogs
+                : deadPoultryLogs // ignore: cast_nullable_to_non_nullable
+                    as List<DeadPoultryLogDto>,
       ),
     );
   }
@@ -403,10 +435,14 @@ class _$ReportFarmingBatchDtoImpl implements _ReportFarmingBatchDto {
     final List<VaccineDetail> vaccineDetails = const [],
     final List<PrescriptionDetail> prescriptionDetails = const [],
     final List<FoodUsageDetail> foodUsageDetails = const [],
+    final List<AnimalMeatSaleDto> animalMeatSales = const [],
+    final List<DeadPoultryLogDto> deadPoultryLogs = const [],
   }) : _growthStageReports = growthStageReports,
        _vaccineDetails = vaccineDetails,
        _prescriptionDetails = prescriptionDetails,
-       _foodUsageDetails = foodUsageDetails;
+       _foodUsageDetails = foodUsageDetails,
+       _animalMeatSales = animalMeatSales,
+       _deadPoultryLogs = deadPoultryLogs;
 
   factory _$ReportFarmingBatchDtoImpl.fromJson(Map<String, dynamic> json) =>
       _$$ReportFarmingBatchDtoImplFromJson(json);
@@ -487,9 +523,27 @@ class _$ReportFarmingBatchDtoImpl implements _ReportFarmingBatchDto {
     return EqualUnmodifiableListView(_foodUsageDetails);
   }
 
+  final List<AnimalMeatSaleDto> _animalMeatSales;
+  @override
+  @JsonKey()
+  List<AnimalMeatSaleDto> get animalMeatSales {
+    if (_animalMeatSales is EqualUnmodifiableListView) return _animalMeatSales;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_animalMeatSales);
+  }
+
+  final List<DeadPoultryLogDto> _deadPoultryLogs;
+  @override
+  @JsonKey()
+  List<DeadPoultryLogDto> get deadPoultryLogs {
+    if (_deadPoultryLogs is EqualUnmodifiableListView) return _deadPoultryLogs;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_deadPoultryLogs);
+  }
+
   @override
   String toString() {
-    return 'ReportFarmingBatchDto(farmingBatchId: $farmingBatchId, farmingBatchName: $farmingBatchName, cageName: $cageName, startDate: $startDate, endDate: $endDate, totalEggSales: $totalEggSales, totalMeatSales: $totalMeatSales, totalFoodCost: $totalFoodCost, totalVaccineCost: $totalVaccineCost, totalMedicineCost: $totalMedicineCost, totalEggsCollected: $totalEggsCollected, netProfit: $netProfit, quantityAnimal: $quantityAnimal, deadQuantity: $deadQuantity, growthStageReports: $growthStageReports, vaccineDetails: $vaccineDetails, prescriptionDetails: $prescriptionDetails, foodUsageDetails: $foodUsageDetails)';
+    return 'ReportFarmingBatchDto(farmingBatchId: $farmingBatchId, farmingBatchName: $farmingBatchName, cageName: $cageName, startDate: $startDate, endDate: $endDate, totalEggSales: $totalEggSales, totalMeatSales: $totalMeatSales, totalFoodCost: $totalFoodCost, totalVaccineCost: $totalVaccineCost, totalMedicineCost: $totalMedicineCost, totalEggsCollected: $totalEggsCollected, netProfit: $netProfit, quantityAnimal: $quantityAnimal, deadQuantity: $deadQuantity, growthStageReports: $growthStageReports, vaccineDetails: $vaccineDetails, prescriptionDetails: $prescriptionDetails, foodUsageDetails: $foodUsageDetails, animalMeatSales: $animalMeatSales, deadPoultryLogs: $deadPoultryLogs)';
   }
 
   @override
@@ -539,12 +593,20 @@ class _$ReportFarmingBatchDtoImpl implements _ReportFarmingBatchDto {
             const DeepCollectionEquality().equals(
               other._foodUsageDetails,
               _foodUsageDetails,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._animalMeatSales,
+              _animalMeatSales,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._deadPoultryLogs,
+              _deadPoultryLogs,
             ));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     runtimeType,
     farmingBatchId,
     farmingBatchName,
@@ -564,7 +626,9 @@ class _$ReportFarmingBatchDtoImpl implements _ReportFarmingBatchDto {
     const DeepCollectionEquality().hash(_vaccineDetails),
     const DeepCollectionEquality().hash(_prescriptionDetails),
     const DeepCollectionEquality().hash(_foodUsageDetails),
-  );
+    const DeepCollectionEquality().hash(_animalMeatSales),
+    const DeepCollectionEquality().hash(_deadPoultryLogs),
+  ]);
 
   /// Create a copy of ReportFarmingBatchDto
   /// with the given fields replaced by the non-null parameter values.
@@ -604,6 +668,8 @@ abstract class _ReportFarmingBatchDto implements ReportFarmingBatchDto {
     final List<VaccineDetail> vaccineDetails,
     final List<PrescriptionDetail> prescriptionDetails,
     final List<FoodUsageDetail> foodUsageDetails,
+    final List<AnimalMeatSaleDto> animalMeatSales,
+    final List<DeadPoultryLogDto> deadPoultryLogs,
   }) = _$ReportFarmingBatchDtoImpl;
 
   factory _ReportFarmingBatchDto.fromJson(Map<String, dynamic> json) =
@@ -645,6 +711,10 @@ abstract class _ReportFarmingBatchDto implements ReportFarmingBatchDto {
   List<PrescriptionDetail> get prescriptionDetails;
   @override
   List<FoodUsageDetail> get foodUsageDetails;
+  @override
+  List<AnimalMeatSaleDto> get animalMeatSales;
+  @override
+  List<DeadPoultryLogDto> get deadPoultryLogs;
 
   /// Create a copy of ReportFarmingBatchDto
   /// with the given fields replaced by the non-null parameter values.

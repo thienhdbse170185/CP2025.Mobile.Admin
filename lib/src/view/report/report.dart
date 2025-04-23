@@ -5,10 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:smart_farm_admin/src/core/utils/date_util.dart';
 import 'package:smart_farm_admin/src/core/utils/time_util.dart';
+import 'package:smart_farm_admin/src/model/dto/animal_meat_sale/animal_meat_sale_dto.dart';
+import 'package:smart_farm_admin/src/model/dto/dead_poultry_log/dead_poultry_log_dto.dart';
 import 'package:smart_farm_admin/src/model/dto/report_farming_batch/food_usage_detail/food_usage_detail.dart';
 import 'package:smart_farm_admin/src/model/dto/report_farming_batch/growth_stage_report/growth_stage_report.dart';
 import 'package:smart_farm_admin/src/model/dto/report_farming_batch/prescription_detail/prescription_detail.dart';
@@ -39,7 +42,7 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 7, vsync: this);
     context
         .read<ReportFarmingBatchCubit>()
         .getReportFarmingBatchByFarmingBatchId(
@@ -136,8 +139,10 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
             Tab(text: 'Tổng quan'),
             Tab(text: 'Giai đoạn phát triển'),
             Tab(text: 'Vaccine'),
+            Tab(text: 'Bán thịt'),
             Tab(text: 'Thức ăn'),
             Tab(text: 'Bệnh lý'),
+            Tab(text: 'Nhật ký thất thoát'),
           ],
         ),
         actions: [
@@ -154,8 +159,10 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
           _buildOverviewTab(reportData),
           _buildGrowthStagesTab(reportData.growthStageReports),
           _buildVaccinesTab(reportData),
+          _buildMeatSalesTab(reportData.animalMeatSales),
           _buildFoodTab(reportData.foodUsageDetails),
           _buildPrescriptionsTab(reportData.prescriptionDetails),
+          _buildDeadPoultryLogsTab(reportData.deadPoultryLogs),
         ],
       ),
     );
@@ -193,6 +200,14 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
                 font,
                 fontBold,
               ),
+            // Thêm phần này vào phương thức _exportToPdf
+            pw.SizedBox(height: 20),
+            if (reportData.animalMeatSales.isNotEmpty)
+              _buildPdfMeatSalesSection(
+                reportData.animalMeatSales,
+                font,
+                fontBold,
+              ),
             pw.SizedBox(height: 20),
             if (reportData.foodUsageDetails.isNotEmpty)
               _buildPdfFoodSection(reportData.foodUsageDetails, font, fontBold),
@@ -200,6 +215,14 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
             if (reportData.prescriptionDetails.isNotEmpty)
               _buildPdfPrescriptionsSection(
                 reportData.prescriptionDetails,
+                font,
+                fontBold,
+              ),
+
+            pw.SizedBox(height: 20),
+            if (reportData.deadPoultryLogs.isNotEmpty)
+              _buildPdfDeadPoultryLogsSection(
+                reportData.deadPoultryLogs,
                 font,
                 fontBold,
               ),
@@ -219,96 +242,122 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
     final savedFile = await _savePdfToStorage(bytes, fileName);
 
     if (savedFile != null) {
-      // Show success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('PDF đã được lưu vào: ${savedFile.path}')),
-      );
-
-      // Optional: Ask if the user wants to share the file
-      final bool share =
-          await showDialog(
-            context: context,
-            builder:
-                (context) => AlertDialog(
-                  title: Text('Lưu thành công'),
-                  content: Text('Bạn có muốn chia sẻ file PDF này không?'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(false),
-                      child: Text('Không'),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(true),
-                      child: Text('Có'),
-                    ),
-                  ],
-                ),
-          ) ??
-          false;
-
-      if (share) {
-        await Printing.sharePdf(bytes: bytes, filename: fileName);
-      }
+      // **Open the PDF in an external viewer:**
+      OpenFile.open(savedFile.path);
     }
   }
 
   // Helper method to save PDF to device storage
   Future<File?> _savePdfToStorage(Uint8List bytes, String fileName) async {
     try {
-      // Request storage permissions
-      bool permissionGranted = false;
-
+      // 1) Yêu cầu WRITE / MANAGE permission
+      PermissionStatus status;
       if (Platform.isAndroid) {
-        if (await Permission.storage.request().isGranted) {
-          permissionGranted = true;
+        // Android 11+ cần MANAGE_EXTERNAL_STORAGE
+        if (await Permission.manageExternalStorage.isDenied) {
+          status = await Permission.manageExternalStorage.request();
+        } else {
+          status = await Permission.manageExternalStorage.status;
         }
       } else {
-        // For iOS and other platforms
-        permissionGranted = true;
+        // iOS / others: không cần
+        status = PermissionStatus.granted;
       }
 
-      if (!permissionGranted) {
+      if (!status.isGranted) {
+        // Nếu từ chối vĩnh viễn, mở cài đặt app
+        if (status.isPermanentlyDenied) {
+          await openAppSettings();
+        }
         throw Exception('Quyền lưu trữ bị từ chối');
       }
 
-      // Determine the save directory
-      Directory? directory;
-
+      // 2) Lấy thư mục
+      Directory directory;
       if (Platform.isAndroid) {
-        // Trước hết xin All files access trên API 30+
-        if (await Permission.manageExternalStorage.isDenied) {
-          await Permission.manageExternalStorage.request();
-        }
-        permissionGranted = await Permission.manageExternalStorage.isGranted;
-      } else if (Platform.isIOS) {
-        directory = await getApplicationDocumentsDirectory();
+        directory = (await getExternalStorageDirectory())!;
+        // nếu muốn lưu vào thư mục gốc DCIM/PDF chẳng hạn:
+        // directory = Directory('/storage/emulated/0/Download');
       } else {
-        // For other platforms
         directory = await getApplicationDocumentsDirectory();
       }
 
-      if (directory == null) {
-        throw Exception('Không thể xác định thư mục lưu trữ');
-      }
-
-      // Create the file path
       final filePath = '${directory.path}/$fileName';
       final file = File(filePath);
-
-      // Write PDF bytes to file
       await file.writeAsBytes(bytes);
-
       return file;
     } catch (e) {
-      print('Error saving PDF: $e');
-
-      // Show error to user
+      // Hiện thông báo lỗi rõ ràng
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Lỗi khi lưu file: $e')));
-
       return null;
     }
+  }
+
+  pw.Widget _buildPdfDeadPoultryLogsSection(
+    List<DeadPoultryLogDto> logs,
+    pw.Font font,
+    pw.Font fontBold,
+  ) {
+    // Sort logs by date (newest first)
+    final sortedLogs = List<DeadPoultryLogDto>.from(logs)
+      ..sort((a, b) => b.date.compareTo(a.date));
+
+    // Calculate total dead quantity
+    int totalDeadQuantity = logs.fold(0, (sum, log) => sum + log.quantity);
+
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        pw.Text(
+          'NHẬT KÝ THẤT THOÁT',
+          style: pw.TextStyle(font: fontBold, fontSize: 14),
+        ),
+        pw.SizedBox(height: 10),
+        pw.Text(
+          'Tổng số vật nuôi thất thoát: $totalDeadQuantity con',
+          style: pw.TextStyle(font: font, fontSize: 12),
+        ),
+        pw.SizedBox(height: 10),
+        pw.Table(
+          border: pw.TableBorder.all(color: PdfColors.grey300),
+          children: [
+            // Header
+            pw.TableRow(
+              decoration: const pw.BoxDecoration(color: PdfColors.grey200),
+              children: [
+                _buildPdfTableCell('Ngày', font, fontBold: true),
+                _buildPdfTableCell(
+                  'Số lượng',
+                  font,
+                  fontBold: true,
+                  align: pw.TextAlign.center,
+                ),
+                _buildPdfTableCell('Ghi chú', font, fontBold: true),
+              ],
+            ),
+            // Data rows
+            ...sortedLogs.map((log) {
+              return pw.TableRow(
+                children: [
+                  _buildPdfTableCell(
+                    CustomDateUtils.formatDate(DateTime.parse(log.date)),
+                    font,
+                  ),
+                  _buildPdfTableCell(
+                    '${log.quantity} con',
+                    font,
+                    align: pw.TextAlign.center,
+                  ),
+                  _buildPdfTableCell(log.note, font),
+                ],
+              );
+            }).toList(),
+          ],
+        ),
+      ],
+    );
   }
 
   pw.Widget _buildPdfHeader(
@@ -828,6 +877,128 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
     );
   }
 
+  // Thêm phương thức này
+  pw.Widget _buildPdfMeatSalesSection(
+    List<AnimalMeatSaleDto> meatSales,
+    pw.Font font,
+    pw.Font fontBold,
+  ) {
+    final totalQuantity = meatSales.fold(0, (sum, sale) => sum + sale.quantity);
+    final totalWeight = meatSales.fold(0.0, (sum, sale) => sum + sale.weight);
+    final totalRevenue = meatSales.fold(0, (sum, sale) => sum + sale.total);
+
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        pw.Text(
+          'CHI TIẾT BÁN THỊT',
+          style: pw.TextStyle(font: fontBold, fontSize: 14),
+        ),
+        pw.SizedBox(height: 10),
+        pw.Container(
+          padding: const pw.EdgeInsets.all(10),
+          decoration: pw.BoxDecoration(
+            border: pw.Border.all(color: PdfColors.grey300),
+            borderRadius: pw.BorderRadius.circular(5),
+          ),
+          child: pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Text(
+                'Tổng kết',
+                style: pw.TextStyle(font: fontBold, fontSize: 12),
+              ),
+              pw.SizedBox(height: 5),
+              _buildPdfInfoRow(
+                'Tổng số lượng đã bán',
+                '$totalQuantity con',
+                font,
+              ),
+              _buildPdfInfoRow('Tổng khối lượng', '$totalWeight kg', font),
+              _buildPdfInfoRow(
+                'Tổng doanh thu',
+                currencyFormat.format(totalRevenue),
+                font,
+                isHighlighted: true,
+                isPositive: true,
+              ),
+            ],
+          ),
+        ),
+        pw.SizedBox(height: 10),
+        pw.Text(
+          'Chi tiết các đợt bán:',
+          style: pw.TextStyle(font: fontBold, fontSize: 12),
+        ),
+        pw.SizedBox(height: 5),
+        pw.Table(
+          border: pw.TableBorder.all(color: PdfColors.grey300),
+          children: [
+            // Header
+            pw.TableRow(
+              decoration: const pw.BoxDecoration(color: PdfColors.grey200),
+              children: [
+                _buildPdfTableCell('Ngày bán', font, fontBold: true),
+                _buildPdfTableCell(
+                  'Số lượng',
+                  font,
+                  fontBold: true,
+                  align: pw.TextAlign.right,
+                ),
+                _buildPdfTableCell(
+                  'Khối lượng (kg)',
+                  font,
+                  fontBold: true,
+                  align: pw.TextAlign.right,
+                ),
+                _buildPdfTableCell(
+                  'Đơn giá',
+                  font,
+                  fontBold: true,
+                  align: pw.TextAlign.right,
+                ),
+                _buildPdfTableCell(
+                  'Tổng tiền',
+                  font,
+                  fontBold: true,
+                  align: pw.TextAlign.right,
+                ),
+              ],
+            ),
+            // Data rows
+            ...meatSales.map((sale) {
+              return pw.TableRow(
+                children: [
+                  _buildPdfTableCell(formatDate(sale.saleDate), font),
+                  _buildPdfTableCell(
+                    '${sale.quantity} con',
+                    font,
+                    align: pw.TextAlign.right,
+                  ),
+                  _buildPdfTableCell(
+                    '${sale.weight}',
+                    font,
+                    align: pw.TextAlign.right,
+                  ),
+                  _buildPdfTableCell(
+                    currencyFormat.format(sale.unitPrice),
+                    font,
+                    align: pw.TextAlign.right,
+                  ),
+                  _buildPdfTableCell(
+                    currencyFormat.format(sale.total),
+                    font,
+                    align: pw.TextAlign.right,
+                  ),
+                ],
+              );
+            }).toList(),
+          ],
+        ),
+      ],
+    );
+  }
+
   pw.Widget _buildPdfTableCell(
     String text,
     pw.Font font, {
@@ -943,6 +1114,193 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
           const SizedBox(height: 16),
           _buildFinancialChart(data),
         ],
+      ),
+    );
+  }
+
+  Widget _buildDeadPoultryLogsTab(List<DeadPoultryLogDto> logs) {
+    if (logs.isEmpty) {
+      return const Center(child: Text('Không có dữ liệu thất thoát'));
+    }
+
+    // Calculate total dead quantity
+    int totalDeadQuantity = logs.fold(0, (sum, log) => sum + log.quantity);
+
+    // Sort logs by date (newest first)
+    final sortedLogs = List<DeadPoultryLogDto>.from(logs)
+      ..sort((a, b) => b.date.compareTo(a.date));
+
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Tổng số vật nuôi thất thoát',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '$totalDeadQuantity con',
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Chi tiết nhật ký thất thoát',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: sortedLogs.length,
+                  separatorBuilder: (context, index) => const Divider(),
+                  itemBuilder: (context, index) {
+                    final log = sortedLogs[index];
+                    return ListTile(
+                      leading: const CircleAvatar(
+                        backgroundColor: Colors.red,
+                        child: Icon(
+                          Icons.warning_amber_rounded,
+                          color: Colors.white,
+                        ),
+                      ),
+                      title: Text('${log.quantity} con thất thoát'),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Ngày: ${formatDate(log.date)}'),
+                          if (log.note.isNotEmpty) Text('Ghi chú: ${log.note}'),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        _buildDeadPoultryTimelineChart(sortedLogs),
+      ],
+    );
+  }
+
+  // Add a chart to visualize dead poultry over time
+  Widget _buildDeadPoultryTimelineChart(List<DeadPoultryLogDto> logs) {
+    if (logs.length < 2) {
+      return const SizedBox.shrink();
+    }
+
+    // Reverse logs order for timeline (oldest first)
+    final timelineLogs = logs.reversed.toList();
+
+    return SizedBox(
+      height: 300,
+      child: Card(
+        elevation: 4,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Biểu đồ thất thoát theo thời gian',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+              Expanded(
+                child: LineChart(
+                  LineChartData(
+                    gridData: FlGridData(show: true),
+                    titlesData: FlTitlesData(
+                      leftTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          getTitlesWidget: (value, meta) {
+                            return Text(
+                              '${value.toInt()} con',
+                              style: const TextStyle(fontSize: 10),
+                            );
+                          },
+                          reservedSize: 40,
+                        ),
+                      ),
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          getTitlesWidget: (value, meta) {
+                            if (value.toInt() >= 0 &&
+                                value.toInt() < timelineLogs.length) {
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Text(
+                                  dateFormat.format(
+                                    DateTime.parse(
+                                      timelineLogs[value.toInt()].date,
+                                    ),
+                                  ),
+                                  style: const TextStyle(fontSize: 8),
+                                ),
+                              );
+                            }
+                            return const Text('');
+                          },
+                          reservedSize: 30,
+                        ),
+                      ),
+                      rightTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      topTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                    ),
+                    borderData: FlBorderData(show: true),
+                    lineBarsData: [
+                      LineChartBarData(
+                        spots: List.generate(
+                          timelineLogs.length,
+                          (index) => FlSpot(
+                            index.toDouble(),
+                            timelineLogs[index].quantity.toDouble(),
+                          ),
+                        ),
+                        isCurved: true,
+                        color: Colors.red,
+                        barWidth: 3,
+                        dotData: FlDotData(show: true),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -1289,7 +1647,7 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
     // Calculate total food used
     double totalFood = 0;
     for (var food in foods) {
-      totalFood += food.totalWeightUsed;
+      totalFood += food.totalWeightUsed / 1000; // Convert from grams to kg
     }
 
     return ListView(
@@ -1336,13 +1694,15 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
                 ),
                 const SizedBox(height: 16),
                 ...foods.map((food) {
-                  final percentage = (food.totalWeightUsed / totalFood * 100);
+                  final foodInKg =
+                      food.totalWeightUsed / 1000; // Convert from grams to kg
+                  final percentage = (foodInKg / totalFood * 100);
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildInfoRow(
                         food.foodType,
-                        '${food.totalWeightUsed} kg',
+                        '${foodInKg.toStringAsFixed(1)} kg',
                       ),
                       const SizedBox(height: 8),
                       LinearProgressIndicator(
@@ -1405,7 +1765,10 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
                         growthStages.fold<double>(0, (max, stage) {
                           final stageTotal = stage.foods.fold<double>(
                             0,
-                            (sum, food) => sum + food.totalWeightUsed,
+                            (sum, food) =>
+                                sum +
+                                food.totalWeightUsed /
+                                    1000, // Convert from grams to kg
                           );
                           return stageTotal > max ? stageTotal : max;
                         }) *
@@ -1414,7 +1777,10 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
                       final stage = growthStages[index];
                       final stageTotal = stage.foods.fold<double>(
                         0,
-                        (sum, food) => sum + food.totalWeightUsed,
+                        (sum, food) =>
+                            sum +
+                            food.totalWeightUsed /
+                                1000, // Convert from grams to kg
                       );
 
                       return BarChartGroupData(
@@ -1441,9 +1807,7 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
                               return Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
                                 child: Text(
-                                  growthStages[value.toInt()].stageName
-                                      .split(' ')
-                                      .last,
+                                  growthStages[value.toInt()].stageName,
                                   style: const TextStyle(fontSize: 10),
                                 ),
                               );
@@ -1459,7 +1823,7 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
                           reservedSize: 40,
                           getTitlesWidget: (value, meta) {
                             return Text(
-                              '${value.toInt()} kg',
+                              '${value.toStringAsFixed(1)} kg', // Format with 1 decimal place
                               style: const TextStyle(fontSize: 10),
                             );
                           },
@@ -1545,6 +1909,104 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
           ),
         );
       },
+    );
+  }
+
+  Widget _buildMeatSalesTab(List<AnimalMeatSaleDto> meatSales) {
+    if (meatSales.isEmpty) {
+      return const Center(child: Text('Không có dữ liệu bán thịt'));
+    }
+
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Tổng kết bán thịt',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                _buildInfoRow(
+                  'Tổng số lượng đã bán',
+                  '${meatSales.fold(0, (sum, sale) => sum + sale.quantity)} con',
+                ),
+                _buildInfoRow(
+                  'Tổng khối lượng',
+                  '${meatSales.fold(0.0, (sum, sale) => sum + sale.weight)} kg',
+                ),
+                _buildInfoRow(
+                  'Tổng doanh thu',
+                  currencyFormat.format(
+                    meatSales.fold(0, (sum, sale) => sum + sale.total),
+                  ),
+                  isHighlighted: true,
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Chi tiết các đợt bán thịt',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                ...meatSales.map((sale) => _buildMeatSaleItem(sale)).toList(),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMeatSaleItem(AnimalMeatSaleDto sale) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 8),
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Ngày bán: ${formatDate(sale.saleDate)}',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  currencyFormat.format(sale.total),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                  ),
+                ),
+              ],
+            ),
+            const Divider(),
+            _buildInfoRow('Số lượng', '${sale.quantity} con'),
+            _buildInfoRow('Khối lượng', '${sale.weight} kg'),
+            _buildInfoRow(
+              'Đơn giá',
+              currencyFormat.format(sale.unitPrice) + '/kg',
+            ),
+            _buildInfoRow('Loại bán', sale.saleTypeName),
+          ],
+        ),
+      ),
     );
   }
 

@@ -1,4 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:smart_farm_admin/src/model/dto/animal_meat_sale/animal_meat_sale_dto.dart';
+import 'package:smart_farm_admin/src/model/dto/dead_poultry_log/dead_poultry_log_dto.dart';
 import 'package:smart_farm_admin/src/model/dto/report_farming_batch/food_usage_detail/food_usage_detail.dart';
 import 'package:smart_farm_admin/src/model/dto/report_farming_batch/growth_stage_report/growth_stage_report.dart';
 import 'package:smart_farm_admin/src/model/dto/report_farming_batch/prescription_detail/prescription_detail.dart';
@@ -28,6 +30,8 @@ class ReportFarmingBatchDto with _$ReportFarmingBatchDto {
     @Default([]) List<VaccineDetail> vaccineDetails,
     @Default([]) List<PrescriptionDetail> prescriptionDetails,
     @Default([]) List<FoodUsageDetail> foodUsageDetails,
+    @Default([]) List<AnimalMeatSaleDto> animalMeatSales,
+    @Default([]) List<DeadPoultryLogDto> deadPoultryLogs,
   }) = _ReportFarmingBatchDto;
 
   factory ReportFarmingBatchDto.fromJson(Map<String, dynamic> json) =>

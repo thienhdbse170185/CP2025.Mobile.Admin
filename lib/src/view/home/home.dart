@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:smart_farm_admin/src/core/constants/session_data_constant.dart';
 import 'package:smart_farm_admin/src/core/router.dart';
 import 'package:smart_farm_admin/src/core/utils/time_util.dart';
-import 'package:smart_farm_admin/src/model/dto/farming_batch/farming_batch_dto.dart';
 import 'package:smart_farm_admin/src/model/dto/merged_farming_batch/merged_farming_batch_details/merged_farming_batch_details_dto.dart';
 import 'package:smart_farm_admin/src/model/dto/merged_farming_batch/merged_farming_batch_dto.dart';
 import 'package:smart_farm_admin/src/view/widgets/avatar_round.dart';
@@ -31,13 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<SystemBloc>().add(const SystemEvent.appStarted());
   }
 
-  String _getGreeting() {
-    final hour = DateTime.now().hour;
-    if (hour < 12) return 'Chào buổi sáng';
-    if (hour < 18) return 'Chào buổi chiều';
-    return 'Chào buổi tối';
-  }
-
   String _handleSessionMessage() {
     final currentSession = TimeUtils.getCurrentSession();
     switch (currentSession) {
@@ -56,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Color _getStatusColor(String status) {
     switch (status) {
-      case 'Active':
+      case 'Active' || 'Mixed':
         return Colors.green;
       case 'Completed':
         return Colors.blue;
@@ -68,12 +60,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   String _translateStatus(String status) {
-    switch (status) {
-      case 'Active':
+    switch (status.toLowerCase()) {
+      case 'active' || 'mixed':
         return 'Đang nuôi';
-      case 'Completed':
+      case 'completed':
         return 'Đã hoàn thành';
-      case 'Pending':
+      case 'pending':
         return 'Chờ xử lý';
       default:
         return 'Không xác định';

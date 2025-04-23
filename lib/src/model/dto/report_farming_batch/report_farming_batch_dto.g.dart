@@ -46,6 +46,16 @@ _$ReportFarmingBatchDtoImpl _$$ReportFarmingBatchDtoImplFromJson(
           ?.map((e) => FoodUsageDetail.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
+  animalMeatSales:
+      (json['animalMeatSales'] as List<dynamic>?)
+          ?.map((e) => AnimalMeatSaleDto.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
+  deadPoultryLogs:
+      (json['deadPoultryLogs'] as List<dynamic>?)
+          ?.map((e) => DeadPoultryLogDto.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
 );
 
 Map<String, dynamic> _$$ReportFarmingBatchDtoImplToJson(
@@ -69,4 +79,6 @@ Map<String, dynamic> _$$ReportFarmingBatchDtoImplToJson(
   'vaccineDetails': instance.vaccineDetails,
   'prescriptionDetails': instance.prescriptionDetails,
   'foodUsageDetails': instance.foodUsageDetails,
+  'animalMeatSales': instance.animalMeatSales,
+  'deadPoultryLogs': instance.deadPoultryLogs,
 };

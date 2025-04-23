@@ -1,9 +1,3 @@
-import 'package:data_layer/repository/auth/auth_api_client.dart';
-import 'package:data_layer/repository/auth/auth_repository.dart';
-import 'package:data_layer/repository/cage/cage_api_client.dart';
-import 'package:data_layer/repository/cage/cage_repository.dart';
-import 'package:data_layer/repository/user/local/user_repository.dart';
-import 'package:data_layer/repository/user/user_api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_farm_admin/src/core/common/cubit/theme_cubit.dart';
@@ -11,13 +5,22 @@ import 'package:smart_farm_admin/src/core/network/http_client.dart';
 import 'package:smart_farm_admin/src/core/router.dart';
 import 'package:smart_farm_admin/src/core/theme/theme.dart';
 import 'package:smart_farm_admin/src/core/theme/util.dart';
+import 'package:smart_farm_admin/src/model/repository/auth/auth_api_client.dart';
+import 'package:smart_farm_admin/src/model/repository/auth/auth_repository.dart';
+import 'package:smart_farm_admin/src/model/repository/cage/cage_api_client.dart';
+import 'package:smart_farm_admin/src/model/repository/cage/cage_repository.dart';
 import 'package:smart_farm_admin/src/model/repository/farming_batch/farming_batch_api_client.dart';
 import 'package:smart_farm_admin/src/model/repository/farming_batch/farming_batch_repository.dart';
+import 'package:smart_farm_admin/src/model/repository/medical_symptom/medical_symptom_api_client.dart';
+import 'package:smart_farm_admin/src/model/repository/medical_symptom/medical_symptom_repository.dart';
 import 'package:smart_farm_admin/src/model/repository/report/report_api_client.dart';
 import 'package:smart_farm_admin/src/model/repository/report/report_repository.dart';
+import 'package:smart_farm_admin/src/model/repository/user/local/user_repository.dart';
+import 'package:smart_farm_admin/src/model/repository/user/user_api_client.dart';
 import 'package:smart_farm_admin/src/viewmodel/auth/auth_bloc.dart';
 import 'package:smart_farm_admin/src/viewmodel/cage/cage_bloc.dart';
 import 'package:smart_farm_admin/src/viewmodel/farming_batch/farming_batch_cubit.dart';
+import 'package:smart_farm_admin/src/viewmodel/medical_symptom/medical_symptom_cubit.dart';
 import 'package:smart_farm_admin/src/viewmodel/report_farming_batch/report_farming_batch_cubit.dart';
 import 'package:smart_farm_admin/src/viewmodel/system/system_bloc.dart';
 import 'package:smart_farm_admin/src/viewmodel/user/user_bloc.dart';
@@ -63,6 +66,12 @@ class _MyAppState extends State<MyApp> {
               (context) =>
                   ReportRepository(apiClient: ReportApiClient(dio: dio)),
         ),
+        RepositoryProvider(
+          create:
+              (context) => MedicalSymptomRepository(
+                apiClient: MedicalSymptomApiClient(dio: dio),
+              ),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -94,6 +103,13 @@ class _MyAppState extends State<MyApp> {
             create:
                 (context) => ReportFarmingBatchCubit(
                   reportRepository: context.read<ReportRepository>(),
+                ),
+          ),
+          BlocProvider(
+            create:
+                (context) => MedicalSymptomCubit(
+                  medicalSymptomRepository:
+                      context.read<MedicalSymptomRepository>(),
                 ),
           ),
         ],

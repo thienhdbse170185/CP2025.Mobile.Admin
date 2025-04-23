@@ -756,7 +756,7 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
       case "Prescribed":
         statusColor = Colors.blue;
         break;
-      case "Resolved":
+      case "Reject":
         statusColor = Colors.green;
         break;
       default:
@@ -771,95 +771,104 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
       case "Prescribed":
         statusText = "Đã kê đơn";
         break;
-      case "Resolved":
-        statusText = "Đã giải quyết";
+      case "Reject":
+        statusText = "Vật nuôi bình thường";
         break;
       default:
         statusText = symptom.status;
     }
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: statusColor.withOpacity(0.5), width: 1),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 2,
-            offset: Offset(0, 1),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: statusColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: statusColor, width: 1),
-                ),
-                child: Text(
-                  statusText,
-                  style: TextStyle(
-                    color: statusColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-              if (symptom.isEmergency == true)
+    return GestureDetector(
+      onTap: () {
+        // Navigate to the detail screen with the symptom data
+        context.push(RouteName.medicalSymptom, extra: {"id": symptom.id});
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: statusColor.withOpacity(0.5), width: 1),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 1,
+              blurRadius: 2,
+              offset: Offset(0, 1),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
                 Container(
-                  margin: const EdgeInsets.only(left: 8),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8,
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.1),
+                    color: statusColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.red, width: 1),
+                    border: Border.all(color: statusColor, width: 1),
                   ),
                   child: Text(
-                    'Khẩn cấp',
+                    statusText,
                     style: TextStyle(
-                      color: Colors.red,
+                      color: statusColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 12,
                     ),
                   ),
                 ),
-              Spacer(),
-              Text(
-                '${symptom.affectedQuantity}/${symptom.quantityInCage} con',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey[700],
+                if (symptom.isEmergency == true)
+                  Container(
+                    margin: const EdgeInsets.only(left: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.red.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.red, width: 1),
+                    ),
+                    child: Text(
+                      'Khẩn cấp',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                Spacer(),
+                Text(
+                  '${symptom.affectedQuantity}/${symptom.quantityInCage} con',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[700],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              symptom.diagnosis ?? 'Chưa chẩn đoán',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            if (symptom.notes != null && symptom.notes.toString().isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  'Ghi chú: ${symptom.notes}',
+                  style: TextStyle(color: Colors.grey[800]),
                 ),
               ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            symptom.diagnosis ?? 'Chưa chẩn đoán',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          if (symptom.notes != null && symptom.notes.toString().isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Text(
-                'Ghi chú: ${symptom.notes}',
-                style: TextStyle(color: Colors.grey[800]),
-              ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

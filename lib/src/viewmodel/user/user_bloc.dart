@@ -1,12 +1,14 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:data_layer/repository/user/local/user_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 import 'package:smart_farm_admin/src/core/constants/auth_data_constant.dart';
 import 'package:smart_farm_admin/src/core/constants/user_data_constant.dart';
 import 'package:smart_farm_admin/src/core/utils/jwt_decoder.dart';
+import 'package:smart_farm_admin/src/model/dto/user/user_dto.dart';
+import 'package:smart_farm_admin/src/model/repository/user/local/user_repository.dart';
+import 'package:smart_farm_admin/src/model/request/user/update_user_info/update_user_info_request.dart';
 
 part 'user_bloc.freezed.dart';
 part 'user_event.dart';
@@ -61,6 +63,22 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     //     emit(UserState.updateDeviceTokenFailure(e.toString()));
     //   }
     // });
+
+    on<_GetUserProfileByUserId>((event, emit) async {
+      emit(const UserState.getUserProfileByUserIdInProgress());
+      try {
+        final authBox = await Hive.openBox(AuthDataConstant.authBoxName);
+        final accessToken = authBox.get(AuthDataConstant.accessTokenKey);
+        final decodedToken = JwtDecoder.decode(accessToken);
+        final userId = decodedToken['nameid'];
+        final userInfo = await userRepository.getUserProfileByUserId(userId);
+        final userBox = await Hive.openBox(UserDataConstant.userBoxName);
+        userBox.put(UserDataConstant.usernameKey, userInfo.username);
+        emit(UserState.getUserProfileByUserIdSuccess(userInfo));
+      } catch (e) {
+        emit(UserState.getUserProfileByUserIdFailure(e.toString()));
+      }
+    });
 
     on<_SendOTP>((event, emit) async {
       emit(const UserState.sendOTPInProgress());
@@ -130,6 +148,26 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         }
       } catch (e) {
         emit(UserState.updatePasswordFailure(e.toString()));
+      }
+    });
+    on<_UpdateUserInfo>((event, emit) async {
+      emit(const UserState.updateUserInfoInProgress());
+      try {
+        final userBox = await Hive.openBox(UserDataConstant.userBoxName);
+        final userId = userBox.get(UserDataConstant.userIdKey);
+        final result = await userRepository.updateUserInfo(
+          userId,
+          event.request,
+        );
+        if (result) {
+          emit(const UserState.updateUserInfoSuccess());
+        } else {
+          emit(
+            const UserState.updateUserInfoFailure('Failed to update user info'),
+          );
+        }
+      } catch (e) {
+        emit(UserState.updateUserInfoFailure(e.toString()));
       }
     });
   }

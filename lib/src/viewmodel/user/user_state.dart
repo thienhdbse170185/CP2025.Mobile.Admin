@@ -37,4 +37,17 @@ class UserState with _$UserState {
   const factory UserState.verifyOTPInProgress() = _VerifyOTPInProgress;
   const factory UserState.verifyOTPSuccess() = _VerifyOTPSuccess;
   const factory UserState.verifyOTPFailure(String message) = _VerifyOTPFailure;
+
+  const factory UserState.getUserProfileByUserIdInProgress() =
+      _GetUserProfileByUserIdInProgress;
+  const factory UserState.getUserProfileByUserIdSuccess(UserDto userInfo) =
+      _GetUserProfileByUserIdSuccess;
+  const factory UserState.getUserProfileByUserIdFailure(String message) =
+      _GetUserProfileByUserIdFailure;
+
+  const factory UserState.updateUserInfoInProgress() =
+      _UpdateUserInfoInProgress;
+  const factory UserState.updateUserInfoSuccess() = _UpdateUserInfoSuccess;
+  const factory UserState.updateUserInfoFailure(String message) =
+      _UpdateUserInfoFailure;
 }
