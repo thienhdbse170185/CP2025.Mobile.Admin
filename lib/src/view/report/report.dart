@@ -19,7 +19,6 @@ import 'package:smart_farm_admin/src/viewmodel/report_farming_batch/report_farmi
 import 'package:smart_farm_admin/src/model/dto/report_farming_batch/report_farming_batch_dto.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
 
 class ReportFarmingBatchScreen extends StatefulWidget {
   final String farmingBatchId;
@@ -172,8 +171,8 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
     final pdf = pw.Document();
 
     // Add font for Vietnamese characters
-    final font = await PdfGoogleFonts.nunitoRegular();
-    final fontBold = await PdfGoogleFonts.nunitoBold();
+    final font = pw.Font.helvetica();
+    final fontBold = pw.Font.helveticaBold();
 
     pdf.addPage(
       pw.MultiPage(
