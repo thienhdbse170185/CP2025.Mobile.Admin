@@ -10,6 +10,7 @@ import 'package:smart_farm_admin/src/model/dto/merged_farming_batch/merged_farmi
 import 'package:smart_farm_admin/src/view/widgets/avatar_round.dart';
 import 'package:smart_farm_admin/src/viewmodel/farming_batch/farming_batch_cubit.dart';
 import 'package:smart_farm_admin/src/viewmodel/system/system_bloc.dart';
+import 'package:smart_farm_admin/src/viewmodel/time/time_bloc.dart';
 import 'package:smart_farm_admin/src/viewmodel/user/user_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     context.read<SystemBloc>().add(const SystemEvent.appStarted());
+    context.read<TimeBloc>().add(const TimeEvent.getServerTime());
   }
 
   String _handleSessionMessage() {
