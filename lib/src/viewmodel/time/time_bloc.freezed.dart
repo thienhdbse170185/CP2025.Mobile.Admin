@@ -12,7 +12,8 @@ part of 'time_bloc.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$TimeEvent {
@@ -20,40 +21,34 @@ mixin _$TimeEvent {
   TResult when<TResult extends Object?>({
     required TResult Function() started,
     required TResult Function() getServerTime,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
     TResult? Function()? getServerTime,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
     TResult Function()? getServerTime,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) started,
     required TResult Function(_GetServerTime value) getServerTime,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Started value)? started,
     TResult? Function(_GetServerTime value)? getServerTime,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_GetServerTime value)? getServerTime,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -79,8 +74,9 @@ class _$TimeEventCopyWithImpl<$Res, $Val extends TimeEvent>
 /// @nodoc
 abstract class _$$StartedImplCopyWith<$Res> {
   factory _$$StartedImplCopyWith(
-          _$StartedImpl value, $Res Function(_$StartedImpl) then) =
-      __$$StartedImplCopyWithImpl<$Res>;
+    _$StartedImpl value,
+    $Res Function(_$StartedImpl) then,
+  ) = __$$StartedImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
@@ -88,8 +84,9 @@ class __$$StartedImplCopyWithImpl<$Res>
     extends _$TimeEventCopyWithImpl<$Res, _$StartedImpl>
     implements _$$StartedImplCopyWith<$Res> {
   __$$StartedImplCopyWithImpl(
-      _$StartedImpl _value, $Res Function(_$StartedImpl) _then)
-      : super(_value, _then);
+    _$StartedImpl _value,
+    $Res Function(_$StartedImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of TimeEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -184,8 +181,9 @@ abstract class _Started implements TimeEvent {
 /// @nodoc
 abstract class _$$GetServerTimeImplCopyWith<$Res> {
   factory _$$GetServerTimeImplCopyWith(
-          _$GetServerTimeImpl value, $Res Function(_$GetServerTimeImpl) then) =
-      __$$GetServerTimeImplCopyWithImpl<$Res>;
+    _$GetServerTimeImpl value,
+    $Res Function(_$GetServerTimeImpl) then,
+  ) = __$$GetServerTimeImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
@@ -193,8 +191,9 @@ class __$$GetServerTimeImplCopyWithImpl<$Res>
     extends _$TimeEventCopyWithImpl<$Res, _$GetServerTimeImpl>
     implements _$$GetServerTimeImplCopyWith<$Res> {
   __$$GetServerTimeImplCopyWithImpl(
-      _$GetServerTimeImpl _value, $Res Function(_$GetServerTimeImpl) _then)
-      : super(_value, _then);
+    _$GetServerTimeImpl _value,
+    $Res Function(_$GetServerTimeImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of TimeEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -294,16 +293,14 @@ mixin _$TimeState {
     required TResult Function() getServerTimeInProgress,
     required TResult Function(String serverTime) getServerTimeSuccess,
     required TResult Function(String error) getServerTimeFailure,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? getServerTimeInProgress,
     TResult? Function(String serverTime)? getServerTimeSuccess,
     TResult? Function(String error)? getServerTimeFailure,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
@@ -311,25 +308,22 @@ mixin _$TimeState {
     TResult Function(String serverTime)? getServerTimeSuccess,
     TResult Function(String error)? getServerTimeFailure,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_GetServerTimeInProgress value)
-        getServerTimeInProgress,
+    getServerTimeInProgress,
     required TResult Function(_GetServerTimeSuccess value) getServerTimeSuccess,
     required TResult Function(_GetServerTimeFailure value) getServerTimeFailure,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_GetServerTimeInProgress value)? getServerTimeInProgress,
     TResult? Function(_GetServerTimeSuccess value)? getServerTimeSuccess,
     TResult? Function(_GetServerTimeFailure value)? getServerTimeFailure,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
@@ -337,8 +331,7 @@ mixin _$TimeState {
     TResult Function(_GetServerTimeSuccess value)? getServerTimeSuccess,
     TResult Function(_GetServerTimeFailure value)? getServerTimeFailure,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -364,8 +357,9 @@ class _$TimeStateCopyWithImpl<$Res, $Val extends TimeState>
 /// @nodoc
 abstract class _$$InitialImplCopyWith<$Res> {
   factory _$$InitialImplCopyWith(
-          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
-      __$$InitialImplCopyWithImpl<$Res>;
+    _$InitialImpl value,
+    $Res Function(_$InitialImpl) then,
+  ) = __$$InitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
@@ -373,8 +367,9 @@ class __$$InitialImplCopyWithImpl<$Res>
     extends _$TimeStateCopyWithImpl<$Res, _$InitialImpl>
     implements _$$InitialImplCopyWith<$Res> {
   __$$InitialImplCopyWithImpl(
-      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
-      : super(_value, _then);
+    _$InitialImpl _value,
+    $Res Function(_$InitialImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of TimeState
   /// with the given fields replaced by the non-null parameter values.
@@ -441,7 +436,7 @@ class _$InitialImpl implements _Initial {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_GetServerTimeInProgress value)
-        getServerTimeInProgress,
+    getServerTimeInProgress,
     required TResult Function(_GetServerTimeSuccess value) getServerTimeSuccess,
     required TResult Function(_GetServerTimeFailure value) getServerTimeFailure,
   }) {
@@ -482,9 +477,9 @@ abstract class _Initial implements TimeState {
 /// @nodoc
 abstract class _$$GetServerTimeInProgressImplCopyWith<$Res> {
   factory _$$GetServerTimeInProgressImplCopyWith(
-          _$GetServerTimeInProgressImpl value,
-          $Res Function(_$GetServerTimeInProgressImpl) then) =
-      __$$GetServerTimeInProgressImplCopyWithImpl<$Res>;
+    _$GetServerTimeInProgressImpl value,
+    $Res Function(_$GetServerTimeInProgressImpl) then,
+  ) = __$$GetServerTimeInProgressImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
@@ -492,9 +487,9 @@ class __$$GetServerTimeInProgressImplCopyWithImpl<$Res>
     extends _$TimeStateCopyWithImpl<$Res, _$GetServerTimeInProgressImpl>
     implements _$$GetServerTimeInProgressImplCopyWith<$Res> {
   __$$GetServerTimeInProgressImplCopyWithImpl(
-      _$GetServerTimeInProgressImpl _value,
-      $Res Function(_$GetServerTimeInProgressImpl) _then)
-      : super(_value, _then);
+    _$GetServerTimeInProgressImpl _value,
+    $Res Function(_$GetServerTimeInProgressImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of TimeState
   /// with the given fields replaced by the non-null parameter values.
@@ -562,7 +557,7 @@ class _$GetServerTimeInProgressImpl implements _GetServerTimeInProgress {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_GetServerTimeInProgress value)
-        getServerTimeInProgress,
+    getServerTimeInProgress,
     required TResult Function(_GetServerTimeSuccess value) getServerTimeSuccess,
     required TResult Function(_GetServerTimeFailure value) getServerTimeFailure,
   }) {
@@ -602,9 +597,10 @@ abstract class _GetServerTimeInProgress implements TimeState {
 
 /// @nodoc
 abstract class _$$GetServerTimeSuccessImplCopyWith<$Res> {
-  factory _$$GetServerTimeSuccessImplCopyWith(_$GetServerTimeSuccessImpl value,
-          $Res Function(_$GetServerTimeSuccessImpl) then) =
-      __$$GetServerTimeSuccessImplCopyWithImpl<$Res>;
+  factory _$$GetServerTimeSuccessImplCopyWith(
+    _$GetServerTimeSuccessImpl value,
+    $Res Function(_$GetServerTimeSuccessImpl) then,
+  ) = __$$GetServerTimeSuccessImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String serverTime});
 }
@@ -613,23 +609,24 @@ abstract class _$$GetServerTimeSuccessImplCopyWith<$Res> {
 class __$$GetServerTimeSuccessImplCopyWithImpl<$Res>
     extends _$TimeStateCopyWithImpl<$Res, _$GetServerTimeSuccessImpl>
     implements _$$GetServerTimeSuccessImplCopyWith<$Res> {
-  __$$GetServerTimeSuccessImplCopyWithImpl(_$GetServerTimeSuccessImpl _value,
-      $Res Function(_$GetServerTimeSuccessImpl) _then)
-      : super(_value, _then);
+  __$$GetServerTimeSuccessImplCopyWithImpl(
+    _$GetServerTimeSuccessImpl _value,
+    $Res Function(_$GetServerTimeSuccessImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of TimeState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? serverTime = null,
-  }) {
-    return _then(_$GetServerTimeSuccessImpl(
-      null == serverTime
-          ? _value.serverTime
-          : serverTime // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
+  $Res call({Object? serverTime = null}) {
+    return _then(
+      _$GetServerTimeSuccessImpl(
+        null == serverTime
+            ? _value.serverTime
+            : serverTime // ignore: cast_nullable_to_non_nullable
+                as String,
+      ),
+    );
   }
 }
 
@@ -664,9 +661,11 @@ class _$GetServerTimeSuccessImpl implements _GetServerTimeSuccess {
   @override
   @pragma('vm:prefer-inline')
   _$$GetServerTimeSuccessImplCopyWith<_$GetServerTimeSuccessImpl>
-      get copyWith =>
-          __$$GetServerTimeSuccessImplCopyWithImpl<_$GetServerTimeSuccessImpl>(
-              this, _$identity);
+  get copyWith =>
+      __$$GetServerTimeSuccessImplCopyWithImpl<_$GetServerTimeSuccessImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
@@ -710,7 +709,7 @@ class _$GetServerTimeSuccessImpl implements _GetServerTimeSuccess {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_GetServerTimeInProgress value)
-        getServerTimeInProgress,
+    getServerTimeInProgress,
     required TResult Function(_GetServerTimeSuccess value) getServerTimeSuccess,
     required TResult Function(_GetServerTimeFailure value) getServerTimeFailure,
   }) {
@@ -754,14 +753,15 @@ abstract class _GetServerTimeSuccess implements TimeState {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GetServerTimeSuccessImplCopyWith<_$GetServerTimeSuccessImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class _$$GetServerTimeFailureImplCopyWith<$Res> {
-  factory _$$GetServerTimeFailureImplCopyWith(_$GetServerTimeFailureImpl value,
-          $Res Function(_$GetServerTimeFailureImpl) then) =
-      __$$GetServerTimeFailureImplCopyWithImpl<$Res>;
+  factory _$$GetServerTimeFailureImplCopyWith(
+    _$GetServerTimeFailureImpl value,
+    $Res Function(_$GetServerTimeFailureImpl) then,
+  ) = __$$GetServerTimeFailureImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String error});
 }
@@ -770,23 +770,24 @@ abstract class _$$GetServerTimeFailureImplCopyWith<$Res> {
 class __$$GetServerTimeFailureImplCopyWithImpl<$Res>
     extends _$TimeStateCopyWithImpl<$Res, _$GetServerTimeFailureImpl>
     implements _$$GetServerTimeFailureImplCopyWith<$Res> {
-  __$$GetServerTimeFailureImplCopyWithImpl(_$GetServerTimeFailureImpl _value,
-      $Res Function(_$GetServerTimeFailureImpl) _then)
-      : super(_value, _then);
+  __$$GetServerTimeFailureImplCopyWithImpl(
+    _$GetServerTimeFailureImpl _value,
+    $Res Function(_$GetServerTimeFailureImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of TimeState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? error = null,
-  }) {
-    return _then(_$GetServerTimeFailureImpl(
-      null == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
+  $Res call({Object? error = null}) {
+    return _then(
+      _$GetServerTimeFailureImpl(
+        null == error
+            ? _value.error
+            : error // ignore: cast_nullable_to_non_nullable
+                as String,
+      ),
+    );
   }
 }
 
@@ -820,9 +821,11 @@ class _$GetServerTimeFailureImpl implements _GetServerTimeFailure {
   @override
   @pragma('vm:prefer-inline')
   _$$GetServerTimeFailureImplCopyWith<_$GetServerTimeFailureImpl>
-      get copyWith =>
-          __$$GetServerTimeFailureImplCopyWithImpl<_$GetServerTimeFailureImpl>(
-              this, _$identity);
+  get copyWith =>
+      __$$GetServerTimeFailureImplCopyWithImpl<_$GetServerTimeFailureImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
@@ -866,7 +869,7 @@ class _$GetServerTimeFailureImpl implements _GetServerTimeFailure {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_GetServerTimeInProgress value)
-        getServerTimeInProgress,
+    getServerTimeInProgress,
     required TResult Function(_GetServerTimeSuccess value) getServerTimeSuccess,
     required TResult Function(_GetServerTimeFailure value) getServerTimeFailure,
   }) {
@@ -910,5 +913,5 @@ abstract class _GetServerTimeFailure implements TimeState {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GetServerTimeFailureImplCopyWith<_$GetServerTimeFailureImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  get copyWith => throw _privateConstructorUsedError;
 }

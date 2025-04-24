@@ -481,7 +481,7 @@ class _MedicalSymptomScreenState extends State<MedicalSymptomScreen> {
             _buildDosageInfo(medication),
             const SizedBox(height: 16),
             Text(
-              'Ghi chú: ${medication.notes}',
+              'Ghi chú: ${medication.notes ?? 'Không có ghi chú'}',
               style: const TextStyle(
                 fontStyle: FontStyle.italic,
                 color: Colors.black87,

@@ -27,7 +27,7 @@ mixin _$MedicationDto {
   int get afternoon => throw _privateConstructorUsedError;
   int get evening => throw _privateConstructorUsedError;
   int get noon => throw _privateConstructorUsedError;
-  String get notes => throw _privateConstructorUsedError;
+  String? get notes => throw _privateConstructorUsedError;
 
   /// Serializes this MedicationDto to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -53,7 +53,7 @@ abstract class $MedicationDtoCopyWith<$Res> {
     int afternoon,
     int evening,
     int noon,
-    String notes,
+    String? notes,
   });
 }
 
@@ -78,7 +78,7 @@ class _$MedicationDtoCopyWithImpl<$Res, $Val extends MedicationDto>
     Object? afternoon = null,
     Object? evening = null,
     Object? noon = null,
-    Object? notes = null,
+    Object? notes = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -113,10 +113,10 @@ class _$MedicationDtoCopyWithImpl<$Res, $Val extends MedicationDto>
                     : noon // ignore: cast_nullable_to_non_nullable
                         as int,
             notes:
-                null == notes
+                freezed == notes
                     ? _value.notes
                     : notes // ignore: cast_nullable_to_non_nullable
-                        as String,
+                        as String?,
           )
           as $Val,
     );
@@ -139,7 +139,7 @@ abstract class _$$MedicationDtoImplCopyWith<$Res>
     int afternoon,
     int evening,
     int noon,
-    String notes,
+    String? notes,
   });
 }
 
@@ -163,7 +163,7 @@ class __$$MedicationDtoImplCopyWithImpl<$Res>
     Object? afternoon = null,
     Object? evening = null,
     Object? noon = null,
-    Object? notes = null,
+    Object? notes = freezed,
   }) {
     return _then(
       _$MedicationDtoImpl(
@@ -198,10 +198,10 @@ class __$$MedicationDtoImplCopyWithImpl<$Res>
                 : noon // ignore: cast_nullable_to_non_nullable
                     as int,
         notes:
-            null == notes
+            freezed == notes
                 ? _value.notes
                 : notes // ignore: cast_nullable_to_non_nullable
-                    as String,
+                    as String?,
       ),
     );
   }
@@ -217,7 +217,7 @@ class _$MedicationDtoImpl implements _MedicationDto {
     required this.afternoon,
     required this.evening,
     required this.noon,
-    required this.notes,
+    this.notes,
   });
 
   factory _$MedicationDtoImpl.fromJson(Map<String, dynamic> json) =>
@@ -236,7 +236,7 @@ class _$MedicationDtoImpl implements _MedicationDto {
   @override
   final int noon;
   @override
-  final String notes;
+  final String? notes;
 
   @override
   String toString() {
@@ -295,7 +295,7 @@ abstract class _MedicationDto implements MedicationDto {
     required final int afternoon,
     required final int evening,
     required final int noon,
-    required final String notes,
+    final String? notes,
   }) = _$MedicationDtoImpl;
 
   factory _MedicationDto.fromJson(Map<String, dynamic> json) =
@@ -314,7 +314,7 @@ abstract class _MedicationDto implements MedicationDto {
   @override
   int get noon;
   @override
-  String get notes;
+  String? get notes;
 
   /// Create a copy of MedicationDto
   /// with the given fields replaced by the non-null parameter values.

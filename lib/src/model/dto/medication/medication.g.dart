@@ -14,7 +14,7 @@ _$MedicationDtoImpl _$$MedicationDtoImplFromJson(Map<String, dynamic> json) =>
       afternoon: (json['afternoon'] as num).toInt(),
       evening: (json['evening'] as num).toInt(),
       noon: (json['noon'] as num).toInt(),
-      notes: json['notes'] as String,
+      notes: json['notes'] as String?,
     );
 
 Map<String, dynamic> _$$MedicationDtoImplToJson(_$MedicationDtoImpl instance) =>

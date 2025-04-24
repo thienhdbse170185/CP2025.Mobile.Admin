@@ -23,6 +23,7 @@ import 'package:smart_farm_admin/src/viewmodel/farming_batch/farming_batch_cubit
 import 'package:smart_farm_admin/src/viewmodel/medical_symptom/medical_symptom_cubit.dart';
 import 'package:smart_farm_admin/src/viewmodel/report_farming_batch/report_farming_batch_cubit.dart';
 import 'package:smart_farm_admin/src/viewmodel/system/system_bloc.dart';
+import 'package:smart_farm_admin/src/viewmodel/time/time_bloc.dart';
 import 'package:smart_farm_admin/src/viewmodel/user/user_bloc.dart';
 
 class MyApp extends StatefulWidget {
@@ -111,6 +112,11 @@ class _MyAppState extends State<MyApp> {
                   medicalSymptomRepository:
                       context.read<MedicalSymptomRepository>(),
                 ),
+          ),
+          BlocProvider(
+            create:
+                (context) =>
+                    TimeBloc(userRepository: context.read<UserRepository>()),
           ),
         ],
         child: BlocBuilder<ThemeCubit, bool>(

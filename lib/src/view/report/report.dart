@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -171,8 +172,12 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
     final pdf = pw.Document();
 
     // Add font for Vietnamese characters
-    final font = pw.Font.helvetica();
-    final fontBold = pw.Font.helveticaBold();
+    final fontData = await rootBundle.load('assets/fonts/NotoSans-Regular.ttf');
+    final fontBoldData = await rootBundle.load(
+      'assets/fonts/NotoSans-Bold.ttf',
+    );
+    final font = pw.Font.ttf(fontData.buffer.asByteData());
+    final fontBold = pw.Font.ttf(fontBoldData.buffer.asByteData());
 
     pdf.addPage(
       pw.MultiPage(
@@ -380,7 +385,7 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
         ),
         pw.SizedBox(height: 10),
         pw.Text(
-          'Ngày xuất báo cáo: ${dateFormat.format(DateTime.now())}',
+          'Ngày xuất báo cáo: ${dateFormat.format(TimeUtils.customNow())}',
           style: pw.TextStyle(font: font, fontSize: 10),
         ),
         pw.Divider(),

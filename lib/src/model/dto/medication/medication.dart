@@ -12,7 +12,7 @@ class MedicationDto with _$MedicationDto {
     required int afternoon,
     required int evening,
     required int noon,
-    required String notes,
+    String? notes,
   }) = _MedicationDto;
 
   factory MedicationDto.fromJson(Map<String, dynamic> json) =>
