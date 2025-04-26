@@ -24,16 +24,16 @@ mixin _$MedicalSymptomDto {
   String get id => throw _privateConstructorUsedError;
   String get farmingBatchId => throw _privateConstructorUsedError;
   String? get symptoms => throw _privateConstructorUsedError;
-  String get diagnosis => throw _privateConstructorUsedError;
+  String? get diagnosis => throw _privateConstructorUsedError;
   @JsonKey(name: 'createAt')
   DateTime get createAt => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
   int get affectedQuantity => throw _privateConstructorUsedError;
   int? get quantity => throw _privateConstructorUsedError;
   String get nameAnimal => throw _privateConstructorUsedError;
-  String get notes => throw _privateConstructorUsedError;
+  String? get notes => throw _privateConstructorUsedError;
   List<PictureSymptom>? get pictures => throw _privateConstructorUsedError;
-  PrescriptionDto get prescriptions => throw _privateConstructorUsedError;
+  PrescriptionDto? get prescriptions => throw _privateConstructorUsedError;
 
   /// Serializes this MedicalSymptomDto to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -56,18 +56,18 @@ abstract class $MedicalSymptomDtoCopyWith<$Res> {
     String id,
     String farmingBatchId,
     String? symptoms,
-    String diagnosis,
+    String? diagnosis,
     @JsonKey(name: 'createAt') DateTime createAt,
     String status,
     int affectedQuantity,
     int? quantity,
     String nameAnimal,
-    String notes,
+    String? notes,
     List<PictureSymptom>? pictures,
-    PrescriptionDto prescriptions,
+    PrescriptionDto? prescriptions,
   });
 
-  $PrescriptionDtoCopyWith<$Res> get prescriptions;
+  $PrescriptionDtoCopyWith<$Res>? get prescriptions;
 }
 
 /// @nodoc
@@ -88,15 +88,15 @@ class _$MedicalSymptomDtoCopyWithImpl<$Res, $Val extends MedicalSymptomDto>
     Object? id = null,
     Object? farmingBatchId = null,
     Object? symptoms = freezed,
-    Object? diagnosis = null,
+    Object? diagnosis = freezed,
     Object? createAt = null,
     Object? status = null,
     Object? affectedQuantity = null,
     Object? quantity = freezed,
     Object? nameAnimal = null,
-    Object? notes = null,
+    Object? notes = freezed,
     Object? pictures = freezed,
-    Object? prescriptions = null,
+    Object? prescriptions = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -116,10 +116,10 @@ class _$MedicalSymptomDtoCopyWithImpl<$Res, $Val extends MedicalSymptomDto>
                     : symptoms // ignore: cast_nullable_to_non_nullable
                         as String?,
             diagnosis:
-                null == diagnosis
+                freezed == diagnosis
                     ? _value.diagnosis
                     : diagnosis // ignore: cast_nullable_to_non_nullable
-                        as String,
+                        as String?,
             createAt:
                 null == createAt
                     ? _value.createAt
@@ -146,20 +146,20 @@ class _$MedicalSymptomDtoCopyWithImpl<$Res, $Val extends MedicalSymptomDto>
                     : nameAnimal // ignore: cast_nullable_to_non_nullable
                         as String,
             notes:
-                null == notes
+                freezed == notes
                     ? _value.notes
                     : notes // ignore: cast_nullable_to_non_nullable
-                        as String,
+                        as String?,
             pictures:
                 freezed == pictures
                     ? _value.pictures
                     : pictures // ignore: cast_nullable_to_non_nullable
                         as List<PictureSymptom>?,
             prescriptions:
-                null == prescriptions
+                freezed == prescriptions
                     ? _value.prescriptions
                     : prescriptions // ignore: cast_nullable_to_non_nullable
-                        as PrescriptionDto,
+                        as PrescriptionDto?,
           )
           as $Val,
     );
@@ -169,8 +169,12 @@ class _$MedicalSymptomDtoCopyWithImpl<$Res, $Val extends MedicalSymptomDto>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $PrescriptionDtoCopyWith<$Res> get prescriptions {
-    return $PrescriptionDtoCopyWith<$Res>(_value.prescriptions, (value) {
+  $PrescriptionDtoCopyWith<$Res>? get prescriptions {
+    if (_value.prescriptions == null) {
+      return null;
+    }
+
+    return $PrescriptionDtoCopyWith<$Res>(_value.prescriptions!, (value) {
       return _then(_value.copyWith(prescriptions: value) as $Val);
     });
   }
@@ -189,19 +193,19 @@ abstract class _$$MedicalSymptomDtoImplCopyWith<$Res>
     String id,
     String farmingBatchId,
     String? symptoms,
-    String diagnosis,
+    String? diagnosis,
     @JsonKey(name: 'createAt') DateTime createAt,
     String status,
     int affectedQuantity,
     int? quantity,
     String nameAnimal,
-    String notes,
+    String? notes,
     List<PictureSymptom>? pictures,
-    PrescriptionDto prescriptions,
+    PrescriptionDto? prescriptions,
   });
 
   @override
-  $PrescriptionDtoCopyWith<$Res> get prescriptions;
+  $PrescriptionDtoCopyWith<$Res>? get prescriptions;
 }
 
 /// @nodoc
@@ -221,15 +225,15 @@ class __$$MedicalSymptomDtoImplCopyWithImpl<$Res>
     Object? id = null,
     Object? farmingBatchId = null,
     Object? symptoms = freezed,
-    Object? diagnosis = null,
+    Object? diagnosis = freezed,
     Object? createAt = null,
     Object? status = null,
     Object? affectedQuantity = null,
     Object? quantity = freezed,
     Object? nameAnimal = null,
-    Object? notes = null,
+    Object? notes = freezed,
     Object? pictures = freezed,
-    Object? prescriptions = null,
+    Object? prescriptions = freezed,
   }) {
     return _then(
       _$MedicalSymptomDtoImpl(
@@ -249,10 +253,10 @@ class __$$MedicalSymptomDtoImplCopyWithImpl<$Res>
                 : symptoms // ignore: cast_nullable_to_non_nullable
                     as String?,
         diagnosis:
-            null == diagnosis
+            freezed == diagnosis
                 ? _value.diagnosis
                 : diagnosis // ignore: cast_nullable_to_non_nullable
-                    as String,
+                    as String?,
         createAt:
             null == createAt
                 ? _value.createAt
@@ -279,20 +283,20 @@ class __$$MedicalSymptomDtoImplCopyWithImpl<$Res>
                 : nameAnimal // ignore: cast_nullable_to_non_nullable
                     as String,
         notes:
-            null == notes
+            freezed == notes
                 ? _value.notes
                 : notes // ignore: cast_nullable_to_non_nullable
-                    as String,
+                    as String?,
         pictures:
             freezed == pictures
                 ? _value._pictures
                 : pictures // ignore: cast_nullable_to_non_nullable
                     as List<PictureSymptom>?,
         prescriptions:
-            null == prescriptions
+            freezed == prescriptions
                 ? _value.prescriptions
                 : prescriptions // ignore: cast_nullable_to_non_nullable
-                    as PrescriptionDto,
+                    as PrescriptionDto?,
       ),
     );
   }
@@ -305,15 +309,15 @@ class _$MedicalSymptomDtoImpl implements _MedicalSymptomDto {
     required this.id,
     required this.farmingBatchId,
     this.symptoms,
-    required this.diagnosis,
+    this.diagnosis,
     @JsonKey(name: 'createAt') required this.createAt,
     required this.status,
     required this.affectedQuantity,
     this.quantity,
     required this.nameAnimal,
-    required this.notes,
+    this.notes,
     required final List<PictureSymptom>? pictures,
-    required this.prescriptions,
+    this.prescriptions,
   }) : _pictures = pictures;
 
   factory _$MedicalSymptomDtoImpl.fromJson(Map<String, dynamic> json) =>
@@ -326,7 +330,7 @@ class _$MedicalSymptomDtoImpl implements _MedicalSymptomDto {
   @override
   final String? symptoms;
   @override
-  final String diagnosis;
+  final String? diagnosis;
   @override
   @JsonKey(name: 'createAt')
   final DateTime createAt;
@@ -339,7 +343,7 @@ class _$MedicalSymptomDtoImpl implements _MedicalSymptomDto {
   @override
   final String nameAnimal;
   @override
-  final String notes;
+  final String? notes;
   final List<PictureSymptom>? _pictures;
   @override
   List<PictureSymptom>? get pictures {
@@ -351,7 +355,7 @@ class _$MedicalSymptomDtoImpl implements _MedicalSymptomDto {
   }
 
   @override
-  final PrescriptionDto prescriptions;
+  final PrescriptionDto? prescriptions;
 
   @override
   String toString() {
@@ -425,15 +429,15 @@ abstract class _MedicalSymptomDto implements MedicalSymptomDto {
     required final String id,
     required final String farmingBatchId,
     final String? symptoms,
-    required final String diagnosis,
+    final String? diagnosis,
     @JsonKey(name: 'createAt') required final DateTime createAt,
     required final String status,
     required final int affectedQuantity,
     final int? quantity,
     required final String nameAnimal,
-    required final String notes,
+    final String? notes,
     required final List<PictureSymptom>? pictures,
-    required final PrescriptionDto prescriptions,
+    final PrescriptionDto? prescriptions,
   }) = _$MedicalSymptomDtoImpl;
 
   factory _MedicalSymptomDto.fromJson(Map<String, dynamic> json) =
@@ -446,7 +450,7 @@ abstract class _MedicalSymptomDto implements MedicalSymptomDto {
   @override
   String? get symptoms;
   @override
-  String get diagnosis;
+  String? get diagnosis;
   @override
   @JsonKey(name: 'createAt')
   DateTime get createAt;
@@ -459,11 +463,11 @@ abstract class _MedicalSymptomDto implements MedicalSymptomDto {
   @override
   String get nameAnimal;
   @override
-  String get notes;
+  String? get notes;
   @override
   List<PictureSymptom>? get pictures;
   @override
-  PrescriptionDto get prescriptions;
+  PrescriptionDto? get prescriptions;
 
   /// Create a copy of MedicalSymptomDto
   /// with the given fields replaced by the non-null parameter values.

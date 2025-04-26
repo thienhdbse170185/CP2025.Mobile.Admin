@@ -21,6 +21,8 @@ class FarmingBatchDto with _$FarmingBatchDto {
     required String status,
     required int cleaningFrequency,
     required int quantity,
+    int? affectQuantity,
+    int? currentQuantity,
     int? deadQuantity,
     String? farmId,
     String? cageId,

@@ -12,20 +12,23 @@ _$MedicalSymptomDtoImpl _$$MedicalSymptomDtoImplFromJson(
   id: json['id'] as String,
   farmingBatchId: json['farmingBatchId'] as String,
   symptoms: json['symptoms'] as String?,
-  diagnosis: json['diagnosis'] as String,
+  diagnosis: json['diagnosis'] as String?,
   createAt: DateTime.parse(json['createAt'] as String),
   status: json['status'] as String,
   affectedQuantity: (json['affectedQuantity'] as num).toInt(),
   quantity: (json['quantity'] as num?)?.toInt(),
   nameAnimal: json['nameAnimal'] as String,
-  notes: json['notes'] as String,
+  notes: json['notes'] as String?,
   pictures:
       (json['pictures'] as List<dynamic>?)
           ?.map((e) => PictureSymptom.fromJson(e as Map<String, dynamic>))
           .toList(),
-  prescriptions: PrescriptionDto.fromJson(
-    json['prescriptions'] as Map<String, dynamic>,
-  ),
+  prescriptions:
+      json['prescriptions'] == null
+          ? null
+          : PrescriptionDto.fromJson(
+            json['prescriptions'] as Map<String, dynamic>,
+          ),
 );
 
 Map<String, dynamic> _$$MedicalSymptomDtoImplToJson(

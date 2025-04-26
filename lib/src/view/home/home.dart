@@ -29,7 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     context.read<SystemBloc>().add(const SystemEvent.appStarted());
-    context.read<TimeBloc>().add(const TimeEvent.getServerTime());
   }
 
   String _handleSessionMessage() {
@@ -168,6 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
           listener: (context, state) {
             state.maybeWhen(
               appStartedSuccess: () {
+                context.read<TimeBloc>().add(const TimeEvent.getServerTime());
                 context.read<UserBloc>().add(const UserEvent.getUserProfile());
               },
               orElse: () {},
@@ -232,9 +232,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ? const Center(child: CircularProgressIndicator())
                 : RefreshIndicator(
                   onRefresh: () async {
-                    context.read<FarmingBatchCubit>().getFarmingBatchByUserId();
-                    context.read<TimeBloc>().add(
-                      const TimeEvent.getServerTime(),
+                    context.read<SystemBloc>().add(
+                      const SystemEvent.appStarted(),
                     );
                   },
                   child: SingleChildScrollView(

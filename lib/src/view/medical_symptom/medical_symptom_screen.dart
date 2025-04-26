@@ -94,146 +94,158 @@ class _MedicalSymptomScreenState extends State<MedicalSymptomScreen> {
         body:
             _isLoading
                 ? Center(child: CircularProgressIndicator())
-                : SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Thông tin cơ bản
-                        _buildInfoCard(
-                          context,
-                          title: 'Thông tin chung',
-                          content: [
-                            _buildInfoRow(
-                              'Loại vật nuôi:',
-                              medicalSymptomDto?.nameAnimal ?? 'N/A',
-                            ),
-                            _buildInfoRow(
-                              'Chẩn đoán:',
-                              medicalSymptomDto?.diagnosis,
-                            ),
-                            _buildInfoRow(
-                              'Số lượng cách ly:',
-                              '${medicalSymptomDto?.affectedQuantity} con',
-                            ),
-                            _buildInfoRow(
-                              'Ngày tạo:',
-                              CustomDateUtils.formatDate(
-                                medicalSymptomDto?.createAt ?? DateTime.now(),
-                              ),
-                            ),
-                            _buildInfoRow(
-                              'Trạng thái:',
-                              _getStatusText(medicalSymptomDto?.status ?? ''),
-                            ),
-                            if (medicalSymptomDto?.notes != null &&
-                                medicalSymptomDto!.notes.toString().isNotEmpty)
-                              _buildInfoRow(
-                                'Ghi chú:',
-                                medicalSymptomDto?.notes,
-                              ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 16),
-
-                        if (medicalSymptomDto?.pictures != null &&
-                            (medicalSymptomDto?.pictures as List)
-                                .isNotEmpty) ...[
-                          Text(
-                            'Hình ảnh',
-                            style: Theme.of(context).textTheme.titleLarge
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 12),
-                          if (medicalSymptomDto?.pictures != null &&
-                              (medicalSymptomDto?.pictures as List)
-                                  .isNotEmpty) ...[
-                            _buildImageGridView(
-                              context,
-                              medicalSymptomDto!.pictures!,
-                            ),
-                          ],
-                          const SizedBox(height: 16),
-                        ],
-
-                        // Thông tin đơn thuốc
-                        if (prescriptions != null) ...[
+                : RefreshIndicator(
+                  onRefresh: () async {
+                    context.read<MedicalSymptomCubit>().getMedicalSymptomById(
+                      id: widget.id,
+                    );
+                  },
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Thông tin cơ bản
                           _buildInfoCard(
                             context,
-                            title: 'Thông tin đơn thuốc',
+                            title: 'Thông tin chung',
                             content: [
                               _buildInfoRow(
-                                'Ngày kê đơn:',
+                                'Loại vật nuôi:',
+                                medicalSymptomDto?.nameAnimal ?? 'N/A',
+                              ),
+                              _buildInfoRow(
+                                'Chẩn đoán:',
+                                medicalSymptomDto?.diagnosis,
+                              ),
+                              _buildInfoRow(
+                                'Số lượng cách ly:',
+                                '${medicalSymptomDto?.affectedQuantity} con',
+                              ),
+                              _buildInfoRow(
+                                'Ngày tạo:',
                                 CustomDateUtils.formatDate(
-                                  prescriptions?.prescribedDate ??
-                                      DateTime.now(),
+                                  medicalSymptomDto?.createAt ?? DateTime.now(),
                                 ),
                               ),
                               _buildInfoRow(
-                                'Ngày kết thúc:',
-                                CustomDateUtils.formatDate(
-                                  prescriptions?.endDate ?? DateTime.now(),
+                                'Trạng thái:',
+                                _getStatusText(medicalSymptomDto?.status ?? ''),
+                              ),
+                              if (medicalSymptomDto?.notes != null &&
+                                  medicalSymptomDto!.notes
+                                      .toString()
+                                      .isNotEmpty)
+                                _buildInfoRow(
+                                  'Ghi chú:',
+                                  medicalSymptomDto?.notes,
                                 ),
-                              ),
-                              _buildInfoRow(
-                                'Số ngày uống thuốc:',
-                                '${prescriptions?.daysToTake} ngày',
-                              ),
-                              _buildInfoRow(
-                                'Trạng thái đơn thuốc:',
-                                _getPrescriptionStatusText(
-                                  prescriptions?.status ?? 'N/A',
-                                ),
-                              ),
-                              _buildInfoRow(
-                                'Giá tiền:',
-                                NumberFormat.currency(
-                                  locale: 'vi_VN',
-                                  symbol: 'đ',
-                                ).format(prescriptions?.price),
-                              ),
-                              if (prescriptions?.notes != null)
-                                _buildInfoRow('Ghi chú:', prescriptions?.notes),
                             ],
                           ),
 
                           const SizedBox(height: 16),
 
-                          // Danh sách thuốc
-                          if (prescriptions?.medications != null &&
-                              (prescriptions?.medications as List)
+                          if (medicalSymptomDto?.pictures != null &&
+                              (medicalSymptomDto?.pictures as List)
                                   .isNotEmpty) ...[
                             Text(
-                              'Danh sách thuốc',
+                              'Hình ảnh',
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 12),
+                            if (medicalSymptomDto?.pictures != null &&
+                                (medicalSymptomDto?.pictures as List)
+                                    .isNotEmpty) ...[
+                              _buildImageGridView(
+                                context,
+                                medicalSymptomDto!.pictures!,
+                              ),
+                            ],
+                            const SizedBox(height: 16),
+                          ],
+
+                          // Thông tin đơn thuốc
+                          if (prescriptions != null) ...[
+                            _buildInfoCard(
+                              context,
+                              title: 'Thông tin đơn thuốc',
+                              content: [
+                                _buildInfoRow(
+                                  'Ngày kê đơn:',
+                                  CustomDateUtils.formatDate(
+                                    prescriptions?.prescribedDate ??
+                                        DateTime.now(),
+                                  ),
+                                ),
+                                _buildInfoRow(
+                                  'Ngày kết thúc:',
+                                  CustomDateUtils.formatDate(
+                                    prescriptions?.endDate ?? DateTime.now(),
+                                  ),
+                                ),
+                                _buildInfoRow(
+                                  'Số ngày uống thuốc:',
+                                  '${prescriptions?.daysToTake} ngày',
+                                ),
+                                _buildInfoRow(
+                                  'Trạng thái đơn thuốc:',
+                                  _getPrescriptionStatusText(
+                                    prescriptions?.status ?? 'N/A',
+                                  ),
+                                ),
+                                _buildInfoRow(
+                                  'Giá tiền:',
+                                  NumberFormat.currency(
+                                    locale: 'vi_VN',
+                                    symbol: 'đ',
+                                  ).format(prescriptions?.price),
+                                ),
+                                if (prescriptions?.notes != null)
+                                  _buildInfoRow(
+                                    'Ghi chú:',
+                                    prescriptions?.notes,
+                                  ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 16),
+
+                            // Danh sách thuốc
+                            if (prescriptions?.medications != null &&
+                                (prescriptions?.medications as List)
+                                    .isNotEmpty) ...[
+                              Text(
+                                'Danh sách thuốc',
+                                style: Theme.of(context).textTheme.titleLarge
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 8),
+                              ...List<Widget>.from(
+                                (prescriptions?.medications as List).map(
+                                  (med) => _buildMedicationCard(context, med),
+                                ),
+                              ),
+                            ],
+                          ],
+
+                          const SizedBox(height: 16),
+
+                          // Hình ảnh (nếu có)
+                          if (medicalSymptomDto?.pictures != null &&
+                              (medicalSymptomDto?.pictures as List)
+                                  .isNotEmpty) ...[
+                            Text(
+                              'Hình ảnh',
                               style: Theme.of(context).textTheme.titleLarge
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 8),
-                            ...List<Widget>.from(
-                              (prescriptions?.medications as List).map(
-                                (med) => _buildMedicationCard(context, med),
-                              ),
-                            ),
+                            Text('Không có hình ảnh nào được cung cấp'),
                           ],
                         ],
-
-                        const SizedBox(height: 16),
-
-                        // Hình ảnh (nếu có)
-                        if (medicalSymptomDto?.pictures != null &&
-                            (medicalSymptomDto?.pictures as List)
-                                .isNotEmpty) ...[
-                          Text(
-                            'Hình ảnh',
-                            style: Theme.of(context).textTheme.titleLarge
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 8),
-                          Text('Không có hình ảnh nào được cung cấp'),
-                        ],
-                      ],
+                      ),
                     ),
                   ),
                 ),

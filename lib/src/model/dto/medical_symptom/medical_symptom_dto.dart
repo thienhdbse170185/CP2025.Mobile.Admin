@@ -11,15 +11,15 @@ class MedicalSymptomDto with _$MedicalSymptomDto {
     required String id,
     required String farmingBatchId,
     String? symptoms,
-    required String diagnosis,
+    String? diagnosis,
     @JsonKey(name: 'createAt') required DateTime createAt,
     required String status,
     required int affectedQuantity,
     int? quantity,
     required String nameAnimal,
-    required String notes,
+    String? notes,
     required List<PictureSymptom>? pictures,
-    required PrescriptionDto prescriptions,
+    PrescriptionDto? prescriptions,
   }) = _MedicalSymptomDto;
 
   factory MedicalSymptomDto.fromJson(Map<String, dynamic> json) =>

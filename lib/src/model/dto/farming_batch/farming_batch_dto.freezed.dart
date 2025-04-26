@@ -32,6 +32,8 @@ mixin _$FarmingBatchDto {
   String get status => throw _privateConstructorUsedError;
   int get cleaningFrequency => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
+  int? get affectQuantity => throw _privateConstructorUsedError;
+  int? get currentQuantity => throw _privateConstructorUsedError;
   int? get deadQuantity => throw _privateConstructorUsedError;
   String? get farmId => throw _privateConstructorUsedError;
   String? get cageId => throw _privateConstructorUsedError;
@@ -73,6 +75,8 @@ abstract class $FarmingBatchDtoCopyWith<$Res> {
     String status,
     int cleaningFrequency,
     int quantity,
+    int? affectQuantity,
+    int? currentQuantity,
     int? deadQuantity,
     String? farmId,
     String? cageId,
@@ -114,6 +118,8 @@ class _$FarmingBatchDtoCopyWithImpl<$Res, $Val extends FarmingBatchDto>
     Object? status = null,
     Object? cleaningFrequency = null,
     Object? quantity = null,
+    Object? affectQuantity = freezed,
+    Object? currentQuantity = freezed,
     Object? deadQuantity = freezed,
     Object? farmId = freezed,
     Object? cageId = freezed,
@@ -181,6 +187,16 @@ class _$FarmingBatchDtoCopyWithImpl<$Res, $Val extends FarmingBatchDto>
                     ? _value.quantity
                     : quantity // ignore: cast_nullable_to_non_nullable
                         as int,
+            affectQuantity:
+                freezed == affectQuantity
+                    ? _value.affectQuantity
+                    : affectQuantity // ignore: cast_nullable_to_non_nullable
+                        as int?,
+            currentQuantity:
+                freezed == currentQuantity
+                    ? _value.currentQuantity
+                    : currentQuantity // ignore: cast_nullable_to_non_nullable
+                        as int?,
             deadQuantity:
                 freezed == deadQuantity
                     ? _value.deadQuantity
@@ -281,6 +297,8 @@ abstract class _$$FarmingBatchDtoImplCopyWith<$Res>
     String status,
     int cleaningFrequency,
     int quantity,
+    int? affectQuantity,
+    int? currentQuantity,
     int? deadQuantity,
     String? farmId,
     String? cageId,
@@ -323,6 +341,8 @@ class __$$FarmingBatchDtoImplCopyWithImpl<$Res>
     Object? status = null,
     Object? cleaningFrequency = null,
     Object? quantity = null,
+    Object? affectQuantity = freezed,
+    Object? currentQuantity = freezed,
     Object? deadQuantity = freezed,
     Object? farmId = freezed,
     Object? cageId = freezed,
@@ -390,6 +410,16 @@ class __$$FarmingBatchDtoImplCopyWithImpl<$Res>
                 ? _value.quantity
                 : quantity // ignore: cast_nullable_to_non_nullable
                     as int,
+        affectQuantity:
+            freezed == affectQuantity
+                ? _value.affectQuantity
+                : affectQuantity // ignore: cast_nullable_to_non_nullable
+                    as int?,
+        currentQuantity:
+            freezed == currentQuantity
+                ? _value.currentQuantity
+                : currentQuantity // ignore: cast_nullable_to_non_nullable
+                    as int?,
         deadQuantity:
             freezed == deadQuantity
                 ? _value.deadQuantity
@@ -455,6 +485,8 @@ class _$FarmingBatchDtoImpl implements _FarmingBatchDto {
     required this.status,
     required this.cleaningFrequency,
     required this.quantity,
+    this.affectQuantity,
+    this.currentQuantity,
     this.deadQuantity,
     this.farmId,
     this.cageId,
@@ -493,6 +525,10 @@ class _$FarmingBatchDtoImpl implements _FarmingBatchDto {
   @override
   final int quantity;
   @override
+  final int? affectQuantity;
+  @override
+  final int? currentQuantity;
+  @override
   final int? deadQuantity;
   @override
   final String? farmId;
@@ -529,7 +565,7 @@ class _$FarmingBatchDtoImpl implements _FarmingBatchDto {
 
   @override
   String toString() {
-    return 'FarmingBatchDto(id: $id, farmingBatchCode: $farmingBatchCode, name: $name, species: $species, startDate: $startDate, completeAt: $completeAt, estimatedTimeStart: $estimatedTimeStart, endDate: $endDate, status: $status, cleaningFrequency: $cleaningFrequency, quantity: $quantity, deadQuantity: $deadQuantity, farmId: $farmId, cageId: $cageId, cageName: $cageName, growthStages: $growthStages, medicalSymptoms: $medicalSymptoms, cage: $cage, animalTemplate: $animalTemplate, templateName: $templateName)';
+    return 'FarmingBatchDto(id: $id, farmingBatchCode: $farmingBatchCode, name: $name, species: $species, startDate: $startDate, completeAt: $completeAt, estimatedTimeStart: $estimatedTimeStart, endDate: $endDate, status: $status, cleaningFrequency: $cleaningFrequency, quantity: $quantity, affectQuantity: $affectQuantity, currentQuantity: $currentQuantity, deadQuantity: $deadQuantity, farmId: $farmId, cageId: $cageId, cageName: $cageName, growthStages: $growthStages, medicalSymptoms: $medicalSymptoms, cage: $cage, animalTemplate: $animalTemplate, templateName: $templateName)';
   }
 
   @override
@@ -554,6 +590,10 @@ class _$FarmingBatchDtoImpl implements _FarmingBatchDto {
                 other.cleaningFrequency == cleaningFrequency) &&
             (identical(other.quantity, quantity) ||
                 other.quantity == quantity) &&
+            (identical(other.affectQuantity, affectQuantity) ||
+                other.affectQuantity == affectQuantity) &&
+            (identical(other.currentQuantity, currentQuantity) ||
+                other.currentQuantity == currentQuantity) &&
             (identical(other.deadQuantity, deadQuantity) ||
                 other.deadQuantity == deadQuantity) &&
             (identical(other.farmId, farmId) || other.farmId == farmId) &&
@@ -590,6 +630,8 @@ class _$FarmingBatchDtoImpl implements _FarmingBatchDto {
     status,
     cleaningFrequency,
     quantity,
+    affectQuantity,
+    currentQuantity,
     deadQuantity,
     farmId,
     cageId,
@@ -631,6 +673,8 @@ abstract class _FarmingBatchDto implements FarmingBatchDto {
     required final String status,
     required final int cleaningFrequency,
     required final int quantity,
+    final int? affectQuantity,
+    final int? currentQuantity,
     final int? deadQuantity,
     final String? farmId,
     final String? cageId,
@@ -667,6 +711,10 @@ abstract class _FarmingBatchDto implements FarmingBatchDto {
   int get cleaningFrequency;
   @override
   int get quantity;
+  @override
+  int? get affectQuantity;
+  @override
+  int? get currentQuantity;
   @override
   int? get deadQuantity;
   @override

@@ -419,14 +419,24 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
           const SizedBox(height: 8),
           Row(
             children: [
-              Expanded(
-                child: _buildInfoCard(
-                  title: 'Số lượng',
-                  value: '${farmingBatchDto?.quantity ?? 0} con',
-                  icon: Icons.group,
-                  color: Colors.blue,
-                ),
-              ),
+              farmingBatchDto?.status == "Active"
+                  ? Expanded(
+                    child: _buildInfoCard(
+                      title: 'Số gà hiện tại',
+                      value: '${farmingBatchDto?.currentQuantity ?? 0} con',
+                      icon: Icons.group,
+                      color: Colors.blue,
+                    ),
+                  )
+                  : Expanded(
+                    child: _buildInfoCard(
+                      title: 'Số gà cuối vụ',
+                      value:
+                          '${(farmingBatchDto?.quantity ?? 0) - (farmingBatchDto?.deadQuantity ?? 0)}',
+                      icon: Icons.group,
+                      color: Colors.blue,
+                    ),
+                  ),
               const SizedBox(width: 12),
               Expanded(
                 child: _buildInfoCard(
