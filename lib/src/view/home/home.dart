@@ -233,6 +233,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 : RefreshIndicator(
                   onRefresh: () async {
                     context.read<FarmingBatchCubit>().getFarmingBatchByUserId();
+                    context.read<TimeBloc>().add(
+                      const TimeEvent.getServerTime(),
+                    );
                   },
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(
