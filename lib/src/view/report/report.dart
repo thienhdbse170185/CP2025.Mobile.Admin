@@ -1509,9 +1509,9 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        if (data.growthStageReports.length > 1)
-          _buildWeightGrowthChart(data.growthStageReports),
-        const SizedBox(height: 16),
+        // if (data.growthStageReports.length > 1)
+        //   _buildWeightGrowthChart(data.growthStageReports),
+        // const SizedBox(height: 16),
         Card(
           child: Padding(
             padding: const EdgeInsets.all(16),
