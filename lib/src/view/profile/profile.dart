@@ -8,6 +8,7 @@ import 'package:smart_farm_admin/src/view/widgets/custom_app_bar.dart';
 import 'package:smart_farm_admin/src/view/widgets/linear_icons.dart';
 import 'package:smart_farm_admin/src/view/widgets/loading_dialog.dart';
 import 'package:smart_farm_admin/src/view/widgets/text_field_required.dart';
+import 'package:smart_farm_admin/src/view/widgets/warning_confirm_dialog.dart';
 import 'package:smart_farm_admin/src/viewmodel/auth/auth_bloc.dart';
 import 'package:smart_farm_admin/src/viewmodel/user/user_bloc.dart';
 
@@ -113,9 +114,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
               getUserProfileByUserIdFailure: (message) {
                 LoadingDialog.hide(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(message), backgroundColor: Colors.red),
-                );
+                if (message.contains('data-changed')) {
+                  showDialog(
+                    context: context,
+                    builder: (_) {
+                      return WarningConfirmationDialog(
+                        title: 'Cảnh báo',
+                        content: const Text(
+                          'Dữ liệu đã bị thay đổi, vui lòng đăng nhập trở lại.',
+                        ),
+                        primaryButtonText: 'Đăng xuất',
+                        onPrimaryButtonPressed: () {
+                          context.read<AuthBloc>().add(AuthEvent.logout());
+                        },
+                      );
+                    },
+                  );
+                }
               },
               orElse: () {},
             );

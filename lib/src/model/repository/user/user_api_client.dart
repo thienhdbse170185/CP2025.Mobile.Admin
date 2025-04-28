@@ -49,6 +49,9 @@ class UserApiClient {
         throw Exception('Failed to get user profile by userId');
       }
     } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        throw Exception('data-changed');
+      }
       throw Exception(e.toString());
     }
   }
