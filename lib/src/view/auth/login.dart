@@ -217,25 +217,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: TextStyle(color: Colors.red, fontSize: 13),
                             ),
                           ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () {
-                              // context.push(RouteName.forgotPassword);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Chức năng đang được phát triển',
-                                  ),
-                                ),
-                              );
-                            },
-                            child: const Text(
-                              "Quên mật khẩu?",
-                              style: TextStyle(color: Colors.blue),
-                            ),
-                          ),
-                        ),
                         const SizedBox(height: 16),
                         SizedBox(
                           width: double.infinity,

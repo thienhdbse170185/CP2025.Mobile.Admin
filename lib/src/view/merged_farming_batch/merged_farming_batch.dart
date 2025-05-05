@@ -71,7 +71,7 @@ class _MergedFarmingBatchScreenState extends State<MergedFarmingBatchScreen> {
         daysRemaining <= 0 ? 1.0 : 1 - (daysRemaining / totalDuration);
 
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 32),
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
@@ -208,76 +208,13 @@ class _MergedFarmingBatchScreenState extends State<MergedFarmingBatchScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
-
-                  // Thanh tiến độ
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Tiến độ',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey[700],
-                            ),
-                          ),
-                          Text(
-                            daysRemaining <= 0
-                                ? 'Đã hoàn thành'
-                                : 'Còn $daysRemaining ngày',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color:
-                                  daysRemaining <= 0
-                                      ? Colors.green
-                                      : Colors.orange,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: LinearProgressIndicator(
-                          value: progress,
-                          backgroundColor: Colors.grey[200],
-                          color: _getProgressColor(progress),
-                          minHeight: 10,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      // Khoảng thời gian
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            dateFormat.format(startDate),
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 12,
-                            ),
-                          ),
-                          Text(
-                            dateFormat.format(endDate),
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
 
             // Phần chân với nút hành động
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.only(left: 16, bottom: 16, right: 16),
               decoration: BoxDecoration(
                 color: Colors.grey[100],
                 borderRadius: const BorderRadius.vertical(

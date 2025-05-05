@@ -161,7 +161,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           actions: [
             IconButton(
               onPressed: () {
-                context.pushNamed(RouteName.editUserProfile);
+                context.push(RouteName.editUserProfile);
               },
               icon: const Icon(Icons.edit),
             ),

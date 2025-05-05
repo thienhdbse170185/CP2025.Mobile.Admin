@@ -510,65 +510,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         }).toList(),
                   ),
-                  const SizedBox(height: 16),
-                  if (status == 'Active') ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Tiến độ:',
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        // Text(
-                        //   'Còn lại: $daysRemaining ngày',
-                        //   style: Theme.of(
-                        //     context,
-                        //   ).textTheme.bodyMedium?.copyWith(
-                        //     color:
-                        //         daysRemaining < 7 ? Colors.red : Colors.green,
-                        //     fontWeight: FontWeight.bold,
-                        //   ),
-                        // ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: LinearProgressIndicator(
-                        value: progress,
-                        minHeight: 10,
-                        backgroundColor:
-                            Theme.of(context).colorScheme.surfaceVariant,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '${(progress * 100).toStringAsFixed(0)}%',
-                      style: Theme.of(context).textTheme.bodySmall,
-                      textAlign: TextAlign.right,
-                    ),
-                  ],
-                  if (status == 'Completed') ...[
-                    Row(
-                      children: [
-                        Icon(Icons.check_circle, color: Colors.green, size: 20),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Hoàn thành vào: ${batchModels.isNotEmpty ? _formatDate(batchModels.first.completeAt) : "N/A"}',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodyMedium?.copyWith(
-                            color: Colors.green,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
                 ],
               ),
             ),

@@ -673,7 +673,7 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
                           ),
                         ),
                         Text(
-                          '${stage.quantity.toString()} (con)',
+                          '${stage.quantity - stage.deadQuantity} (con)',
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[600],

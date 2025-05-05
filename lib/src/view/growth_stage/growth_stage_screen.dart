@@ -126,7 +126,7 @@ class _GrowthStageScreenState extends State<GrowthStageScreen> {
                         _buildInfoItem(
                           icon: Icons.numbers,
                           label: "Số lượng",
-                          value: "${stage.quantity} con",
+                          value: "${stage.quantity - stage.deadQuantity} con",
                         ),
                         const SizedBox(width: 12),
                         _buildInfoItem(

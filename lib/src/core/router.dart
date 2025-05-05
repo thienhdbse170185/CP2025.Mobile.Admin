@@ -12,6 +12,7 @@ import 'package:smart_farm_admin/src/view/layout.dart';
 import 'package:smart_farm_admin/src/view/medical_symptom/medical_symptom_screen.dart';
 import 'package:smart_farm_admin/src/view/merged_farming_batch/merged_farming_batch.dart';
 import 'package:smart_farm_admin/src/view/notification/notification.dart';
+import 'package:smart_farm_admin/src/view/profile/edit_user.dart';
 import 'package:smart_farm_admin/src/view/profile/profile.dart';
 import 'package:smart_farm_admin/src/view/report/report.dart';
 
@@ -134,6 +135,12 @@ final router = GoRouter(
         final params = state.extra as Map<String, dynamic>;
         final id = params['id'] as String;
         return MedicalSymptomScreen(id: id);
+      },
+    ),
+    GoRoute(
+      path: RouteName.editUserProfile,
+      builder: (context, state) {
+        return EditUserProfileWidget();
       },
     ),
   ],

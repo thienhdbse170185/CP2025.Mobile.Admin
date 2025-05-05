@@ -466,11 +466,6 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
           font,
         ),
         _buildPdfInfoRow(
-          'Tổng doanh thu trứng',
-          currencyFormat.format(reportData.totalEggSales),
-          font,
-        ),
-        _buildPdfInfoRow(
           'Lợi nhuận',
           currencyFormat.format(reportData.netProfit),
           font,
@@ -1104,10 +1099,6 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
             _buildInfoRow(
               'Tổng doanh thu thịt',
               currencyFormat.format(data.totalMeatSales),
-            ),
-            _buildInfoRow(
-              'Tổng doanh thu trứng',
-              currencyFormat.format(data.totalEggSales),
             ),
             _buildInfoRow(
               'Lợi nhuận',
