@@ -58,11 +58,11 @@ class _FarmingBatchDetailScreenState extends State<FarmingBatchDetailScreen> {
 
       // Find current stage
       for (var stage in farmingBatchDto?.growthStages ?? []) {
-        DateTime stageStart = DateTime.parse(stage["ageStartDate"]);
-        DateTime stageEnd = DateTime.parse(stage["ageEndDate"]);
+        DateTime stageStart = DateTime.parse(stage.ageStartDate);
+        DateTime stageEnd = DateTime.parse(stage.ageEndDate);
 
         if (now.isAfter(stageStart) && now.isBefore(stageEnd)) {
-          currentStage = stage["name"];
+          currentStage = stage.name;
           break;
         }
       }
