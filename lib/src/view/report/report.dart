@@ -1444,7 +1444,10 @@ class _ReportFarmingBatchScreenState extends State<ReportFarmingBatchScreen>
                       'Cân nặng dự kiến',
                       '${stage.weightAnimalExpect} kg',
                     ),
-                    _buildInfoRow('Số lượng', '${stage.quantity} con'),
+                    _buildInfoRow(
+                      'Số lượng',
+                      '${stage.quantity - stage.deadQuantity} con',
+                    ),
                     _buildInfoRow(
                       'Số lượng đã chết',
                       '${stage.deadQuantity} con',
